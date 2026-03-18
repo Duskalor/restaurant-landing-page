@@ -1,0 +1,63 @@
+---
+const images = [
+  {
+    src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
+    alt: 'Ambiente del comedor principal',
+    class: 'col-span-2 row-span-2',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80',
+    alt: 'Plato de la chef ejecutiva',
+    class: '',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',
+    alt: 'Mesa preparada para la velada',
+    class: '',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80',
+    alt: 'Coctelería artesanal',
+    class: '',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80',
+    alt: 'Salón privado para eventos',
+    class: '',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80',
+    alt: 'Postres de temporada',
+    class: '',
+  },
+];
+---
+
+<section id="galeria" class="py-24 bg-[#F5F0E8]">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
+        Galería
+      </p>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-4">
+        Momentos de La Maison
+      </h2>
+      <p class="text-[#6B6B6B] max-w-lg mx-auto">
+        Cada rincón de nuestro restaurante está pensado para que tu visita sea memorable.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[200px]">
+      {images.map((img, i) => (
+        <div class={`overflow-hidden rounded-sm ${img.class}`}>
+          <img
+            src={img.src}
+            alt={img.alt}
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

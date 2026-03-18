@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import MenuHighlights from '../components/MenuHighlights.astro';
+import Gallery from '../components/Gallery.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title='La Maison — Restaurante'
+  description='Experiencia gastronómica única en el corazón de la ciudad. Ingredientes de temporada, cocina francesa y hospitalidad inigualable. Reserva tu mesa hoy.'
+>
+  <Navbar />
+  <main>
+    <Hero />
+    <About />
+    <MenuHighlights />
+    <Gallery />
+    <Testimonials />
+    <Contact />
+  </main>
+  <Footer />
+</Layout>

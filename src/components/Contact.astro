@@ -1,0 +1,126 @@
+---
+const hours = [
+  { day: 'Lunes – Miércoles', time: '1:00 pm – 10:00 pm' },
+  { day: 'Jueves – Viernes', time: '1:00 pm – 11:30 pm' },
+  { day: 'Sábado', time: '12:00 pm – 11:30 pm' },
+  { day: 'Domingo', time: '12:00 pm – 9:00 pm' },
+];
+---
+
+<section id="contacto" class="py-24 bg-[#F5F0E8]">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16">
+    <!-- Info -->
+    <div>
+      <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
+        Encuéntranos
+      </p>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-8">
+        Reserva tu mesa
+      </h2>
+
+      <div class="space-y-6 mb-10">
+        <div>
+          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Dirección</p>
+          <p class="text-[#2C2C2C] font-medium">Calle Triunfo 379, Centro Histórico</p>
+          <p class="text-[#6B6B6B] text-sm">Cusco, Perú 08002</p>
+        </div>
+        <div>
+          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Teléfono</p>
+          <a href="tel:+51014456789" class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+            +51 (01) 445-6789
+          </a>
+        </div>
+        <div>
+          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Correo</p>
+          <a href="mailto:reservas@lamaison.pe" class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+            reservas@lamaison.pe
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-3">Horarios</p>
+        <div class="space-y-2">
+          {hours.map((h) => (
+            <div class="flex justify-between border-b border-[#E8E0D0] pb-2">
+              <span class="text-sm text-[#2C2C2C]">{h.day}</span>
+              <span class="text-sm text-[#6B6B6B]">{h.time}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white p-10 border border-[#E8E0D0] rounded-sm shadow-sm">
+      <h3 class="font-serif text-2xl font-bold text-[#2C2C2C] mb-6">Haz tu reservación</h3>
+      <form class="space-y-5" novalidate>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="nombre" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Nombre</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              placeholder="Tu nombre"
+              required
+              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
+            />
+          </div>
+          <div>
+            <label for="email" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Correo</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="tu@correo.com"
+              required
+              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
+            />
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="fecha" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Fecha</label>
+            <input
+              type="date"
+              id="fecha"
+              name="fecha"
+              required
+              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
+            />
+          </div>
+          <div>
+            <label for="personas" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Personas</label>
+            <select
+              id="personas"
+              name="personas"
+              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
+            >
+              {[1,2,3,4,5,6,7,8].map((n) => (
+                <option value={n}>{n} {n === 1 ? 'persona' : 'personas'}</option>
+              ))}
+              <option value="9+">9 o más</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="mensaje" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Mensaje especial (opcional)</label>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            rows="3"
+            placeholder="Alergias, ocasión especial, preferencias de mesa..."
+            class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors resize-none"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="w-full py-3 bg-[#C9A96E] text-white font-medium rounded hover:bg-[#A8834A] transition-colors duration-200"
+        >
+          Confirmar reservación
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
