@@ -1,0 +1,248 @@
+---
+import { getGalleryImages, getFeaturedMenuItems, urlFor } from '../lib/sanity';
+
+const galleryImages = await getGalleryImages();
+const featuredItems = await getFeaturedMenuItems();
+
+interface Slide {
+  src: string;
+  caption: string;
+  description?: string;
+}
+
+const slides: Slide[] = [];
+
+// Gallery images first
+for (const img of galleryImages) {
+  slides.push({
+    src: urlFor(img.image).width(1200).height(700).format('webp').url(),
+    caption: img.alt ?? img.title ?? '',
+  });
+}
+
+// Menu items with images
+for (const item of featuredItems) {
+  if (!item.image) continue;
+  slides.push({
+    src: urlFor(item.image).width(1200).height(700).format('webp').url(),
+    caption: item.name,
+    description: item.description,
+  });
+}
+
+// Fallback if no Sanity images
+const fallbackSlides: Slide[] =
+  slides.length === 0
+    ? [
+        {
+          src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=85',
+          caption: 'Mesa preparada para la velada',
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=85',
+          caption: 'Ambiente del comedor principal',
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=85',
+          caption: 'Platos de nuestra chef ejecutiva',
+        },
+        {
+          src: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=1200&q=85',
+          caption: 'Postres de temporada',
+        },
+      ]
+    : [];
+
+const activeSlides = slides.length > 0 ? slides : fallbackSlides;
+---
+
+<section
+  class='relative w-full overflow-hidden bg-[#1A1A1A] mt-16'
+  style='height: calc(100vh - 4rem);'
+>
+  <!-- Slides wrapper -->
+  <div
+    id='carousel-track'
+    class='flex h-full transition-transform duration-800 ease-in-out'
+    style='cursor: grab;'
+  >
+    {
+      activeSlides.map((slide) => (
+        <div class='min-w-full h-full relative flex-shrink-0'>
+          <img
+            src={slide.src}
+            alt={slide.caption}
+            class='w-full h-full object-cover opacity-80'
+            loading='lazy'
+          />
+          <div class='absolute inset-0 flex flex-col items-center justify-center text-white text-center px-6 bg-black/30'>
+            {slide.caption && (
+              <h2 class='font-serif text-4xl md:text-5xl font-bold drop-shadow-lg mb-4'>
+                {slide.caption}
+              </h2>
+            )}
+            {slide.description && (
+              <p class='text-white/90 text-lg md:text-xl max-w-xl drop-shadow leading-relaxed'>
+                {slide.description}
+              </p>
+            )}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Prev button -->
+  <button
+    id='carousel-prev'
+    aria-label='Anterior'
+    class='cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors text-2xl leading-none'
+  >
+    ‹
+  </button>
+
+  <!-- Next button -->
+  <button
+    id='carousel-next'
+    aria-label='Siguiente'
+    class='cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors text-2xl leading-none'
+  >
+    ›
+  </button>
+
+  <!-- Dots -->
+  <div
+    id='carousel-dots'
+    class='absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 items-center'
+  >
+    {
+      activeSlides.map((_, i) => (
+        <button
+          class={`carousel-dot rounded-full transition-all duration-300 ${i === 0 ? 'bg-[#C9A96E] w-3 h-3' : 'bg-white/50 w-2 h-2'}`}
+          data-index={i}
+          aria-label={`Ir a la imagen ${i + 1}`}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const track = document.getElementById('carousel-track') as HTMLElement;
+  const dots = document.querySelectorAll<HTMLButtonElement>('.carousel-dot');
+  const prevBtn = document.getElementById('carousel-prev') as HTMLButtonElement;
+  const nextBtn = document.getElementById('carousel-next') as HTMLButtonElement;
+  const section = track?.closest('section') as HTMLElement;
+
+  const total = dots.length;
+  let current = 0;
+  let timer: ReturnType<typeof setInterval> | null = null;
+
+  // Drag state
+  let dragStartX = 0;
+  let isDragging = false;
+
+  function goTo(index: number) {
+    current = (index + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((dot, i) => {
+      if (i === current) {
+        dot.classList.remove('bg-white/50', 'w-2', 'h-2');
+        dot.classList.add('bg-[#C9A96E]', 'w-3', 'h-3');
+      } else {
+        dot.classList.remove('bg-[#C9A96E]', 'w-3', 'h-3');
+        dot.classList.add('bg-white/50', 'w-2', 'h-2');
+      }
+    });
+  }
+
+  function startTimer() {
+    timer = setInterval(() => goTo(current + 1), 3000);
+  }
+
+  function stopTimer() {
+    if (timer !== null) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  prevBtn?.addEventListener('click', () => goTo(current - 1));
+  nextBtn?.addEventListener('click', () => goTo(current + 1));
+
+  dots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const index = parseInt(dot.dataset.index ?? '0', 10);
+      goTo(index);
+    });
+  });
+
+  // Mouse drag
+  section?.addEventListener('mousedown', (e: MouseEvent) => {
+    dragStartX = e.clientX;
+    isDragging = true;
+    stopTimer();
+    track.style.transition = 'none';
+  });
+
+  section?.addEventListener('mousemove', (e: MouseEvent) => {
+    if (!isDragging) return;
+    const diff = e.clientX - dragStartX;
+    track.style.transform = `translateX(calc(-${current * 100}% + ${diff}px))`;
+  });
+
+  section?.addEventListener('mouseup', (e: MouseEvent) => {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = 'transform 0.5s ease-in-out';
+    const diff = e.clientX - dragStartX;
+    if (diff < -50) goTo(current + 1);
+    else if (diff > 50) goTo(current - 1);
+    else goTo(current);
+    startTimer();
+  });
+
+  section?.addEventListener('mouseleave', (e: MouseEvent) => {
+    if (isDragging) {
+      isDragging = false;
+      track.style.transition = 'transform 0.5s ease-in-out';
+      goTo(current);
+    }
+    startTimer();
+  });
+
+  // Touch drag
+  section?.addEventListener(
+    'touchstart',
+    (e: TouchEvent) => {
+      dragStartX = e.touches[0].clientX;
+      isDragging = true;
+      stopTimer();
+      track.style.transition = 'none';
+    },
+    { passive: true },
+  );
+
+  section?.addEventListener(
+    'touchmove',
+    (e: TouchEvent) => {
+      if (!isDragging) return;
+      const diff = e.touches[0].clientX - dragStartX;
+      track.style.transform = `translateX(calc(-${current * 100}% + ${diff}px))`;
+    },
+    { passive: true },
+  );
+
+  section?.addEventListener('touchend', (e: TouchEvent) => {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = 'transform 0.5s ease-in-out';
+    const diff = e.changedTouches[0].clientX - dragStartX;
+    if (diff < -50) goTo(current + 1);
+    else if (diff > 50) goTo(current - 1);
+    else goTo(current);
+    startTimer();
+  });
+
+  startTimer();
+</script>

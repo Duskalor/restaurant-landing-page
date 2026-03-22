@@ -8,11 +8,11 @@ const logoUrl = settings?.logo
   : null
 
 const links = [
-  { label: 'Nosotros', href: '/#nosotros' },
-  { label: 'Menú', href: '/#menu' },
-  { label: 'Galería', href: '/#galeria' },
-  { label: 'Reseñas', href: '/#resenas' },
-  { label: 'Contacto', href: '/#contacto' },
+  { label: 'Nosotros', href: '/nosotros' },
+  { label: 'Menú', href: '/menu' },
+  { label: 'Galería', href: '/galeria' },
+  { label: 'Reseñas', href: '/resenas' },
+  { label: 'Contacto', href: '/contacto' },
 ];
 ---
 
@@ -42,7 +42,7 @@ const links = [
 
     <!-- CTA -->
     <a
-      href="/#contacto"
+      href="/contacto"
       class="hidden md:inline-block px-5 py-2 text-sm font-medium bg-[#C9A96E] text-white rounded hover:bg-[#A8834A] transition-colors duration-200"
     >
       Reservar mesa
@@ -75,7 +75,7 @@ const links = [
       </a>
     ))}
     <a
-      href="/#contacto"
+      href="/contacto"
       class="mt-2 inline-block text-center px-5 py-2 text-sm font-medium bg-[#C9A96E] text-white rounded hover:bg-[#A8834A] transition-colors"
       data-mobile-link
     >
