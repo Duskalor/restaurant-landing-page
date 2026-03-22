@@ -1,18 +1,29 @@
 ---
+import { getSiteSettings, urlFor } from '../lib/sanity'
+
+const settings = await getSiteSettings()
+const restaurantName = settings?.restaurantName ?? 'La Maison'
+const logoUrl = settings?.logo
+  ? urlFor(settings.logo).width(160).height(48).format('webp').url()
+  : null
+
 const links = [
-  { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Menú', href: '#menu' },
-  { label: 'Galería', href: '#galeria' },
-  { label: 'Reseñas', href: '#resenas' },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Nosotros', href: '/#nosotros' },
+  { label: 'Menú', href: '/#menu' },
+  { label: 'Galería', href: '/#galeria' },
+  { label: 'Reseñas', href: '/#resenas' },
+  { label: 'Contacto', href: '/#contacto' },
 ];
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF7]/95 backdrop-blur-sm border-b border-[#E8E0D0]">
   <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
     <!-- Logo -->
-    <a href="#" class="font-serif text-2xl font-bold text-[#2C2C2C] tracking-wide">
-      La Maison
+    <a href="/" class="font-serif text-2xl font-bold text-[#2C2C2C] tracking-wide">
+      {logoUrl
+        ? <img src={logoUrl} alt={restaurantName} class="h-10 w-auto object-contain" />
+        : restaurantName
+      }
     </a>
 
     <!-- Desktop links -->
@@ -31,7 +42,7 @@ const links = [
 
     <!-- CTA -->
     <a
-      href="#contacto"
+      href="/#contacto"
       class="hidden md:inline-block px-5 py-2 text-sm font-medium bg-[#C9A96E] text-white rounded hover:bg-[#A8834A] transition-colors duration-200"
     >
       Reservar mesa
@@ -64,7 +75,7 @@ const links = [
       </a>
     ))}
     <a
-      href="#contacto"
+      href="/#contacto"
       class="mt-2 inline-block text-center px-5 py-2 text-sm font-medium bg-[#C9A96E] text-white rounded hover:bg-[#A8834A] transition-colors"
       data-mobile-link
     >

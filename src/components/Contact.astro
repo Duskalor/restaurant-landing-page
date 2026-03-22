@@ -1,10 +1,36 @@
 ---
-const hours = [
+import { getContactContent } from '../lib/sanity'
+
+const contact = await getContactContent()
+
+const title = contact?.title ?? 'Reserva tu mesa'
+const subtitle = contact?.subtitle ?? 'Encuéntranos'
+const phone = contact?.phone ?? '+51 (01) 445-6789'
+const email = contact?.email ?? 'reservas@lamaison.pe'
+const address = contact?.address ?? 'Calle Triunfo 379, Centro Histórico\nCusco, Perú 08002'
+const reservationCtaText = contact?.reservationCtaText ?? 'Confirmar reservación'
+
+// Parse opening hours: each line "Día | Hora", fallback to hardcoded
+const defaultHours = [
   { day: 'Lunes – Miércoles', time: '1:00 pm – 10:00 pm' },
   { day: 'Jueves – Viernes', time: '1:00 pm – 11:30 pm' },
   { day: 'Sábado', time: '12:00 pm – 11:30 pm' },
   { day: 'Domingo', time: '12:00 pm – 9:00 pm' },
-];
+]
+
+const hours = contact?.openingHours
+  ? contact.openingHours
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const [day, time] = line.split('|').map((s) => s.trim())
+        return { day: day ?? line, time: time ?? '' }
+      })
+  : defaultHours
+
+// Split address into lines for display
+const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
 ---
 
 <section id="contacto" class="py-24 bg-[#F5F0E8]">
@@ -12,28 +38,31 @@ const hours = [
     <!-- Info -->
     <div>
       <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
-        Encuéntranos
+        {subtitle}
       </p>
       <h2 class="font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-8">
-        Reserva tu mesa
+        {title}
       </h2>
 
       <div class="space-y-6 mb-10">
         <div>
           <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Dirección</p>
-          <p class="text-[#2C2C2C] font-medium">Calle Triunfo 379, Centro Histórico</p>
-          <p class="text-[#6B6B6B] text-sm">Cusco, Perú 08002</p>
+          {addressLines.map((line, i) => (
+            i === 0
+              ? <p class="text-[#2C2C2C] font-medium">{line}</p>
+              : <p class="text-[#6B6B6B] text-sm">{line}</p>
+          ))}
         </div>
         <div>
           <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Teléfono</p>
-          <a href="tel:+51014456789" class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
-            +51 (01) 445-6789
+          <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+            {phone}
           </a>
         </div>
         <div>
           <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Correo</p>
-          <a href="mailto:reservas@lamaison.pe" class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
-            reservas@lamaison.pe
+          <a href={`mailto:${email}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+            {email}
           </a>
         </div>
       </div>
@@ -118,7 +147,7 @@ const hours = [
           type="submit"
           class="w-full py-3 bg-[#C9A96E] text-white font-medium rounded hover:bg-[#A8834A] transition-colors duration-200"
         >
-          Confirmar reservación
+          {reservationCtaText}
         </button>
       </form>
     </div>

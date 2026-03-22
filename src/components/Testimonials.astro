@@ -1,5 +1,10 @@
 ---
-import { testimonials } from '../data/testimonials';
+import { getTestimonials } from '../lib/sanity'
+import { testimonials as hardcodedTestimonials } from '../data/testimonials'
+
+const sanityTestimonials = await getTestimonials()
+
+const useSanity = sanityTestimonials && sanityTestimonials.length > 0
 ---
 
 <section id="resenas" class="py-24 bg-[#FAFAF7]">
@@ -13,37 +18,65 @@ import { testimonials } from '../data/testimonials';
       </h2>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8">
-      {testimonials.map((t) => (
-        <article class="bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col">
-          <!-- Stars -->
-          <div class="flex gap-1 mb-6">
-            {Array.from({ length: t.rating }).map(() => (
-              <span class="text-[#C9A96E] text-lg">★</span>
-            ))}
-          </div>
-
-          <!-- Quote -->
-          <blockquote class="font-serif text-lg text-[#2C2C2C] leading-relaxed italic flex-1">
-            "{t.quote}"
-          </blockquote>
-
-          <!-- Author -->
-          <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[#E8E0D0]">
-            {t.avatar && (
-              <img
-                src={t.avatar}
-                alt={t.author}
-                class="w-12 h-12 rounded-full object-cover"
-              />
-            )}
-            <div>
-              <p class="font-semibold text-[#2C2C2C] text-sm">{t.author}</p>
-              {t.role && <p class="text-xs text-[#6B6B6B] mt-0.5">{t.role}</p>}
+    {useSanity ? (
+      <div class="grid md:grid-cols-3 gap-8">
+        {sanityTestimonials.map((t) => (
+          <article class="bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col">
+            <!-- Stars -->
+            <div class="flex gap-1 mb-6">
+              {Array.from({ length: t.rating ?? 5 }).map(() => (
+                <span class="text-[#C9A96E] text-lg">★</span>
+              ))}
             </div>
-          </div>
-        </article>
-      ))}
-    </div>
+
+            <!-- Quote -->
+            <blockquote class="font-serif text-lg text-[#2C2C2C] leading-relaxed italic flex-1">
+              "{t.comment}"
+            </blockquote>
+
+            <!-- Author -->
+            <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[#E8E0D0]">
+              <div>
+                <p class="font-semibold text-[#2C2C2C] text-sm">{t.name}</p>
+                {t.date && <p class="text-xs text-[#6B6B6B] mt-0.5">{t.date}</p>}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="grid md:grid-cols-3 gap-8">
+        {hardcodedTestimonials.map((t) => (
+          <article class="bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col">
+            <!-- Stars -->
+            <div class="flex gap-1 mb-6">
+              {Array.from({ length: t.rating }).map(() => (
+                <span class="text-[#C9A96E] text-lg">★</span>
+              ))}
+            </div>
+
+            <!-- Quote -->
+            <blockquote class="font-serif text-lg text-[#2C2C2C] leading-relaxed italic flex-1">
+              "{t.quote}"
+            </blockquote>
+
+            <!-- Author -->
+            <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[#E8E0D0]">
+              {t.avatar && (
+                <img
+                  src={t.avatar}
+                  alt={t.author}
+                  class="w-12 h-12 rounded-full object-cover"
+                />
+              )}
+              <div>
+                <p class="font-semibold text-[#2C2C2C] text-sm">{t.author}</p>
+                {t.role && <p class="text-xs text-[#6B6B6B] mt-0.5">{t.role}</p>}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
   </div>
 </section>

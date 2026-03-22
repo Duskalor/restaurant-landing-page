@@ -1,5 +1,9 @@
 ---
-const images = [
+import { getGalleryImages, urlFor } from '../lib/sanity'
+
+const sanityImages = await getGalleryImages()
+
+const fallbackImages = [
   {
     src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
     alt: 'Ambiente del comedor principal',
@@ -30,34 +34,50 @@ const images = [
     alt: 'Postres de temporada',
     class: '',
   },
-];
+]
 ---
 
-<section id="galeria" class="py-24 bg-[#F5F0E8]">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-16">
-      <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
+<section id='galeria' class='py-24 bg-[#F5F0E8]'>
+  <div class='max-w-7xl mx-auto px-6'>
+    <div class='text-center mb-16'>
+      <p
+        class='text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3'
+      >
         Galería
       </p>
-      <h2 class="font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-4">
+      <h2 class='font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-4'>
         Momentos de La Maison
       </h2>
-      <p class="text-[#6B6B6B] max-w-lg mx-auto">
-        Cada rincón de nuestro restaurante está pensado para que tu visita sea memorable.
+      <p class='text-[#6B6B6B] max-w-lg mx-auto'>
+        Cada rincón de nuestro restaurante está pensado para que tu visita sea
+        memorable.
       </p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[200px]">
-      {images.map((img, i) => (
-        <div class={`overflow-hidden rounded-sm ${img.class}`}>
-          <img
-            src={img.src}
-            alt={img.alt}
-            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-          />
-        </div>
-      ))}
+    <div class='grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[200px]'>
+      {
+        sanityImages.length > 0
+          ? sanityImages.map((img) => (
+              <div class='overflow-hidden rounded-sm'>
+                <img
+                  src={urlFor(img.image).width(600).height(400).format('webp').url()}
+                  alt={img.alt}
+                  class='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
+                  loading='lazy'
+                />
+              </div>
+            ))
+          : fallbackImages.map((img) => (
+              <div class={`overflow-hidden rounded-sm ${img.class}`}>
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  class='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
+                  loading='lazy'
+                />
+              </div>
+            ))
+      }
     </div>
   </div>
 </section>

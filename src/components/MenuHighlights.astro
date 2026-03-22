@@ -1,5 +1,5 @@
 ---
-import { featuredItems } from '../data/menu';
+import { getFeaturedMenuItems, urlFor } from '../lib/sanity';
 
 const categoryLabels: Record<string, string> = {
   entrada: 'Entrada',
@@ -7,6 +7,8 @@ const categoryLabels: Record<string, string> = {
   postre: 'Postre',
   bebida: 'Bebida',
 };
+
+const featuredItems = await getFeaturedMenuItems();
 ---
 
 <section id="menu" class="py-24 bg-[#FAFAF7]">
@@ -30,8 +32,8 @@ const categoryLabels: Record<string, string> = {
         <article class="bg-white border border-[#E8E0D0] rounded-sm overflow-hidden group hover:shadow-md transition-shadow duration-300">
           <div class="overflow-hidden h-52">
             <img
-              src={item.image}
-              alt={item.name}
+              src={urlFor(item.image).width(400).height(208).format('webp').url()}
+              alt={item.imageAlt || item.name}
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
@@ -42,7 +44,7 @@ const categoryLabels: Record<string, string> = {
             </span>
             <h3 class="font-serif text-lg font-bold text-[#2C2C2C] mt-1 mb-2">{item.name}</h3>
             <p class="text-sm text-[#6B6B6B] leading-relaxed mb-4">{item.description}</p>
-            <p class="font-serif text-xl font-bold text-[#C9A96E]">{item.price}</p>
+            <p class="font-serif text-xl font-bold text-[#C9A96E]">S/. {Number(item.price).toFixed(2)}</p>
           </div>
         </article>
       ))}
@@ -50,7 +52,7 @@ const categoryLabels: Record<string, string> = {
 
     <div class="text-center mt-12">
       <a
-        href="#contacto"
+        href="/menu"
         class="inline-block px-8 py-3 border border-[#C9A96E] text-[#C9A96E] font-medium rounded hover:bg-[#C9A96E] hover:text-white transition-colors duration-200"
       >
         Ver menú completo
