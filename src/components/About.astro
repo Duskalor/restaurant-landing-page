@@ -7,11 +7,11 @@ const imageUrl = about?.image
   ? urlFor(about.image).width(800).height(600).format('webp').url()
   : 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800&q=80'
 
-const imageAlt = about?.imageAlt ?? 'Chef preparando un plato en la cocina de La Maison'
+const imageAlt = about?.imageAlt ?? 'Chef preparando un plato en la cocina'
 ---
 
-<section id='nosotros' class='py-24 bg-[#F5F0E8]'>
-  <div class='max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center'>
+<section id='nosotros' class='py-16 md:py-24 bg-[#F5F0E8]'>
+  <div class='max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-10 md:gap-16 items-center'>
     <!-- Text -->
     <div>
       <p
@@ -20,31 +20,14 @@ const imageAlt = about?.imageAlt ?? 'Chef preparando un plato en la cocina de La
         Nuestra historia
       </p>
       <h2
-        class='font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] leading-tight mb-6'
+        class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] leading-tight mb-6 reveal'
       >
         {about?.title ?? 'Pasión por la gastronomía desde 1998'}
       </h2>
-      <p class='text-[#6B6B6B] text-base leading-relaxed mb-5'>
-        {about?.description ?? `La Maison nació del sueño de dos chefs que querían traer la esencia de
-        la cocina francesa clásica a nuestra ciudad, sin perder el alma local.
-        Desde el primer día, apostamos por ingredientes frescos de temporada,
-        productores regionales y técnicas heredadas de las mejores cocinas de
-        Europa.`}
+      <p class='text-[#6B6B6B] text-base leading-relaxed mb-5 reveal reveal-delay-1'>
+        {about?.description ?? `Somos un restaurante comprometido con la excelencia culinaria. Desde el primer día, apostamos por ingredientes frescos de temporada, productores regionales y técnicas heredadas de las mejores cocinas del mundo.`}
       </p>
-      <div class='flex gap-10'>
-        <div>
-          <p class='font-serif text-4xl font-bold text-[#C9A96E]'>25+</p>
-          <p class='text-sm text-[#6B6B6B] mt-1'>Años de historia</p>
-        </div>
-        <div>
-          <p class='font-serif text-4xl font-bold text-[#C9A96E]'>12</p>
-          <p class='text-sm text-[#6B6B6B] mt-1'>Chefs especializados</p>
-        </div>
-        <div>
-          <p class='font-serif text-4xl font-bold text-[#C9A96E]'>3</p>
-          <p class='text-sm text-[#6B6B6B] mt-1'>Premios nacionales</p>
-        </div>
-      </div>
+      <!-- Stats: agregá estadísticas desde Sanity Studio cuando las configures -->
     </div>
 
     <!-- Image -->
@@ -52,7 +35,7 @@ const imageAlt = about?.imageAlt ?? 'Chef preparando un plato en la cocina de La
       <img
         src={imageUrl}
         alt={imageAlt}
-        class='w-full h-[500px] object-cover rounded-sm shadow-lg'
+        class='w-full h-[280px] sm:h-[380px] md:h-[500px] object-cover rounded-sm shadow-lg max-w-full reveal reveal-delay-2'
         loading='lazy'
       />
       <div

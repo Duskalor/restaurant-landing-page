@@ -2,7 +2,7 @@
 import { getSiteSettings, urlFor } from '../lib/sanity'
 
 const settings = await getSiteSettings()
-const restaurantName = settings?.restaurantName ?? 'La Maison'
+const restaurantName = settings?.restaurantName ?? 'Restaurante'
 const logoUrl = settings?.logo
   ? urlFor(settings.logo).width(160).height(48).format('webp').url()
   : null
@@ -17,7 +17,7 @@ const links = [
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF7]/95 backdrop-blur-sm border-b border-[#E8E0D0]">
-  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+  <nav class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="font-serif text-2xl font-bold text-[#2C2C2C] tracking-wide">
       {logoUrl
@@ -63,7 +63,7 @@ const links = [
   <!-- Mobile drawer -->
   <div
     id="mobile-menu"
-    class="md:hidden hidden flex-col gap-4 px-6 py-6 bg-[#FAFAF7] border-t border-[#E8E0D0]"
+    class="md:hidden hidden flex-col gap-4 px-4 md:px-6 py-6 bg-[#FAFAF7] border-t border-[#E8E0D0]"
   >
     {links.map((link) => (
       <a

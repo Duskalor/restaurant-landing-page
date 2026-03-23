@@ -72,6 +72,7 @@ export interface SiteSettings {
   instagram?: string
   facebook?: string
   openingHours?: string
+  favicon?: SanityImageSource
 }
 
 export interface HeroContent {
@@ -110,7 +111,8 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       address,
       instagram,
       facebook,
-      openingHours
+      openingHours,
+      favicon
     }
   `)
 }

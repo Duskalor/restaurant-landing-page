@@ -1,7 +1,8 @@
 ---
-import { getHeroContent, urlFor } from '../lib/sanity'
+import { getHeroContent, getSiteSettings, urlFor } from '../lib/sanity'
 
 const hero = await getHeroContent()
+const settings = await getSiteSettings()
 
 const backgroundImageUrl = hero?.backgroundImage
   ? urlFor(hero.backgroundImage).width(1920).height(1080).format('webp').url()
@@ -21,7 +22,7 @@ const ctaLink = hero?.ctaLink ?? '#contacto'
   <div class='absolute inset-0'>
     <img
       src={backgroundImageUrl}
-      alt='Interior elegante del restaurante La Maison'
+      alt={settings?.restaurantName ? `Interior del restaurante ${settings.restaurantName}` : 'Interior del restaurante'}
       class='w-full h-full object-cover'
       loading='eager'
     />
@@ -32,18 +33,18 @@ const ctaLink = hero?.ctaLink ?? '#contacto'
   </div>
 
   <!-- Content -->
-  <div class='relative z-10 max-w-7xl mx-auto px-6 py-32'>
+  <div class='relative z-10 max-w-7xl mx-auto px-4 md:px-6 py-24 md:py-32'>
     <p
       class='text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-4'
     >
-      Bienvenido a La Maison
+      {settings?.restaurantName ? `Bienvenido a ${settings.restaurantName}` : 'Bienvenido'}
     </p>
     <h1
-      class='font-serif text-white text-5xl md:text-7xl font-bold leading-tight max-w-2xl mb-6'
+      class='font-serif text-white text-3xl md:text-5xl lg:text-7xl font-bold leading-tight max-w-2xl mb-6'
     >
       {title}
     </h1>
-    <p class='text-white/80 text-lg md:text-xl max-w-lg mb-10 leading-relaxed'>
+    <p class='text-white/80 text-base md:text-lg lg:text-xl max-w-lg mb-10 leading-relaxed'>
       {subtitle}
     </p>
     <div class='flex flex-col sm:flex-row gap-4'>

@@ -11,14 +11,14 @@ const categoryLabels: Record<string, string> = {
 const featuredItems = await getFeaturedMenuItems();
 ---
 
-<section id="menu" class="py-24 bg-[#FAFAF7]">
-  <div class="max-w-7xl mx-auto px-6">
+<section id="menu" class="py-16 md:py-24 bg-[#FAFAF7]">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
     <!-- Header -->
     <div class="text-center mb-16">
       <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
         Lo mejor de nuestra cocina
       </p>
-      <h2 class="font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-4">
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] mb-4 reveal">
         Especialidades de la casa
       </h2>
       <p class="text-[#6B6B6B] max-w-lg mx-auto">
@@ -26,11 +26,18 @@ const featuredItems = await getFeaturedMenuItems();
       </p>
     </div>
 
+    <!-- Empty state -->
+    {featuredItems.length === 0 && (
+      <p class="text-center text-[#6B6B6B] py-8">
+        Marcá platos como destacados en Sanity Studio para mostrarlos aquí.
+      </p>
+    )}
+
     <!-- Cards grid -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-      {featuredItems.map((item) => (
-        <article class="bg-white border border-[#E8E0D0] rounded-sm overflow-hidden group hover:shadow-md transition-shadow duration-300">
-          <div class="overflow-hidden h-52">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+      {featuredItems.map((item, i) => (
+        <article class={`bg-white border border-[#E8E0D0] rounded-sm overflow-hidden group hover:shadow-md transition-shadow duration-300 reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
+          <div class="overflow-hidden h-44 sm:h-52">
             <img
               src={urlFor(item.image).width(400).height(208).format('webp').url()}
               alt={item.imageAlt || item.name}

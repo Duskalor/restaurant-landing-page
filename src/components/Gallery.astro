@@ -2,51 +2,18 @@
 import { getGalleryImages, urlFor } from '../lib/sanity'
 
 const sanityImages = await getGalleryImages()
-
-const fallbackImages = [
-  {
-    src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
-    alt: 'Ambiente del comedor principal',
-    class: 'col-span-2 row-span-2',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80',
-    alt: 'Plato de la chef ejecutiva',
-    class: '',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',
-    alt: 'Mesa preparada para la velada',
-    class: '',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80',
-    alt: 'Coctelería artesanal',
-    class: '',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80',
-    alt: 'Salón privado para eventos',
-    class: '',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80',
-    alt: 'Postres de temporada',
-    class: '',
-  },
-]
 ---
 
-<section id='galeria' class='py-24 bg-[#F5F0E8]'>
-  <div class='max-w-7xl mx-auto px-6'>
+<section id='galeria' class='py-16 md:py-24 bg-[#F5F0E8]'>
+  <div class='max-w-7xl mx-auto px-4 md:px-6'>
     <div class='text-center mb-16'>
       <p
         class='text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3'
       >
         Galería
       </p>
-      <h2 class='font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-4'>
-        Momentos de La Maison
+      <h2 class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] mb-4 reveal'>
+        Nuestra galería
       </h2>
       <p class='text-[#6B6B6B] max-w-lg mx-auto'>
         Cada rincón de nuestro restaurante está pensado para que tu visita sea
@@ -54,30 +21,42 @@ const fallbackImages = [
       </p>
     </div>
 
-    <div class='grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[200px]'>
-      {
-        sanityImages.length > 0
-          ? sanityImages.map((img) => (
-              <div class='overflow-hidden rounded-sm'>
-                <img
-                  src={urlFor(img.image).width(600).height(400).format('webp').url()}
-                  alt={img.alt}
-                  class='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
-                  loading='lazy'
-                />
-              </div>
-            ))
-          : fallbackImages.map((img) => (
-              <div class={`overflow-hidden rounded-sm ${img.class}`}>
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  class='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
-                  loading='lazy'
-                />
-              </div>
-            ))
-      }
-    </div>
+    {sanityImages.length > 0 ? (
+      <div class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[180px] md:auto-rows-[200px] reveal reveal-delay-1'>
+        {sanityImages.map((img) => (
+          <a
+            href={urlFor(img.image).width(1920).height(1080).format('webp').quality(90).url()}
+            class='glightbox overflow-hidden rounded-sm block group'
+            data-gallery='restaurant-gallery'
+            data-type='image'
+            data-description={img.alt ?? img.title ?? ''}
+          >
+            <img
+              src={urlFor(img.image).width(600).height(400).format('webp').quality(85).url()}
+              alt={img.alt ?? img.title ?? ''}
+              class='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
+              loading='lazy'
+            />
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class='text-center py-16'>
+        <p class='text-[#6B6B6B]'>Agregá imágenes desde Sanity Studio → Galería para mostrarlas aquí.</p>
+      </div>
+    )}
   </div>
 </section>
+
+<script>
+  import GLightbox from 'glightbox'
+  import 'glightbox/dist/css/glightbox.min.css'
+
+  GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true,
+    autoplayVideos: false,
+    zoomable: true,
+  })
+</script>

@@ -13,7 +13,7 @@ export const testimonials: Testimonial[] = [
     author: 'Sofía Martínez',
     role: 'Comensal frecuente',
     quote:
-      'La Maison es simplemente incomparable. Cada visita es una experiencia nueva: los sabores son impecables y el servicio, de primera clase. Es el lugar perfecto para celebrar momentos especiales.',
+      'Este restaurante es simplemente incomparable. Cada visita es una experiencia nueva: los sabores son impecables y el servicio, de primera clase. Es el lugar perfecto para celebrar momentos especiales.',
     rating: 5,
     avatar: 'https://i.pravatar.cc/80?img=47',
   },

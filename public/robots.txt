@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://restaurant-landing-page-git-main-duskalors-projects.vercel.app/sitemap-index.xml

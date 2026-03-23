@@ -58,7 +58,7 @@ const activeSlides = slides.length > 0 ? slides : fallbackSlides;
 
 <section
   class='relative w-full overflow-hidden bg-[#1A1A1A] mt-16'
-  style='height: calc(100vh - 4rem);'
+  style='height: 520px;'
 >
   <!-- Slides wrapper -->
   <div
@@ -67,22 +67,22 @@ const activeSlides = slides.length > 0 ? slides : fallbackSlides;
     style='cursor: grab;'
   >
     {
-      activeSlides.map((slide) => (
+      activeSlides.map((slide, i) => (
         <div class='min-w-full h-full relative flex-shrink-0'>
           <img
             src={slide.src}
             alt={slide.caption}
             class='w-full h-full object-cover opacity-80'
-            loading='lazy'
+            loading={i === 0 ? 'eager' : 'lazy'}
           />
-          <div class='absolute inset-0 flex flex-col items-center justify-center text-white text-center px-6 bg-black/30'>
+          <div class='absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 md:px-6 bg-black/30'>
             {slide.caption && (
-              <h2 class='font-serif text-4xl md:text-5xl font-bold drop-shadow-lg mb-4'>
+              <h2 class='font-serif text-2xl md:text-4xl lg:text-5xl font-bold drop-shadow-lg mb-4'>
                 {slide.caption}
               </h2>
             )}
             {slide.description && (
-              <p class='text-white/90 text-lg md:text-xl max-w-xl drop-shadow leading-relaxed'>
+              <p class='text-white/90 text-sm md:text-lg lg:text-xl max-w-xl drop-shadow leading-relaxed'>
                 {slide.description}
               </p>
             )}
@@ -96,7 +96,7 @@ const activeSlides = slides.length > 0 ? slides : fallbackSlides;
   <button
     id='carousel-prev'
     aria-label='Anterior'
-    class='cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors text-2xl leading-none'
+    class='cursor-pointer absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors text-xl md:text-2xl leading-none'
   >
     ‹
   </button>
@@ -105,7 +105,7 @@ const activeSlides = slides.length > 0 ? slides : fallbackSlides;
   <button
     id='carousel-next'
     aria-label='Siguiente'
-    class='cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-12 h-12 rounded-full flex items-center justify-center transition-colors text-2xl leading-none'
+    class='cursor-pointer absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors text-xl md:text-2xl leading-none'
   >
     ›
   </button>
@@ -157,7 +157,7 @@ const activeSlides = slides.length > 0 ? slides : fallbackSlides;
   }
 
   function startTimer() {
-    timer = setInterval(() => goTo(current + 1), 3000);
+    timer = setInterval(() => goTo(current + 1), 6000);
   }
 
   function stopTimer() {

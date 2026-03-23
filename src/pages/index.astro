@@ -4,11 +4,15 @@ import Navbar from '../components/Navbar.astro';
 import Carousel from '../components/Carousel.astro';
 import MenuHighlights from '../components/MenuHighlights.astro';
 import Footer from '../components/Footer.astro';
+import { getSiteSettings } from '../lib/sanity';
+
+const settings = await getSiteSettings();
+const restaurantName = settings?.restaurantName ?? 'Restaurante';
 ---
 
 <Layout
-  title='La Maison — Restaurante'
-  description='Experiencia gastronómica única en el corazón de la ciudad. Ingredientes de temporada, cocina francesa y hospitalidad inigualable. Reserva tu mesa hoy.'
+  title={`${restaurantName} — Restaurante`}
+  description='Experiencia gastronómica única en el corazón de la ciudad. Ingredientes de temporada y hospitalidad inigualable. Reserva tu mesa hoy.'
 >
   <Navbar />
   <main>

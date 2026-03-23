@@ -3,9 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Testimonials from '../components/Testimonials.astro';
 import Footer from '../components/Footer.astro';
+import { getSiteSettings } from '../lib/sanity';
+
+const settings = await getSiteSettings();
+const restaurantName = settings?.restaurantName ?? 'Restaurante';
 ---
 
-<Layout title="Reseñas — La Maison" description="Lee lo que dicen nuestros comensales sobre la experiencia gastronómica en La Maison, Cusco.">
+<Layout title={`Reseñas — ${restaurantName}`} description={`Lee lo que dicen nuestros comensales sobre la experiencia gastronómica en ${restaurantName}.`}>
   <Navbar />
   <main class="pt-16">
     <Testimonials />

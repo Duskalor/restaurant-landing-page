@@ -1,312 +1,159 @@
-# PDR — Integración de Sanity CMS
+# PDR — Roadmap hacia producto vendible
 ## Proyecto: La Maison — Restaurant Landing Page
-**Fecha:** 2026-03-19
+**Fecha:** 2026-03-22
 **Stack:** Astro 6 · Tailwind CSS 4 · Sanity v5 · TypeScript
 
 ---
 
 ## 1. Estado actual
 
-### Qué está integrado con Sanity
-| Sección | Fuente de datos | Estado |
-|---------|----------------|--------|
-| Menú completo (`/menu`) | Sanity (`menuItem`) | ✅ Dinámico |
-| Especialidades (`MenuHighlights`) | Sanity (`menuItem[featured==true]`) | ✅ Dinámico |
-| Hero | Hardcoded (Unsplash) | ❌ Estático |
-| About / Nosotros | Hardcoded | ❌ Estático |
-| Gallery | Hardcoded (Unsplash) | ❌ Estático |
-| Navbar | Hardcoded | ❌ Estático |
-| Footer | Hardcoded | ❌ Estático |
-| Testimonials | Hardcoded | ❌ Estático |
-| Contact | Hardcoded | ❌ Estático |
-
-### Schema actual
-```
-menuItem
-  ├── name: string (required)
-  ├── description: text
-  ├── price: string ⚠️ (debería ser number)
-  ├── category: string (enum: entrada | principal | postre | bebida)
-  ├── image: image (hotspot: true)
-  └── featured: boolean (default: false)
-```
-
-### Cliente Sanity
-- `projectId`: hardcodeado en dos archivos
-- `useCdn: true` — correcto para producción
-- `apiVersion: '2024-01-01'`
-- Sin variables de entorno
+### Completado ✅
+| Ítem | Detalle |
+|------|---------|
+| CMS integrado | Todos los schemas creados y conectados a los componentes |
+| Schemas | menuItem, siteSettings, heroContent, heroContent, aboutContent, galleryImage, testimonial, contactContent |
+| Páginas separadas | `/menu`, `/nosotros`, `/galeria`, `/resenas`, `/contacto` |
+| Carrusel | Con drag (mouse + touch), auto-avance, dots |
+| Navbar | Conectada a siteSettings (logo dinámico) |
+| Studio deployado | `res.sanity.studio` |
+| Vercel | Deployado y público |
 
 ---
 
-## 2. Problemas identificados
+## 2. Lo que falta para vender
 
-### P1 — Crítico
-| ID | Problema | Impacto |
-|----|---------|---------|
-| C1 | `price` es `string` en schema y en TypeScript | No se puede ordenar por precio ni hacer cálculos |
-| C2 | Imágenes servidas en resolución completa sin transformación | Performance: se carga una imagen de 1600px en una card de 200px |
-| C3 | `projectId` hardcodeado en `src/lib/sanity.ts` y `sanity.config.ts` | No hay separación entre entornos |
+### P1 — Crítico (sin esto no es vendible)
 
-### P2 — Importante
-| ID | Problema | Impacto |
-|----|---------|---------|
-| I1 | No hay campo `alt` en el tipo `image` del schema | Accesibilidad y SEO deficientes |
-| I2 | Sin campo `order: number` para ordenación manual | El restaurante no puede controlar el orden del menú |
-| I3 | 7 secciones del sitio con contenido hardcodeado | El dueño no puede actualizar nada sin tocar código |
-| I4 | Sin `slug` en `menuItem` | Imposible añadir páginas de detalle de plato en el futuro |
-
-### P3 — Menor
-| ID | Problema | Impacto |
-|----|---------|---------|
-| M1 | `styled-components` en dependencias sin uso aparente | Peso innecesario |
-| M2 | Sin `perspective: 'published'` en el cliente | Podría mostrar borradores si se activa Live Preview |
+| ID | Problema | Por qué importa |
+|----|----------|-----------------|
+| C1 | **Responsive mobile no revisado** | El cliente lo va a abrir desde el celular el primer día |
+| C2 | **Formulario de contacto no envía emails** | El restaurante no recibe reservas — el producto no cumple su función principal |
+| C3 | **Webhook Sanity → Vercel no configurado** | El cliente edita contenido en Sanity y no ve los cambios en el sitio — va a pensar que está roto |
 
 ---
 
-## 3. Recomendaciones priorizadas
+### P2 — Importante (afecta la calidad del producto)
 
-### Fase 1 — Correcciones inmediatas (sin nuevas features)
-
-#### Fix C1: `price` como `number`
-**Schema** (`src/sanity/schemaTypes/menuItem.ts`):
-```ts
-defineField({
-  name: 'price',
-  title: 'Precio',
-  type: 'number',
-  validation: (Rule) => Rule.required().positive(),
-})
-```
-**TypeScript** (`src/lib/sanity.ts`):
-```ts
-price: number  // era: string
-```
-**Render** (en `.astro`):
-```astro
-S/. {item.price.toFixed(2)}
-```
-
-#### Fix C3: Variables de entorno
-Crear `.env`:
-```
-PUBLIC_SANITY_PROJECT_ID=q2ywqdj2
-PUBLIC_SANITY_DATASET=production
-```
-En `src/lib/sanity.ts`:
-```ts
-projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-dataset: import.meta.env.PUBLIC_SANITY_DATASET,
-```
-
-#### Fix C2: Transformación de imágenes
-Instalar: `pnpm add @sanity/image-url`
-
-```ts
-// src/lib/sanity.ts
-import imageUrlBuilder from '@sanity/image-url'
-const builder = imageUrlBuilder(sanityClient)
-
-export function urlFor(source: any) {
-  return builder.image(source)
-}
-```
-
-En lugar de `"image": image.asset->url`, pasar el objeto `image` completo y usar:
-```astro
-src={urlFor(item.image).width(400).height(208).format('webp').url()}
-```
+| ID | Problema | Por qué importa |
+|----|----------|-----------------|
+| I1 | **SEO básico ausente** | Sin meta tags, og:image ni sitemap el sitio no aparece en Google |
+| I2 | **Footer hardcodeado** | El teléfono, email y redes sociales no se pueden cambiar desde el Studio |
+| I3 | **Página 404 genérica** | Se ve poco profesional cuando alguien entra a una URL inexistente |
+| I4 | **Sin favicon personalizable** | El tab del browser muestra el ícono de Astro |
+| I5 | **Primera imagen del carrusel con `loading="lazy"`** | La imagen principal tarda en cargar — mala experiencia en primer render |
 
 ---
 
-### Fase 2 — Mejoras al schema existente
+### P3 — Menor (pulido final)
 
-#### Fix I1: `alt` text en imágenes
-```ts
-defineField({
-  name: 'imageAlt',
-  title: 'Texto alternativo de la imagen',
-  type: 'string',
-  description: 'Describe la imagen para accesibilidad y SEO',
-})
-```
-
-#### Fix I2: Campo `order`
-```ts
-defineField({
-  name: 'order',
-  title: 'Orden de aparición',
-  type: 'number',
-  description: 'Número menor = aparece primero',
-})
-```
-Actualizar query:
-```groq
-*[_type == "menuItem"] | order(order asc, _createdAt asc)
-```
-
-#### Fix I4: Slug
-```ts
-defineField({
-  name: 'slug',
-  title: 'Slug',
-  type: 'slug',
-  options: { source: 'name', maxLength: 96 },
-  validation: (Rule) => Rule.required(),
-})
-```
+| ID | Problema | Por qué importa |
+|----|----------|-----------------|
+| M1 | **Sin animaciones de entrada** | Las secciones aparecen abruptamente al hacer scroll |
+| M2 | **MenuHighlights no tiene fallback visual** | Si no hay platos destacados en Sanity la sección queda vacía sin mensaje |
+| M3 | **Horarios en Contact tienen formato manual** | El cliente tiene que saber escribir `Lunes | 10:00 - 22:00` — confuso |
 
 ---
 
-### Fase 3 — Nuevos schemas (contenido dinámico completo)
+## 3. Plan de implementación
 
-#### `siteSettings` (singleton)
-Controla datos globales del restaurante:
-```ts
-defineType({
-  name: 'siteSettings',
-  title: 'Configuración del sitio',
-  type: 'document',
-  fields: [
-    { name: 'restaurantName', type: 'string' },
-    { name: 'phone', type: 'string' },
-    { name: 'address', type: 'text' },
-    { name: 'openingHours', type: 'text' },
-    { name: 'instagramUrl', type: 'url' },
-    { name: 'reservationEmail', type: 'string' },
-  ]
-})
+### Fase 1 — Lo crítico (hacer antes de mostrar a cualquier cliente)
+
+#### C1: Responsive mobile
+- Revisar cada página en 375px (iPhone SE) y 390px (iPhone 14)
+- Ajustar tipografías, padding, grillas
+- Verificar que el carrusel funcione con touch en mobile real
+
+#### C2: Formulario de contacto funcional
+Opciones recomendadas:
+- **Resend** (más simple, gratis hasta 3000 emails/mes) — instalar `resend`, crear API route en Astro
+- **Formspree** (sin código, solo cambiar el `action` del form) — para una solución rápida
+
+```
+Astro SSR necesario para API routes:
+pnpm add @astrojs/node
 ```
 
-#### `heroContent` (singleton)
-```ts
-defineType({
-  name: 'heroContent',
-  title: 'Hero principal',
-  type: 'document',
-  fields: [
-    { name: 'tagline', type: 'string' },
-    { name: 'headline', type: 'string' },
-    { name: 'subheadline', type: 'text' },
-    { name: 'backgroundImage', type: 'image', options: { hotspot: true } },
-    { name: 'ctaPrimaryLabel', type: 'string' },
-    { name: 'ctaSecondaryLabel', type: 'string' },
-  ]
-})
+Cambiar `output: 'static'` → `output: 'hybrid'` en `astro.config.mjs`
+
+#### C3: Webhook Sanity → Vercel
+```
+1. Vercel → proyecto → Settings → Git → Deploy Hooks → crear hook → copiar URL
+2. Sanity Dashboard → proyecto → API → Webhooks → crear webhook
+   URL: [la URL de Vercel]
+   Trigger: on document publish
+   Filter: _type in ["menuItem", "siteSettings", "heroContent", "galleryImage", "testimonial", "aboutContent", "contactContent"]
 ```
 
-#### `galleryImage`
-```ts
-defineType({
-  name: 'galleryImage',
-  title: 'Imagen de galería',
-  type: 'document',
-  fields: [
-    { name: 'image', type: 'image', options: { hotspot: true } },
-    { name: 'alt', type: 'string', validation: (Rule) => Rule.required() },
-    { name: 'order', type: 'number' },
-    { name: 'featured', type: 'boolean', initialValue: false },
-  ]
-})
-```
-
-#### `testimonial`
-```ts
-defineType({
-  name: 'testimonial',
-  title: 'Testimonio',
-  type: 'document',
-  fields: [
-    { name: 'authorName', type: 'string' },
-    { name: 'quote', type: 'text' },
-    { name: 'rating', type: 'number', options: { list: [1,2,3,4,5] } },
-    { name: 'date', type: 'date' },
-    { name: 'active', type: 'boolean', initialValue: true },
-  ]
-})
-```
+Resultado: cada vez que el cliente publica contenido en Sanity, Vercel redeploya automáticamente en ~30 segundos.
 
 ---
 
-## 4. Estructura de archivos propuesta
+### Fase 2 — Calidad del producto
 
+#### I1: SEO
+Agregar en `Layout.astro`:
+```html
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:type" content="website" />
+<link rel="canonical" href={Astro.url} />
 ```
-src/
-├── lib/
-│   └── sanity.ts          # cliente + urlFor + queries
-├── sanity/
-│   └── schemaTypes/
-│       ├── index.ts
-│       ├── menuItem.ts     ✅ existente → actualizar
-│       ├── siteSettings.ts ➕ nuevo
-│       ├── heroContent.ts  ➕ nuevo
-│       ├── galleryImage.ts ➕ nuevo
-│       └── testimonial.ts  ➕ nuevo
-```
+
+Crear `public/sitemap.xml` o instalar `@astrojs/sitemap`.
+
+#### I2: Footer conectado a Sanity
+- Importar `getSiteSettings()` en `Footer.astro`
+- Mostrar teléfono, email, dirección, redes sociales desde `siteSettings`
+
+#### I3: Página 404
+- Crear `src/pages/404.astro`
+- Diseño simple con el estilo del sitio y link al inicio
+
+#### I4: Favicon
+- Agregar campo `favicon` (image) al schema `siteSettings`
+- En `Layout.astro` usar la URL del favicon desde Sanity
+
+#### I5: Primera imagen del carrusel
+- Cambiar `loading='lazy'` → `loading='eager'` solo en el primer slide
 
 ---
 
-## 5. Configuración de Sanity Studio
+### Fase 3 — Starter kit (después de que el producto esté terminado)
 
-### Estructura personalizada (singletons)
-```ts
-// sanity.config.ts
-import { structureTool } from 'sanity/structure'
-
-structureTool({
-  structure: (S) =>
-    S.list().title('Contenido').items([
-      S.singletonListItem().title('Configuración del sitio').id('siteSettings'),
-      S.singletonListItem().title('Hero principal').id('heroContent'),
-      S.documentTypeListItem('menuItem').title('Menú'),
-      S.documentTypeListItem('galleryImage').title('Galería'),
-      S.documentTypeListItem('testimonial').title('Testimonios'),
-    ])
-})
-```
+| Tarea | Detalle |
+|-------|---------|
+| Archivo de tema | `src/config/theme.ts` con colores y fuentes configurables |
+| Limpiar branding | Reemplazar "La Maison" por variables de configuración |
+| README completo | Setup, deploy, cómo usar el Studio, cómo personalizar |
+| Script de datos demo | `sanity dataset import` con contenido de ejemplo |
+| `.env.example` | Ya existe ✅ |
 
 ---
 
-## 6. Orden de implementación recomendado
+## 4. Prioridad de venta
 
-```
-[Semana 1]
-  1. Variables de entorno (.env)
-  2. Fix price: string → number
-  3. Instalar @sanity/image-url + urlFor helper
+Para mostrarle el producto a un cliente real necesitás **mínimo**:
+1. ✅ Responsive mobile
+2. ✅ Formulario funcional
+3. ✅ Webhook configurado
 
-[Semana 2]
-  4. Añadir alt, order, slug a menuItem
-  5. Actualizar queries con order asc
-  6. Migrar datos existentes en Sanity Studio
-
-[Semana 3]
-  7. Schema siteSettings + heroContent (singletons)
-  8. Conectar Hero y Footer a Sanity
-  9. Schema galleryImage + conectar Gallery
-
-[Semana 4]
-  10. Schema testimonial + conectar Testimonials
-  11. Estructura personalizada en Studio
-  12. Test de build estático final
-```
+Con esas tres cosas el producto cumple su promesa. Todo lo demás es pulido.
 
 ---
 
-## 7. Consideraciones de arquitectura
+## 5. Consideraciones de precio (actualizado)
 
-**Astro + Sanity en modo estático (SSG)**
-- Todo el fetch ocurre en build time → cero overhead en runtime
-- Cambios en Sanity requieren un nuevo deploy (considera Webhooks de Sanity → trigger de build en Vercel/Netlify)
-- Para preview de borradores en el futuro: activar `perspective: 'previewDrafts'` y modo SSR en las rutas de preview
+| Entregable | Precio sugerido |
+|------------|-----------------|
+| Landing básica (sin CMS) | $300 – $500 |
+| Landing + Sanity CMS | $600 – $900 |
+| Landing + CMS + dominio + 1 mes soporte | $800 – $1200 |
+| Mantenimiento mensual | $30 – $50/mes |
 
-**Sanity Webhook → Deploy automático**
-```
-Sanity Dashboard → API → Webhooks
-  URL: https://api.vercel.com/v1/deployments (o Netlify build hook)
-  Trigger: on document publish
-```
+Los $100 que pensabas cobrar no cubren ni el valor del tiempo invertido. Este producto vale mínimo $600 con CMS incluido.
 
 ---
 
-*PDR generado el 2026-03-19 · La Maison Restaurant Landing Page*
+*PDR actualizado el 2026-03-22 · La Maison Restaurant Landing Page*

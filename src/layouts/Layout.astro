@@ -1,25 +1,58 @@
 ---
 import '../styles/global.css';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { getSiteSettings, urlFor } from '../lib/sanity';
+
+const settings = await getSiteSettings();
 
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
 }
 
 const {
-  title = 'La Maison — Restaurante',
-  description = 'Experiencia gastronómica única en el corazón de la ciudad. Reserva tu mesa hoy.',
+  title = 'Restaurante',
+  description = 'Experiencia gastronómica única en el corazón de la ciudad. Ingredientes de temporada y hospitalidad inigualable. Reserva tu mesa hoy.',
+  ogImage = 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=85',
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 ---
 
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
+
+    <!-- SEO -->
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:site_name" content={settings?.restaurantName ?? 'Restaurante'} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicon -->
+    {settings?.favicon
+      ? <link rel="icon" type="image/png" href={urlFor(settings.favicon).width(64).height(64).format('webp').url()} />
+      : <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    }
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,5 +62,20 @@ const {
   </head>
   <body>
     <slot />
+    <WhatsAppButton />
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible')
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0.1 }
+      )
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    </script>
   </body>
 </html>

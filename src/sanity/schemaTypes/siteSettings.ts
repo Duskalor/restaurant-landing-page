@@ -54,5 +54,11 @@ export default defineType({
       type: 'text',
       rows: 3,
     }),
+    defineField({
+      name: 'favicon',
+      title: 'Favicon',
+      type: 'image',
+      description: 'Ícono del sitio que aparece en el tab del navegador (recomendado: 32x32px o 64x64px)',
+    }),
   ],
 })

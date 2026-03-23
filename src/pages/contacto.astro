@@ -3,9 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
+import { getSiteSettings } from '../lib/sanity';
+
+const settings = await getSiteSettings();
+const restaurantName = settings?.restaurantName ?? 'Restaurante';
 ---
 
-<Layout title="Contacto — La Maison" description="Reserva tu mesa en La Maison. Encuéntranos en Calle Triunfo 379, Centro Histórico, Cusco. Reservaciones y consultas.">
+<Layout title={`Contacto — ${restaurantName}`} description={`Reserva tu mesa en ${restaurantName}. Reservaciones y consultas.`}>
   <Navbar />
   <main class="pt-16">
     <Contact />

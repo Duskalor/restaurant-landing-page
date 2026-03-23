@@ -7,21 +7,21 @@ const sanityTestimonials = await getTestimonials()
 const useSanity = sanityTestimonials && sanityTestimonials.length > 0
 ---
 
-<section id="resenas" class="py-24 bg-[#FAFAF7]">
-  <div class="max-w-7xl mx-auto px-6">
+<section id="resenas" class="py-16 md:py-24 bg-[#FAFAF7]">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
     <div class="text-center mb-16">
       <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
         Lo que dicen nuestros comensales
       </p>
-      <h2 class="font-serif text-4xl md:text-5xl font-bold text-[#2C2C2C]">
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] reveal">
         Reseñas
       </h2>
     </div>
 
     {useSanity ? (
-      <div class="grid md:grid-cols-3 gap-8">
-        {sanityTestimonials.map((t) => (
-          <article class="bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {sanityTestimonials.map((t, i) => (
+          <article class={`bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
             <!-- Stars -->
             <div class="flex gap-1 mb-6">
               {Array.from({ length: t.rating ?? 5 }).map(() => (
@@ -45,9 +45,9 @@ const useSanity = sanityTestimonials && sanityTestimonials.length > 0
         ))}
       </div>
     ) : (
-      <div class="grid md:grid-cols-3 gap-8">
-        {hardcodedTestimonials.map((t) => (
-          <article class="bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {hardcodedTestimonials.map((t, i) => (
+          <article class={`bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
             <!-- Stars -->
             <div class="flex gap-1 mb-6">
               {Array.from({ length: t.rating }).map(() => (

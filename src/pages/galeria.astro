@@ -3,9 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Gallery from '../components/Gallery.astro';
 import Footer from '../components/Footer.astro';
+import { getSiteSettings } from '../lib/sanity';
+
+const settings = await getSiteSettings();
+const restaurantName = settings?.restaurantName ?? 'Restaurante';
 ---
 
-<Layout title="Galería — La Maison" description="Descubre los espacios, platos y momentos que hacen de La Maison una experiencia gastronómica única en Cusco.">
+<Layout title={`Galería — ${restaurantName}`} description={`Descubre los espacios, platos y momentos que hacen de ${restaurantName} una experiencia gastronómica única.`}>
   <Navbar />
   <main class="pt-16">
     <Gallery />

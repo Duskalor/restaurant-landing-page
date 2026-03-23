@@ -1,9 +1,14 @@
 ---
-const socials = [
-  { label: 'Instagram', href: '#', icon: 'IG' },
-  { label: 'Facebook', href: '#', icon: 'FB' },
-  { label: 'TripAdvisor', href: '#', icon: 'TA' },
-];
+import { getSiteSettings } from '../lib/sanity'
+
+const settings = await getSiteSettings()
+
+const restaurantName = settings?.restaurantName ?? 'Restaurante'
+const phone = settings?.phone ?? null
+const email = settings?.email ?? null
+const address = settings?.address ?? null
+const instagram = settings?.instagram ?? null
+const facebook = settings?.facebook ?? null
 
 const links = [
   { label: 'Nosotros', href: '/nosotros' },
@@ -11,16 +16,18 @@ const links = [
   { label: 'Galería', href: '/galeria' },
   { label: 'Reseñas', href: '/resenas' },
   { label: 'Contacto', href: '/contacto' },
-];
+]
+
+const year = new Date().getFullYear()
 ---
 
 <footer class="bg-[#2C2C2C] text-white py-16">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
     <!-- Brand -->
     <div class="md:col-span-2">
-      <p class="font-serif text-3xl font-bold text-[#C9A96E] mb-3">La Maison</p>
+      <p class="font-serif text-3xl font-bold text-[#C9A96E] mb-3">{restaurantName}</p>
       <p class="text-white/60 text-sm leading-relaxed max-w-sm">
-        Una experiencia gastronómica que celebra la tradición francesa con el alma de nuestra tierra. Calle Triunfo 379, Centro Histórico, Cusco.
+        {address ?? 'Una experiencia gastronómica que celebra los sabores y la hospitalidad de nuestra tierra.'}
       </p>
     </div>
 
@@ -41,26 +48,54 @@ const links = [
     <!-- Contact & Socials -->
     <div>
       <p class="text-xs text-white/40 uppercase tracking-widest mb-4">Contacto</p>
-      <p class="text-sm text-white/70 mb-1">+51 (01) 445-6789</p>
-      <p class="text-sm text-white/70 mb-6">reservas@lamaison.pe</p>
+      {phone && (
+        <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="block text-sm text-white/70 hover:text-[#C9A96E] transition-colors mb-1">
+          {phone}
+        </a>
+      )}
+      {email && (
+        <a href={`mailto:${email}`} class="block text-sm text-white/70 hover:text-[#C9A96E] transition-colors mb-6">
+          {email}
+        </a>
+      )}
+      {!phone && !email && (
+        <p class="text-sm text-white/40 mb-6">Configurá el contacto en Sanity Studio.</p>
+      )}
 
-      <p class="text-xs text-white/40 uppercase tracking-widest mb-3">Síguenos</p>
-      <div class="flex gap-3">
-        {socials.map((s) => (
-          <a
-            href={s.href}
-            aria-label={s.label}
-            class="w-9 h-9 flex items-center justify-center border border-white/20 text-xs text-white/60 hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors rounded"
-          >
-            {s.icon}
-          </a>
-        ))}
-      </div>
+      {(instagram || facebook) && (
+        <>
+          <p class="text-xs text-white/40 uppercase tracking-widest mb-3">Síguenos</p>
+          <div class="flex gap-3">
+            {instagram && (
+              <a
+                href={instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                class="w-9 h-9 flex items-center justify-center border border-white/20 text-xs text-white/60 hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors rounded"
+              >
+                IG
+              </a>
+            )}
+            {facebook && (
+              <a
+                href={facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                class="w-9 h-9 flex items-center justify-center border border-white/20 text-xs text-white/60 hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors rounded"
+              >
+                FB
+              </a>
+            )}
+          </div>
+        </>
+      )}
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
-    <p class="text-xs text-white/40">© 2026 La Maison. Todos los derechos reservados.</p>
-    <p class="text-xs text-white/40">Diseñado con ♥ en Cusco, Perú</p>
+  <div class="max-w-7xl mx-auto px-4 md:px-6 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <p class="text-xs text-white/40">© {year} {restaurantName}. Todos los derechos reservados.</p>
+    <p class="text-xs text-white/40">Desarrollado con ♥</p>
   </div>
 </footer>

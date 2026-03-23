@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import { getMenuItems, urlFor } from '../lib/sanity';
+import { getMenuItems, getSiteSettings, urlFor } from '../lib/sanity';
 
 const categoryLabels: Record<string, string> = {
   entrada: 'Entradas',
@@ -13,6 +13,9 @@ const categoryLabels: Record<string, string> = {
 
 const categoryOrder = ['entrada', 'principal', 'postre', 'bebida'];
 
+const settings = await getSiteSettings();
+const restaurantName = settings?.restaurantName ?? 'Restaurante';
+
 const allItems = await getMenuItems();
 
 const grouped = categoryOrder.reduce((acc, cat) => {
@@ -22,10 +25,10 @@ const grouped = categoryOrder.reduce((acc, cat) => {
 }, {} as Record<string, typeof allItems>);
 ---
 
-<Layout title="Menú — La Maison" description="Descubre todas las especialidades de La Maison. Entradas, platos principales, postres y bebidas con ingredientes de temporada.">
+<Layout title={`Menú — ${restaurantName}`} description={`Descubre todas las especialidades de ${restaurantName}. Entradas, platos principales, postres y bebidas con ingredientes de temporada.`}>
   <Navbar />
-  <main class="pt-24 pb-24 bg-[#FAFAF7] min-h-screen">
-    <div class="max-w-7xl mx-auto px-6">
+  <main class="pt-24 pb-16 md:pb-24 bg-[#FAFAF7] min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
 
       <!-- Header -->
       <div class="text-center mb-16">
@@ -49,11 +52,11 @@ const grouped = categoryOrder.reduce((acc, cat) => {
           <h2 class="font-serif text-2xl font-bold text-[#2C2C2C] mb-8 pb-3 border-b border-[#E8E0D0]">
             {categoryLabels[cat]}
           </h2>
-          <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {items.map((item) => (
               <article class="bg-white border border-[#E8E0D0] rounded-sm overflow-hidden group hover:shadow-md transition-shadow duration-300">
                 {item.image && (
-                  <div class="overflow-hidden h-52">
+                  <div class="overflow-hidden h-44 sm:h-52">
                     <img
                       src={urlFor(item.image).width(400).height(208).format('webp').url()}
                       alt={item.imageAlt || item.name}

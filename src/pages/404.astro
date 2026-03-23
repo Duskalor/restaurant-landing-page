@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Navbar from '../components/Navbar.astro'
+import Footer from '../components/Footer.astro'
+import { getSiteSettings } from '../lib/sanity'
+
+const settings = await getSiteSettings()
+const restaurantName = settings?.restaurantName ?? 'Restaurante'
+---
+
+<Layout
+  title={`Página no encontrada — ${restaurantName}`}
+  description="La página que buscás no existe. Volvé al inicio y explorá nuestra propuesta gastronómica."
+>
+  <Navbar />
+  <main class="min-h-screen flex items-center justify-center bg-[#FAFAF7] pt-16">
+    <div class="text-center px-6 py-24">
+      <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-4">
+        Error 404
+      </p>
+      <h1 class="font-serif text-6xl md:text-8xl font-bold text-[#2C2C2C] mb-4">
+        404
+      </h1>
+      <p class="font-serif text-2xl md:text-3xl text-[#2C2C2C] mb-4">
+        Esta mesa no existe
+      </p>
+      <p class="text-[#6B6B6B] text-base md:text-lg max-w-md mx-auto mb-10 leading-relaxed">
+        La página que buscás no fue encontrada. Quizás fue movida o simplemente nunca existió.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/"
+          class="inline-block px-8 py-3.5 bg-[#C9A96E] text-white font-medium rounded hover:bg-[#A8834A] transition-colors duration-200"
+        >
+          Volver al inicio
+        </a>
+        <a
+          href="/menu"
+          class="inline-block px-8 py-3.5 border border-[#2C2C2C] text-[#2C2C2C] font-medium rounded hover:bg-[#2C2C2C] hover:text-white transition-colors duration-200"
+        >
+          Ver el menú
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
