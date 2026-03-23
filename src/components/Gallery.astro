@@ -26,7 +26,7 @@ const sanityImages = await getGalleryImages()
         {sanityImages.map((img) => (
           <a
             href={urlFor(img.image).width(1920).height(1080).format('webp').quality(90).url()}
-            class='glightbox overflow-hidden rounded-sm block group'
+            class='glightbox overflow-hidden rounded-sm block group relative'
             data-gallery='restaurant-gallery'
             data-type='image'
             data-title={img.title ?? ''}
@@ -35,9 +35,23 @@ const sanityImages = await getGalleryImages()
             <img
               src={urlFor(img.image).width(600).height(400).format('webp').quality(85).url()}
               alt={img.alt ?? img.title ?? ''}
-              class='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
+              class='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
               loading='lazy'
             />
+            {(img.title || img.description) && (
+              <div class='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center px-4'>
+                {img.title && (
+                  <p class='font-serif text-white text-lg font-semibold leading-snug mb-1'>
+                    {img.title}
+                  </p>
+                )}
+                {img.description && (
+                  <p class='text-white/80 text-sm leading-relaxed'>
+                    {img.description}
+                  </p>
+                )}
+              </div>
+            )}
           </a>
         ))}
       </div>
