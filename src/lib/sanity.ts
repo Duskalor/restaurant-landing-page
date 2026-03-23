@@ -86,6 +86,7 @@ export interface HeroContent {
 export interface GalleryImage {
   _id: string
   title?: string
+  description?: string
   image: SanityImageSource
   alt: string
   order?: number
@@ -134,6 +135,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
     *[_type == "galleryImage"] | order(order asc) {
       _id,
       title,
+      description,
       image,
       alt,
       order

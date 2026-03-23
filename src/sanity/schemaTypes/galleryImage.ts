@@ -24,6 +24,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'description',
+      title: 'Descripción',
+      type: 'text',
+      rows: 2,
+      description: 'Texto que aparece bajo la imagen en el lightbox',
+    }),
+    defineField({
       name: 'order',
       title: 'Orden de aparición',
       type: 'number',
