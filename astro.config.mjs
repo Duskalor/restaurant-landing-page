@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://restaurant-landing-page-git-main-duskalors-projects.vercel.app',
+  site: import.meta.env.SITE_URL,
   adapter: vercel(),
   integrations: [sitemap()],
   vite: {

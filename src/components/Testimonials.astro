@@ -4,7 +4,7 @@ import { testimonials as hardcodedTestimonials } from '../data/testimonials'
 
 const sanityTestimonials = await getTestimonials()
 
-const useSanity = sanityTestimonials && sanityTestimonials.length > 0
+const useSanity = Array.isArray(sanityTestimonials) && sanityTestimonials.length > 0
 ---
 
 <section id="resenas" class="py-16 md:py-24 bg-[#FAFAF7]">

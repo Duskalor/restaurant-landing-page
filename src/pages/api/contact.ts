@@ -40,9 +40,19 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { nombre, email, fecha, personas, mensaje } = result.output
 
+  const contactEmail = import.meta.env.CONTACT_EMAIL
+  if (!contactEmail) {
+    return new Response(JSON.stringify({ error: 'Servicio de contacto no configurado.' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'
+
   const { error } = await resend.emails.send({
-    from: `Reservas ${restaurantName} <onboarding@resend.dev>`,
-    to: [import.meta.env.CONTACT_EMAIL ?? email],
+    from: `Reservas ${restaurantName} <${fromEmail}>`,
+    to: [contactEmail],
     subject: `Nueva reservación de ${nombre}`,
     html: `
       <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #FAFAF7; border: 1px solid #E8E0D0;">

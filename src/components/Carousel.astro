@@ -135,6 +135,7 @@ const activeSlides = slides.length > 0 ? slides : fallbackSlides;
   const section = track?.closest('section') as HTMLElement;
 
   const total = dots.length;
+  if (total === 0) return  // nothing to do
   let current = 0;
   let timer: ReturnType<typeof setInterval> | null = null;
 

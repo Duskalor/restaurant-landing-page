@@ -5,12 +5,11 @@ const settings = await getSiteSettings()
 const phone = settings?.phone?.replace(/\D/g, '') ?? ''
 const restaurantName = settings?.restaurantName ?? 'nosotros'
 const message = encodeURIComponent(`Hola, me gustaría hacer una reservación en ${restaurantName}.`)
-const href = phone ? `https://wa.me/${phone}?text=${message}` : '#'
 ---
 
 {phone && (
   <a
-    href={href}
+    href={`https://wa.me/${phone}?text=${message}`}
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Contactar por WhatsApp"

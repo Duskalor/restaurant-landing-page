@@ -5,9 +5,9 @@ const contact = await getContactContent()
 
 const title = contact?.title ?? 'Reserva tu mesa'
 const subtitle = contact?.subtitle ?? 'Encuéntranos'
-const phone = contact?.phone ?? '+51 (01) 445-6789'
-const email = contact?.email ?? 'reservas@lamaison.pe'
-const address = contact?.address ?? 'Calle Triunfo 379, Centro Histórico\nCusco, Perú 08002'
+const phone = contact?.phone ?? null
+const email = contact?.email ?? null
+const address = contact?.address ?? null
 const reservationCtaText = contact?.reservationCtaText ?? 'Confirmar reservación'
 
 // Parse opening hours: each line "Día | Hora", fallback to hardcoded
@@ -30,7 +30,7 @@ const hours = contact?.openingHours
   : defaultHours
 
 // Split address into lines for display
-const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
+const addressLines = address ? address.split('\n').map((l) => l.trim()).filter(Boolean) : []
 ---
 
 <style>
@@ -99,26 +99,32 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
       </h2>
 
       <div class="space-y-6 mb-10">
-        <div>
-          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Dirección</p>
-          {addressLines.map((line, i) => (
-            i === 0
-              ? <p class="text-[#2C2C2C] font-medium">{line}</p>
-              : <p class="text-[#6B6B6B] text-sm">{line}</p>
-          ))}
-        </div>
-        <div>
-          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Teléfono</p>
-          <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
-            {phone}
-          </a>
-        </div>
-        <div>
-          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Correo</p>
-          <a href={`mailto:${email}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
-            {email}
-          </a>
-        </div>
+        {addressLines.length > 0 && (
+          <div>
+            <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Dirección</p>
+            {addressLines.map((line, i) => (
+              i === 0
+                ? <p class="text-[#2C2C2C] font-medium">{line}</p>
+                : <p class="text-[#6B6B6B] text-sm">{line}</p>
+            ))}
+          </div>
+        )}
+        {phone && (
+          <div>
+            <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Teléfono</p>
+            <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+              {phone}
+            </a>
+          </div>
+        )}
+        {email && (
+          <div>
+            <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Correo</p>
+            <a href={`mailto:${email}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+              {email}
+            </a>
+          </div>
+        )}
       </div>
 
       <div>

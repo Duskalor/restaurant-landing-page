@@ -46,6 +46,15 @@ const grouped = categoryOrder.reduce((acc, cat) => {
         </a>
       </div>
 
+      <!-- Empty state -->
+      {allItems.length === 0 && (
+        <div class="text-center py-24">
+          <p class="text-[#6B6B6B] text-lg">
+            Agregá platos desde Sanity Studio → Menú para mostrarlos aquí.
+          </p>
+        </div>
+      )}
+
       <!-- Categories -->
       {Object.entries(grouped).map(([cat, items]) => (
         <div class="mb-16">
