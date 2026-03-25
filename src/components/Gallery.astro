@@ -4,18 +4,18 @@ import { getGalleryImages, urlFor } from '../lib/sanity'
 const sanityImages = await getGalleryImages()
 ---
 
-<section id='galeria' class='py-16 md:py-24 bg-[#F5F0E8]'>
+<section id='galeria' class='py-16 md:py-24 bg-[var(--color-surface)]'>
   <div class='max-w-7xl mx-auto px-4 md:px-6'>
     <div class='text-center mb-16'>
       <p
-        class='text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3'
+        class='text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-3'
       >
         Galería
       </p>
-      <h2 class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] mb-4 reveal'>
+      <h2 class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 reveal'>
         Nuestra galería
       </h2>
-      <p class='text-[#6B6B6B] max-w-lg mx-auto'>
+      <p class='text-[var(--color-muted)] max-w-lg mx-auto'>
         Imágenes reales de nuestros tours y destinos en Cusco y los Andes peruanos.
       </p>
     </div>
@@ -41,7 +41,7 @@ const sanityImages = await getGalleryImages()
       </div>
     ) : (
       <div class='text-center py-16'>
-        <p class='text-[#6B6B6B]'>Agregá fotos de tus tours desde Sanity Studio → Galería para mostrarlas aquí.</p>
+        <p class='text-[var(--color-muted)]'>Agregá fotos de tus tours desde Sanity Studio → Galería para mostrarlas aquí.</p>
       </div>
     )}
   </div>

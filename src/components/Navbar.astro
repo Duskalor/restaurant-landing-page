@@ -16,10 +16,10 @@ const links = [
 ];
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF7]/95 backdrop-blur-sm border-b border-[#E8E0D0]">
+<header class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]">
   <nav class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
     <!-- Logo -->
-    <a href="/" class="font-serif text-2xl font-bold text-[#2C2C2C] tracking-wide">
+    <a href="/" class="font-serif text-2xl font-bold text-[var(--color-text)] tracking-wide">
       {logoUrl
         ? <img src={logoUrl} alt={restaurantName} class="h-10 w-auto object-contain" />
         : restaurantName
@@ -32,7 +32,7 @@ const links = [
         <li>
           <a
             href={link.href}
-            class="text-sm font-medium text-[#6B6B6B] hover:text-[#C9A96E] transition-colors duration-200"
+            class="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-primary)] transition-colors duration-200"
           >
             {link.label}
           </a>
@@ -57,21 +57,21 @@ const links = [
       aria-label="Abrir menú"
       class="md:hidden flex flex-col gap-1.5 p-2"
     >
-      <span class="w-6 h-0.5 bg-[#2C2C2C] block transition-all" id="b1"></span>
-      <span class="w-6 h-0.5 bg-[#2C2C2C] block transition-all" id="b2"></span>
-      <span class="w-6 h-0.5 bg-[#2C2C2C] block transition-all" id="b3"></span>
+      <span class="w-6 h-0.5 bg-[var(--color-text)] block transition-all" id="b1"></span>
+      <span class="w-6 h-0.5 bg-[var(--color-text)] block transition-all" id="b2"></span>
+      <span class="w-6 h-0.5 bg-[var(--color-text)] block transition-all" id="b3"></span>
     </button>
   </nav>
 
   <!-- Mobile drawer -->
   <div
     id="mobile-menu"
-    class="md:hidden hidden flex-col gap-4 px-4 md:px-6 py-6 bg-[#FAFAF7] border-t border-[#E8E0D0]"
+    class="md:hidden hidden flex-col gap-4 px-4 md:px-6 py-6 bg-[var(--color-bg)] border-t border-[var(--color-border)]"
   >
     {links.map((link) => (
       <a
         href={link.href}
-        class="text-base font-medium text-[#2C2C2C] hover:text-[#C9A96E] transition-colors"
+        class="text-base font-medium text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
         data-mobile-link
       >
         {link.label}

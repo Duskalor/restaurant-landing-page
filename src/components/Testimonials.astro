@@ -7,13 +7,13 @@ const sanityTestimonials = await getTestimonials()
 const useSanity = sanityTestimonials && sanityTestimonials.length > 0
 ---
 
-<section id="resenas" class="py-16 md:py-24 bg-[#FAFAF7]">
+<section id="resenas" class="py-16 md:py-24 bg-[var(--color-bg)]">
   <div class="max-w-7xl mx-auto px-4 md:px-6">
     <div class="text-center mb-16">
-      <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
+      <p class="text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-3">
         Lo que dicen nuestros viajeros
       </p>
-      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] reveal">
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] reveal">
         Reseñas
       </h2>
     </div>
@@ -21,24 +21,24 @@ const useSanity = sanityTestimonials && sanityTestimonials.length > 0
     {useSanity ? (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         {sanityTestimonials.map((t, i) => (
-          <article class={`bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
+          <article class={`bg-[var(--color-surface)] p-8 border border-[var(--color-border)] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
             <!-- Stars -->
             <div class="flex gap-1 mb-6">
               {Array.from({ length: t.rating ?? 5 }).map(() => (
-                <span class="text-[#C9A96E] text-lg">★</span>
+                <span class="text-[var(--color-primary)] text-lg">★</span>
               ))}
             </div>
 
             <!-- Quote -->
-            <blockquote class="font-serif text-lg text-[#2C2C2C] leading-relaxed italic flex-1">
+            <blockquote class="font-serif text-lg text-[var(--color-text)] leading-relaxed italic flex-1">
               "{t.comment}"
             </blockquote>
 
             <!-- Author -->
-            <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[#E8E0D0]">
+            <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[var(--color-border)]">
               <div>
-                <p class="font-semibold text-[#2C2C2C] text-sm">{t.name}</p>
-                {t.date && <p class="text-xs text-[#6B6B6B] mt-0.5">{t.date}</p>}
+                <p class="font-semibold text-[var(--color-text)] text-sm">{t.name}</p>
+                {t.date && <p class="text-xs text-[var(--color-muted)] mt-0.5">{t.date}</p>}
               </div>
             </div>
           </article>
@@ -47,21 +47,21 @@ const useSanity = sanityTestimonials && sanityTestimonials.length > 0
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         {hardcodedTestimonials.map((t, i) => (
-          <article class={`bg-[#F5F0E8] p-8 border border-[#E8E0D0] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
+          <article class={`bg-[var(--color-surface)] p-8 border border-[var(--color-border)] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
             <!-- Stars -->
             <div class="flex gap-1 mb-6">
               {Array.from({ length: t.rating }).map(() => (
-                <span class="text-[#C9A96E] text-lg">★</span>
+                <span class="text-[var(--color-primary)] text-lg">★</span>
               ))}
             </div>
 
             <!-- Quote -->
-            <blockquote class="font-serif text-lg text-[#2C2C2C] leading-relaxed italic flex-1">
+            <blockquote class="font-serif text-lg text-[var(--color-text)] leading-relaxed italic flex-1">
               "{t.quote}"
             </blockquote>
 
             <!-- Author -->
-            <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[#E8E0D0]">
+            <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[var(--color-border)]">
               {t.avatar && (
                 <img
                   src={t.avatar}
@@ -70,8 +70,8 @@ const useSanity = sanityTestimonials && sanityTestimonials.length > 0
                 />
               )}
               <div>
-                <p class="font-semibold text-[#2C2C2C] text-sm">{t.author}</p>
-                {t.role && <p class="text-xs text-[#6B6B6B] mt-0.5">{t.role}</p>}
+                <p class="font-semibold text-[var(--color-text)] text-sm">{t.author}</p>
+                {t.role && <p class="text-xs text-[var(--color-muted)] mt-0.5">{t.role}</p>}
               </div>
             </div>
           </article>

@@ -220,6 +220,9 @@ export interface Tour {
   featured: boolean
   order: number
   maxGroupSize?: number
+  included?: string[]
+  notIncluded?: string[]
+  gallery?: Array<SanityImageSource & { url: string }>
 }
 
 export interface TourCategory {
@@ -254,7 +257,10 @@ export async function getTours(): Promise<Tour[]> {
       image,
       featured,
       order,
-      maxGroupSize
+      maxGroupSize,
+      included,
+      notIncluded,
+      gallery[] { ..., "url": asset->url }
     }
   `)
 }
@@ -274,7 +280,10 @@ export async function getFeaturedTours(): Promise<Tour[]> {
       image,
       featured,
       order,
-      maxGroupSize
+      maxGroupSize,
+      included,
+      notIncluded,
+      gallery[] { ..., "url": asset->url }
     }
   `)
 }

@@ -7,25 +7,25 @@ const imageUrl = about?.image
   ? urlFor(about.image).width(800).height(600).format('webp').url()
   : 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800&q=80'
 
-const imageAlt = about?.imageAlt ?? 'Chef preparando un plato en la cocina'
+const imageAlt = about?.imageAlt ?? 'Guía turístico con viajeros en los Andes'
 ---
 
-<section id='nosotros' class='py-16 md:py-24 bg-[#F5F0E8]'>
+<section id='nosotros' class='py-16 md:py-24 bg-[var(--color-surface)]'>
   <div class='max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-10 md:gap-16 items-center'>
     <!-- Text -->
     <div>
       <p
-        class='text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3'
+        class='text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-3'
       >
         Nuestra historia
       </p>
       <h2
-        class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] leading-tight mb-6 reveal'
+        class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] leading-tight mb-6 reveal'
       >
-        {about?.title ?? 'Pasión por la gastronomía desde 1998'}
+        {about?.title ?? 'Expertos en turismo andino'}
       </h2>
-      <p class='text-[#6B6B6B] text-base leading-relaxed mb-5 reveal reveal-delay-1'>
-        {about?.description ?? `Somos un restaurante comprometido con la excelencia culinaria. Desde el primer día, apostamos por ingredientes frescos de temporada, productores regionales y técnicas heredadas de las mejores cocinas del mundo.`}
+      <p class='text-[var(--color-muted)] text-base leading-relaxed mb-5 reveal reveal-delay-1'>
+        {about?.description ?? `Somos una agencia de turismo comprometida con brindarte experiencias auténticas en los Andes peruanos. Nuestros guías locales certificados te llevarán a descubrir Machu Picchu, el Valle Sagrado y mucho más.`}
       </p>
       <!-- Stats: agregá estadísticas desde Sanity Studio cuando las configures -->
     </div>
@@ -39,7 +39,7 @@ const imageAlt = about?.imageAlt ?? 'Chef preparando un plato en la cocina'
         loading='lazy'
       />
       <div
-        class='absolute -bottom-6 -left-6 bg-[#C9A96E] text-white p-6 w-40 hidden md:block'
+        class='absolute -bottom-6 -left-6 bg-[var(--color-primary)] text-white p-6 w-40 hidden md:block'
       >
         <p class='font-serif text-3xl font-bold'>★★★</p>
         <p class='text-xs mt-1 leading-snug'>

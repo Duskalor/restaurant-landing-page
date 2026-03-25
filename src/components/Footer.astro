@@ -21,11 +21,11 @@ const links = [
 const year = new Date().getFullYear()
 ---
 
-<footer class="bg-[#2C2C2C] text-white py-16">
+<footer class="bg-[var(--color-text)] text-white py-16">
   <div class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
     <!-- Brand -->
     <div class="md:col-span-2">
-      <p class="font-serif text-3xl font-bold text-[#C9A96E] mb-3">{restaurantName}</p>
+      <p class="font-serif text-3xl font-bold text-[var(--color-primary)] mb-3">{restaurantName}</p>
       <p class="text-white/60 text-sm leading-relaxed max-w-sm">
         {address ?? 'Agencia de turismo local en Cusco, Perú. Guías certificados, experiencias auténticas en los Andes.'}
       </p>
@@ -37,7 +37,7 @@ const year = new Date().getFullYear()
       <ul class="space-y-2">
         {links.map((link) => (
           <li>
-            <a href={link.href} class="text-sm text-white/70 hover:text-[#C9A96E] transition-colors">
+            <a href={link.href} class="text-sm text-white/70 hover:text-[var(--color-primary)] transition-colors">
               {link.label}
             </a>
           </li>
@@ -49,12 +49,12 @@ const year = new Date().getFullYear()
     <div>
       <p class="text-xs text-white/40 uppercase tracking-widest mb-4">Contacto</p>
       {phone && (
-        <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="block text-sm text-white/70 hover:text-[#C9A96E] transition-colors mb-1">
+        <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="block text-sm text-white/70 hover:text-[var(--color-primary)] transition-colors mb-1">
           {phone}
         </a>
       )}
       {email && (
-        <a href={`mailto:${email}`} class="block text-sm text-white/70 hover:text-[#C9A96E] transition-colors mb-6">
+        <a href={`mailto:${email}`} class="block text-sm text-white/70 hover:text-[var(--color-primary)] transition-colors mb-6">
           {email}
         </a>
       )}
@@ -72,7 +72,7 @@ const year = new Date().getFullYear()
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                class="w-9 h-9 flex items-center justify-center border border-white/20 text-xs text-white/60 hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors rounded"
+                class="w-9 h-9 flex items-center justify-center border border-white/20 text-xs text-white/60 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors rounded"
               >
                 IG
               </a>
@@ -83,7 +83,7 @@ const year = new Date().getFullYear()
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                class="w-9 h-9 flex items-center justify-center border border-white/20 text-xs text-white/60 hover:border-[#C9A96E] hover:text-[#C9A96E] transition-colors rounded"
+                class="w-9 h-9 flex items-center justify-center border border-white/20 text-xs text-white/60 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors rounded"
               >
                 FB
               </a>

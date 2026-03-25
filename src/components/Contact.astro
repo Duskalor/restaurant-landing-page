@@ -35,98 +35,98 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
 <style>
   .flatpickr-calendar {
     font-family: Georgia, serif;
-    border: 1px solid #E8E0D0;
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    background: #FAFAF7;
+    background: var(--color-bg);
   }
   .flatpickr-months {
-    background: #2C2C2C;
+    background: var(--color-text);
     border-radius: 4px 4px 0 0;
     padding: 8px 0;
   }
   .flatpickr-month, .flatpickr-prev-month, .flatpickr-next-month {
-    color: #FAFAF7 !important;
-    fill: #FAFAF7 !important;
+    color: var(--color-bg) !important;
+    fill: var(--color-bg) !important;
   }
   .flatpickr-current-month .flatpickr-monthDropdown-months,
   .flatpickr-current-month input.cur-year {
-    color: #FAFAF7;
+    color: var(--color-bg);
     font-size: 15px;
   }
   .flatpickr-weekday {
-    color: #C9A96E;
+    color: var(--color-primary);
     font-weight: 600;
     font-size: 12px;
   }
   .flatpickr-day {
-    color: #2C2C2C;
+    color: var(--color-text);
     border-radius: 2px;
   }
   .flatpickr-day:hover {
-    background: #F5F0E8;
-    border-color: #C9A96E;
+    background: var(--color-surface);
+    border-color: var(--color-primary);
   }
   .flatpickr-day.selected,
   .flatpickr-day.selected:hover {
-    background: #C9A96E;
-    border-color: #C9A96E;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     color: #fff;
   }
   .flatpickr-day.today {
-    border-color: #C9A96E;
-    color: #C9A96E;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
     font-weight: bold;
   }
   .flatpickr-day.today.selected {
     color: #fff;
   }
   .flatpickr-day.flatpickr-disabled {
-    color: #D0C9BE;
+    color: var(--color-muted);
   }
 </style>
 
-<section id="contacto" class="py-16 md:py-24 bg-[#F5F0E8]">
+<section id="contacto" class="py-16 md:py-24 bg-[var(--color-surface)]">
   <div class="max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-10 md:gap-16">
     <!-- Info -->
     <div>
-      <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
+      <p class="text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-3">
         {subtitle}
       </p>
-      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] mb-8 reveal">
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-8 reveal">
         {title}
       </h2>
 
       <div class="space-y-6 mb-10">
         <div>
-          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Dirección</p>
+          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">Dirección</p>
           {addressLines.map((line, i) => (
             i === 0
-              ? <p class="text-[#2C2C2C] font-medium">{line}</p>
-              : <p class="text-[#6B6B6B] text-sm">{line}</p>
+              ? <p class="text-[var(--color-text)] font-medium">{line}</p>
+              : <p class="text-[var(--color-muted)] text-sm">{line}</p>
           ))}
         </div>
         <div>
-          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Teléfono</p>
-          <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">Teléfono</p>
+          <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[var(--color-text)] font-medium hover:text-[var(--color-primary)] transition-colors">
             {phone}
           </a>
         </div>
         <div>
-          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Correo</p>
-          <a href={`mailto:${email}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">Correo</p>
+          <a href={`mailto:${email}`} class="text-[var(--color-text)] font-medium hover:text-[var(--color-primary)] transition-colors">
             {email}
           </a>
         </div>
       </div>
 
       <div>
-        <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-3">Horarios</p>
+        <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-3">Horarios</p>
         <div class="space-y-2">
           {hours.map((h) => (
-            <div class="flex justify-between border-b border-[#E8E0D0] pb-2">
-              <span class="text-sm text-[#2C2C2C]">{h.day}</span>
-              <span class="text-sm text-[#6B6B6B]">{h.time}</span>
+            <div class="flex justify-between border-b border-[var(--color-border)] pb-2">
+              <span class="text-sm text-[var(--color-text)]">{h.day}</span>
+              <span class="text-sm text-[var(--color-muted)]">{h.time}</span>
             </div>
           ))}
         </div>
@@ -134,41 +134,41 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
     </div>
 
     <!-- Form -->
-    <div class="bg-white p-6 md:p-10 border border-[#E8E0D0] rounded-sm shadow-sm reveal reveal-delay-1">
-      <h3 class="font-serif text-2xl font-bold text-[#2C2C2C] mb-6">Envianos tu consulta</h3>
+    <div class="bg-white p-6 md:p-10 border border-[var(--color-border)] rounded-sm shadow-sm reveal reveal-delay-1">
+      <h3 class="font-serif text-2xl font-bold text-[var(--color-text)] mb-6">Envianos tu consulta</h3>
       <div id="form-success" class="hidden text-center py-8">
         <p class="text-2xl mb-2">✓</p>
-        <p class="font-serif text-xl text-[#2C2C2C] mb-1">¡Consulta recibida!</p>
-        <p class="text-sm text-[#6B6B6B]">Te respondemos por correo a la brevedad.</p>
+        <p class="font-serif text-xl text-[var(--color-text)] mb-1">¡Consulta recibida!</p>
+        <p class="text-sm text-[var(--color-muted)]">Te respondemos por correo a la brevedad.</p>
       </div>
       <form id="contact-form" class="space-y-5" novalidate>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="nombre" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Nombre</label>
+            <label for="nombre" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Nombre</label>
             <input
               type="text"
               id="nombre"
               name="nombre"
               placeholder="Tu nombre"
               required
-              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
+              class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             />
           </div>
           <div>
-            <label for="email" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Correo</label>
+            <label for="email" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Correo</label>
             <input
               type="email"
               id="email"
               name="email"
               placeholder="tu@correo.com"
               required
-              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
+              class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             />
           </div>
         </div>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="fecha" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Fecha del tour</label>
+            <label for="fecha" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Fecha del tour</label>
             <input
               type="text"
               id="fecha"
@@ -176,15 +176,15 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
               placeholder="Seleccioná una fecha"
               required
               readonly
-              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors cursor-pointer"
+              class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors cursor-pointer"
             />
           </div>
           <div>
-            <label for="personas" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Viajeros</label>
+            <label for="personas" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Viajeros</label>
             <select
               id="personas"
               name="personas"
-              class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
+              class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             >
               {[1,2,3,4,5,6,7,8].map((n) => (
                 <option value={n}>{n} {n === 1 ? 'viajero' : 'viajeros'}</option>
@@ -194,20 +194,20 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
           </div>
         </div>
         <div>
-          <label for="mensaje" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">¿Qué tour te interesa? (opcional)</label>
+          <label for="mensaje" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">¿Qué tour te interesa? (opcional)</label>
           <textarea
             id="mensaje"
             name="mensaje"
             rows="3"
             placeholder="Tour al Camino Inca, Machu Picchu, preferencias, preguntas..."
-            class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors resize-none"
+            class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors resize-none"
           ></textarea>
         </div>
         <p id="form-error" class="hidden text-sm text-red-600"></p>
         <button
           id="submit-btn"
           type="submit"
-          class="w-full py-3 bg-[#C9A96E] text-white font-medium rounded hover:bg-[#A8834A] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          class="w-full py-3 bg-[var(--color-primary)] text-white font-medium rounded hover:bg-[var(--color-primary-dark)] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {reservationCtaText}
         </button>
@@ -228,7 +228,7 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
     disableMobile: true,
     onReady(_selectedDates, _dateStr, instance) {
       const cal = instance.calendarContainer
-      cal.style.setProperty('--fp-accent', '#C9A96E')
+      cal.style.setProperty('--fp-accent', getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim())
       cal.style.fontFamily = 'Georgia, serif'
     },
   })
@@ -258,7 +258,7 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
       errorEl.textContent = json.error ?? 'Error al enviar. Intentá de nuevo.'
       errorEl.classList.remove('hidden')
       submitBtn.disabled = false
-      submitBtn.textContent = 'Confirmar reservación'
+      submitBtn.textContent = 'Enviar consulta'
     }
   })
 </script>
