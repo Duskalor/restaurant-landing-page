@@ -13,7 +13,7 @@ import Footer from '../components/Footer.astro';
 import { getSiteSettings } from '../lib/sanity';
 
 const settings = await getSiteSettings();
-const agencyName = settings?.restaurantName ?? 'Agencia de Turismo';
+const agencyName = settings?.businessName ?? 'Agencia de Turismo';
 ---
 
 <Layout

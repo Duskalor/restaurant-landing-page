@@ -5,11 +5,11 @@ import Footer from '../components/Footer.astro'
 import { getSiteSettings } from '../lib/sanity'
 
 const settings = await getSiteSettings()
-const restaurantName = settings?.restaurantName ?? 'Restaurante'
+const businessName = settings?.businessName ?? 'Restaurante'
 ---
 
 <Layout
-  title={`Página no encontrada — ${restaurantName}`}
+  title={`Página no encontrada — ${businessName}`}
   description="La página que buscás no existe. Volvé al inicio y explorá nuestros tours."
 >
   <Navbar />

@@ -3,7 +3,7 @@ import { getSiteSettings } from '../lib/sanity'
 
 const settings = await getSiteSettings()
 
-const restaurantName = settings?.restaurantName ?? 'Restaurante'
+const businessName = settings?.businessName ?? 'Restaurante'
 const phone = settings?.phone ?? null
 const email = settings?.email ?? null
 const address = settings?.address ?? null
@@ -25,7 +25,7 @@ const year = new Date().getFullYear()
   <div class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
     <!-- Brand -->
     <div class="md:col-span-2">
-      <p class="font-serif text-3xl font-bold text-[var(--color-primary)] mb-3">{restaurantName}</p>
+      <p class="font-serif text-3xl font-bold text-[var(--color-primary)] mb-3">{businessName}</p>
       <p class="text-white/60 text-sm leading-relaxed max-w-sm">
         {address ?? 'Agencia de turismo local en Cusco, Perú. Guías certificados, experiencias auténticas en los Andes.'}
       </p>
@@ -95,7 +95,7 @@ const year = new Date().getFullYear()
   </div>
 
   <div class="max-w-7xl mx-auto px-4 md:px-6 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
-    <p class="text-xs text-white/40">© {year} {restaurantName}. Todos los derechos reservados.</p>
+    <p class="text-xs text-white/40">© {year} {businessName}. Todos los derechos reservados.</p>
     <p class="text-xs text-white/40">Desarrollado con ♥</p>
   </div>
 </footer>

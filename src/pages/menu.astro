@@ -14,7 +14,7 @@ const categoryLabels: Record<string, string> = {
 const categoryOrder = ['entrada', 'principal', 'postre', 'bebida'];
 
 const settings = await getSiteSettings();
-const restaurantName = settings?.restaurantName ?? 'Restaurante';
+const businessName = settings?.businessName ?? 'Restaurante';
 
 const allItems = await getMenuItems();
 
@@ -25,7 +25,7 @@ const grouped = categoryOrder.reduce((acc, cat) => {
 }, {} as Record<string, typeof allItems>);
 ---
 
-<Layout title={`Menú — ${restaurantName}`} description={`Descubre todas las especialidades de ${restaurantName}. Entradas, platos principales, postres y bebidas con ingredientes de temporada.`}>
+<Layout title={`Menú — ${businessName}`} description={`Descubre todas las especialidades de ${businessName}. Entradas, platos principales, postres y bebidas con ingredientes de temporada.`}>
   <Navbar />
   <main class="pt-24 pb-16 md:pb-24 bg-[#FAFAF7] min-h-screen">
     <div class="max-w-7xl mx-auto px-4 md:px-6">

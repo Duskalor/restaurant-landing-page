@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import { getTours, getTourCategories, getSiteSettings, urlFor } from '../lib/sanity';
 
 const settings = await getSiteSettings();
-const agencyName = settings?.restaurantName ?? 'Agencia de Turismo';
+const agencyName = settings?.businessName ?? 'Agencia de Turismo';
 
 const [tours, categories] = await Promise.all([getTours(), getTourCategories()]);
 

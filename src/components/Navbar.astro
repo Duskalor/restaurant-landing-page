@@ -1,11 +1,11 @@
 ---
-import { getSiteSettings, urlFor } from '../lib/sanity'
+import { getSiteSettings, urlFor } from '../lib/sanity';
 
-const settings = await getSiteSettings()
-const restaurantName = settings?.restaurantName ?? 'Restaurante'
+const settings = await getSiteSettings();
+const businessName = settings?.businessName ?? 'Restaurante';
 const logoUrl = settings?.logo
   ? urlFor(settings.logo).width(160).height(48).format('webp').url()
-  : null
+  : null;
 
 const links = [
   { label: 'Nosotros', href: '/nosotros' },
@@ -16,35 +16,51 @@ const links = [
 ];
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]">
-  <nav class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+<header
+  class='fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-border)]'
+>
+  <nav
+    class='max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between'
+  >
     <!-- Logo -->
-    <a href="/" class="font-serif text-2xl font-bold text-[var(--color-text)] tracking-wide">
-      {logoUrl
-        ? <img src={logoUrl} alt={restaurantName} class="h-10 w-auto object-contain" />
-        : restaurantName
+    <a
+      href='/'
+      class='font-serif text-2xl font-bold text-[var(--color-text)] tracking-wide'
+    >
+      {
+        logoUrl ? (
+          <img
+            src={logoUrl}
+            alt={businessName}
+            class='h-10 w-auto object-contain'
+          />
+        ) : (
+          businessName
+        )
       }
     </a>
 
     <!-- Desktop links -->
-    <ul class="hidden md:flex items-center gap-8">
-      {links.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-primary)] transition-colors duration-200"
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
+    <ul class='hidden md:flex items-center gap-8'>
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class='text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-primary)] transition-colors duration-200'
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
     <!-- CTA -->
     <a
-      href="/contacto"
-      class="hidden md:inline-block px-5 py-2 text-sm font-medium text-white rounded transition-colors duration-200"
-      style="background-color: var(--color-primary);"
+      href='/contacto'
+      class='hidden md:inline-block px-5 py-2 text-sm font-medium text-white rounded transition-colors duration-200'
+      style='background-color: var(--color-primary);'
       onmouseover="this.style.backgroundColor='var(--color-primary-dark)'"
       onmouseout="this.style.backgroundColor='var(--color-primary)'"
     >
@@ -53,34 +69,42 @@ const links = [
 
     <!-- Mobile burger -->
     <button
-      id="burger"
-      aria-label="Abrir menú"
-      class="md:hidden flex flex-col gap-1.5 p-2"
+      id='burger'
+      aria-label='Abrir menú'
+      class='md:hidden flex flex-col gap-1.5 p-2'
     >
-      <span class="w-6 h-0.5 bg-[var(--color-text)] block transition-all" id="b1"></span>
-      <span class="w-6 h-0.5 bg-[var(--color-text)] block transition-all" id="b2"></span>
-      <span class="w-6 h-0.5 bg-[var(--color-text)] block transition-all" id="b3"></span>
+      <span
+        class='w-6 h-0.5 bg-[var(--color-text)] block transition-all'
+        id='b1'></span>
+      <span
+        class='w-6 h-0.5 bg-[var(--color-text)] block transition-all'
+        id='b2'></span>
+      <span
+        class='w-6 h-0.5 bg-[var(--color-text)] block transition-all'
+        id='b3'></span>
     </button>
   </nav>
 
   <!-- Mobile drawer -->
   <div
-    id="mobile-menu"
-    class="md:hidden hidden flex-col gap-4 px-4 md:px-6 py-6 bg-[var(--color-bg)] border-t border-[var(--color-border)]"
+    id='mobile-menu'
+    class='md:hidden hidden flex-col gap-4 px-4 md:px-6 py-6 bg-[var(--color-bg)] border-t border-[var(--color-border)]'
   >
-    {links.map((link) => (
-      <a
-        href={link.href}
-        class="text-base font-medium text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
-        data-mobile-link
-      >
-        {link.label}
-      </a>
-    ))}
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class='text-base font-medium text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors'
+          data-mobile-link
+        >
+          {link.label}
+        </a>
+      ))
+    }
     <a
-      href="/contacto"
-      class="mt-2 inline-block text-center px-5 py-2 text-sm font-medium text-white rounded transition-colors"
-      style="background-color: var(--color-primary);"
+      href='/contacto'
+      class='mt-2 inline-block text-center px-5 py-2 text-sm font-medium text-white rounded transition-colors'
+      style='background-color: var(--color-primary);'
       data-mobile-link
     >
       Consultar tour
