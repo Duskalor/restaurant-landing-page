@@ -1,0 +1,64 @@
+---
+import { getTourCategories, urlFor } from '../lib/sanity'
+
+const categories = await getTourCategories()
+---
+
+<section id="destinos" class="py-16 md:py-24" style="background-color: var(--color-surface)">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--color-accent)">
+        Explorá Cusco y los Andes
+      </p>
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 reveal" style="color: var(--color-text)">
+        Destinos
+      </h2>
+      <p class="max-w-lg mx-auto" style="color: var(--color-muted)">
+        Desde la ciudad imperial hasta las alturas de la cordillera, tenemos el tour perfecto para vos.
+      </p>
+    </div>
+
+    <!-- Empty state -->
+    {categories.length === 0 && (
+      <p class="text-center py-8" style="color: var(--color-muted)">
+        Agregá categorías de tours en Sanity Studio para mostrarlas aquí.
+      </p>
+    )}
+
+    <!-- Categories grid -->
+    {categories.length > 0 && (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {categories.map((cat, i) => (
+          <a
+            href={`/tours?categoria=${cat.slug.current}`}
+            class={`relative block rounded-lg overflow-hidden h-56 group reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}
+          >
+            <!-- Background image or fallback gradient -->
+            {cat.image ? (
+              <img
+                src={urlFor(cat.image).width(600).height(224).format('webp').quality(85).url()}
+                alt={cat.name}
+                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+            ) : (
+              <div class="absolute inset-0 w-full h-full" style="background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark))"></div>
+            )}
+
+            <!-- Dark overlay -->
+            <div class="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300"></div>
+
+            <!-- Category name -->
+            <div class="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
+              <h3 class="font-serif text-2xl font-bold text-white mb-1">{cat.name}</h3>
+              {cat.description && (
+                <p class="text-white/80 text-sm leading-relaxed line-clamp-2">{cat.description}</p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

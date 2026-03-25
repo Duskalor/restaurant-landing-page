@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # accidental scaffold subfolder
 virtual-virgo/
+
+# private planning docs
+PLAN.md

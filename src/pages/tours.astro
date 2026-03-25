@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { getTours, getTourCategories, getSiteSettings, urlFor } from '../lib/sanity';
+
+const settings = await getSiteSettings();
+const agencyName = settings?.restaurantName ?? 'Agencia de Turismo';
+
+const [tours, categories] = await Promise.all([getTours(), getTourCategories()]);
+
+const difficultyLabels: Record<string, string> = {
+  facil: 'Fácil',
+  moderado: 'Moderado',
+  dificil: 'Difícil',
+  'muy-dificil': 'Muy difícil',
+};
+
+const difficultyColors: Record<string, string> = {
+  facil: 'bg-green-500',
+  moderado: 'bg-yellow-500',
+  dificil: 'bg-orange-500',
+  'muy-dificil': 'bg-red-500',
+};
+---
+
+<Layout
+  title={`Tours — ${agencyName}`}
+  description={`Todos nuestros tours en Cusco y los Andes. ${agencyName} — guías certificados, precios transparentes.`}
+>
+  <Navbar />
+  <main class="pt-16">
+    <!-- Page header -->
+    <div class="py-16 md:py-24 text-center" style="background-color: var(--color-surface)">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--color-accent)">
+        Explorá Cusco
+      </p>
+      <h1 class="font-serif text-3xl md:text-5xl font-bold mb-4" style="color: var(--color-text)">
+        Todos nuestros tours
+      </h1>
+      <p class="max-w-lg mx-auto" style="color: var(--color-muted)">
+        Elegí el tour que más te guste y viví una experiencia auténtica en los Andes peruanos.
+      </p>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16">
+      <!-- Category filter tabs -->
+      {categories.length > 0 && (
+        <div class="flex flex-wrap gap-3 mb-10" id="category-filters">
+          <button
+            class="category-btn px-5 py-2 rounded-full text-sm font-medium border transition-colors duration-200 active"
+            data-category="all"
+            style="border-color: var(--color-primary); background-color: var(--color-primary); color: white;"
+          >
+            Todos
+          </button>
+          {categories.map((cat) => (
+            <button
+              class="category-btn px-5 py-2 rounded-full text-sm font-medium border transition-colors duration-200"
+              data-category={cat.slug.current}
+              style="border-color: var(--color-border); color: var(--color-muted); background-color: transparent;"
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <!-- Empty state -->
+      {tours.length === 0 && (
+        <div class="text-center py-20">
+          <p class="text-lg mb-2" style="color: var(--color-text)">Todavía no hay tours cargados.</p>
+          <p class="text-sm" style="color: var(--color-muted)">
+            Agregá tours desde Sanity Studio para mostrarlos aquí.
+          </p>
+        </div>
+      )}
+
+      <!-- Tours grid -->
+      {tours.length > 0 && (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="tours-grid">
+          {tours.map((tour) => (
+            <article
+              class="tour-card rounded-lg overflow-hidden group hover:shadow-lg transition-shadow duration-300"
+              data-category={tour.category?.slug?.current ?? ''}
+              style="background-color: white; border: 1px solid var(--color-border)"
+            >
+              <!-- Image -->
+              <div class="relative h-48 overflow-hidden">
+                <img
+                  src={urlFor(tour.image).width(600).height(192).format('webp').quality(85).url()}
+                  alt={tour.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                {tour.difficulty && (
+                  <span
+                    class={`absolute top-3 right-3 ${difficultyColors[tour.difficulty] ?? 'bg-gray-500'} text-white text-xs font-semibold px-2 py-1 rounded`}
+                  >
+                    {difficultyLabels[tour.difficulty] ?? tour.difficulty}
+                  </span>
+                )}
+              </div>
+
+              <!-- Card body -->
+              <div class="p-5">
+                <h3 class="font-serif text-lg font-bold mb-2" style="color: var(--color-text)">{tour.name}</h3>
+                {tour.shortDescription && (
+                  <p class="text-sm leading-relaxed mb-4 line-clamp-2" style="color: var(--color-muted)">
+                    {tour.shortDescription}
+                  </p>
+                )}
+
+                <div class="flex items-center justify-between mb-4 text-sm" style="color: var(--color-muted)">
+                  <span>⏱ {tour.duration}</span>
+                  <span class="font-bold text-base" style="color: var(--color-accent)">
+                    Desde USD {tour.price}
+                  </span>
+                </div>
+
+                <a
+                  href={`/tours/${tour.slug.current}`}
+                  class="block w-full text-center px-4 py-2.5 rounded text-sm font-medium transition-colors duration-200"
+                  style="background-color: var(--color-primary); color: white;"
+                  onmouseover="this.style.backgroundColor='var(--color-primary-dark)'"
+                  onmouseout="this.style.backgroundColor='var(--color-primary)'"
+                >
+                  Ver tour
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Category filter — JS-powered show/hide
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.category-btn')
+  const tourCards = document.querySelectorAll<HTMLElement>('.tour-card')
+
+  const activeStyle = {
+    backgroundColor: 'var(--color-primary)',
+    color: 'white',
+    borderColor: 'var(--color-primary)',
+  }
+  const inactiveStyle = {
+    backgroundColor: 'transparent',
+    color: 'var(--color-muted)',
+    borderColor: 'var(--color-border)',
+  }
+
+  // Read ?categoria= from URL on load
+  const params = new URLSearchParams(window.location.search)
+  const initialCategory = params.get('categoria') ?? 'all'
+
+  function applyFilter(category: string) {
+    filterBtns.forEach((btn) => {
+      const isActive = btn.dataset.category === category
+      Object.assign(btn.style, isActive ? activeStyle : inactiveStyle)
+      btn.classList.toggle('active', isActive)
+    })
+
+    tourCards.forEach((card) => {
+      const cardCategory = card.dataset.category ?? ''
+      const show = category === 'all' || cardCategory === category
+      card.style.display = show ? '' : 'none'
+    })
+  }
+
+  applyFilter(initialCategory)
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.category ?? 'all'
+      applyFilter(cat)
+      // Update URL without reload
+      const url = new URL(window.location.href)
+      if (cat === 'all') {
+        url.searchParams.delete('categoria')
+      } else {
+        url.searchParams.set('categoria', cat)
+      }
+      window.history.replaceState(null, '', url.toString())
+    })
+  })
+</script>

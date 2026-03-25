@@ -86,7 +86,6 @@ export interface HeroContent {
 export interface GalleryImage {
   _id: string
   title?: string
-  description?: string
   image: SanityImageSource
   alt: string
   order?: number
@@ -135,7 +134,6 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
     *[_type == "galleryImage"] | order(order asc) {
       _id,
       title,
-      description,
       image,
       alt,
       order
@@ -204,6 +202,104 @@ export async function getContactContent(): Promise<ContactContent | null> {
       mapEmbedUrl,
       openingHours,
       reservationCtaText
+    }
+  `)
+}
+
+export interface Tour {
+  _id: string
+  name: string
+  slug: { current: string }
+  description: string
+  shortDescription?: string
+  price: number
+  duration: string
+  difficulty: 'facil' | 'moderado' | 'dificil' | 'muy-dificil'
+  category: { name: string; slug: { current: string } }
+  image: SanityImageSource
+  featured: boolean
+  order: number
+  maxGroupSize?: number
+}
+
+export interface TourCategory {
+  _id: string
+  name: string
+  slug: { current: string }
+  description?: string
+  image?: SanityImageSource
+  order?: number
+}
+
+export interface Certification {
+  _id: string
+  name: string
+  logo: SanityImageSource
+  url?: string
+  order?: number
+}
+
+export async function getTours(): Promise<Tour[]> {
+  return sanityClient.fetch(`
+    *[_type == "tour"] | order(order asc, _createdAt asc) {
+      _id,
+      name,
+      slug,
+      description,
+      shortDescription,
+      price,
+      duration,
+      difficulty,
+      category-> { name, slug },
+      image,
+      featured,
+      order,
+      maxGroupSize
+    }
+  `)
+}
+
+export async function getFeaturedTours(): Promise<Tour[]> {
+  return sanityClient.fetch(`
+    *[_type == "tour" && featured == true] | order(order asc, _createdAt asc) {
+      _id,
+      name,
+      slug,
+      description,
+      shortDescription,
+      price,
+      duration,
+      difficulty,
+      category-> { name, slug },
+      image,
+      featured,
+      order,
+      maxGroupSize
+    }
+  `)
+}
+
+export async function getTourCategories(): Promise<TourCategory[]> {
+  return sanityClient.fetch(`
+    *[_type == "tourCategory"] | order(order asc, _createdAt asc) {
+      _id,
+      name,
+      slug,
+      description,
+      image,
+      order
+    }
+  `)
+}
+
+export async function getCertifications(): Promise<Certification[]> {
+  return sanityClient.fetch(`
+    *[_type == "certification"] | order(order asc, _createdAt asc) {
+      _id,
+      name,
+      logo,
+      url,
+      order
     }
   `)
 }

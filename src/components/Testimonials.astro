@@ -4,14 +4,14 @@ import { testimonials as hardcodedTestimonials } from '../data/testimonials'
 
 const sanityTestimonials = await getTestimonials()
 
-const useSanity = Array.isArray(sanityTestimonials) && sanityTestimonials.length > 0
+const useSanity = sanityTestimonials && sanityTestimonials.length > 0
 ---
 
 <section id="resenas" class="py-16 md:py-24 bg-[#FAFAF7]">
   <div class="max-w-7xl mx-auto px-4 md:px-6">
     <div class="text-center mb-16">
       <p class="text-[#C9A96E] text-sm font-medium tracking-widest uppercase mb-3">
-        Lo que dicen nuestros comensales
+        Lo que dicen nuestros viajeros
       </p>
       <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#2C2C2C] reveal">
         Reseñas

@@ -4,12 +4,13 @@ import { getSiteSettings } from '../lib/sanity'
 const settings = await getSiteSettings()
 const phone = settings?.phone?.replace(/\D/g, '') ?? ''
 const restaurantName = settings?.restaurantName ?? 'nosotros'
-const message = encodeURIComponent(`Hola, me gustaría hacer una reservación en ${restaurantName}.`)
+const message = encodeURIComponent(`Hola, me gustaría consultar sobre los tours de ${restaurantName}.`)
+const href = phone ? `https://wa.me/${phone}?text=${message}` : '#'
 ---
 
 {phone && (
   <a
-    href={`https://wa.me/${phone}?text=${message}`}
+    href={href}
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Contactar por WhatsApp"

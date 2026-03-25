@@ -16,8 +16,7 @@ const sanityImages = await getGalleryImages()
         Nuestra galería
       </h2>
       <p class='text-[#6B6B6B] max-w-lg mx-auto'>
-        Cada rincón de nuestro restaurante está pensado para que tu visita sea
-        memorable.
+        Imágenes reales de nuestros tours y destinos en Cusco y los Andes peruanos.
       </p>
     </div>
 
@@ -26,38 +25,23 @@ const sanityImages = await getGalleryImages()
         {sanityImages.map((img) => (
           <a
             href={urlFor(img.image).width(1920).height(1080).format('webp').quality(90).url()}
-            class='glightbox overflow-hidden rounded-sm block group relative'
+            class='glightbox overflow-hidden rounded-sm block group'
             data-gallery='restaurant-gallery'
             data-type='image'
-            data-title={img.title ?? ''}
-            data-description={img.description ?? ''}
+            data-description={img.alt ?? img.title ?? ''}
           >
             <img
               src={urlFor(img.image).width(600).height(400).format('webp').quality(85).url()}
               alt={img.alt ?? img.title ?? ''}
-              class='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+              class='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
               loading='lazy'
             />
-            {(img.title || img.description) && (
-              <div class='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center px-4'>
-                {img.title && (
-                  <p class='font-serif text-white text-lg font-semibold leading-snug mb-1'>
-                    {img.title}
-                  </p>
-                )}
-                {img.description && (
-                  <p class='text-white/80 text-sm leading-relaxed'>
-                    {img.description}
-                  </p>
-                )}
-              </div>
-            )}
           </a>
         ))}
       </div>
     ) : (
       <div class='text-center py-16'>
-        <p class='text-[#6B6B6B]'>Agregá imágenes desde Sanity Studio → Galería para mostrarlas aquí.</p>
+        <p class='text-[#6B6B6B]'>Agregá fotos de tus tours desde Sanity Studio → Galería para mostrarlas aquí.</p>
       </div>
     )}
   </div>

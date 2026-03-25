@@ -9,7 +9,7 @@ const logoUrl = settings?.logo
 
 const links = [
   { label: 'Nosotros', href: '/nosotros' },
-  { label: 'Menú', href: '/menu' },
+  { label: 'Tours', href: '/tours' },
   { label: 'Galería', href: '/galeria' },
   { label: 'Reseñas', href: '/resenas' },
   { label: 'Contacto', href: '/contacto' },
@@ -43,9 +43,12 @@ const links = [
     <!-- CTA -->
     <a
       href="/contacto"
-      class="hidden md:inline-block px-5 py-2 text-sm font-medium bg-[#C9A96E] text-white rounded hover:bg-[#A8834A] transition-colors duration-200"
+      class="hidden md:inline-block px-5 py-2 text-sm font-medium text-white rounded transition-colors duration-200"
+      style="background-color: var(--color-primary);"
+      onmouseover="this.style.backgroundColor='var(--color-primary-dark)'"
+      onmouseout="this.style.backgroundColor='var(--color-primary)'"
     >
-      Reservar mesa
+      Consultar tour
     </a>
 
     <!-- Mobile burger -->
@@ -76,10 +79,11 @@ const links = [
     ))}
     <a
       href="/contacto"
-      class="mt-2 inline-block text-center px-5 py-2 text-sm font-medium bg-[#C9A96E] text-white rounded hover:bg-[#A8834A] transition-colors"
+      class="mt-2 inline-block text-center px-5 py-2 text-sm font-medium text-white rounded transition-colors"
+      style="background-color: var(--color-primary);"
       data-mobile-link
     >
-      Reservar mesa
+      Consultar tour
     </a>
   </div>
 </header>

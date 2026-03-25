@@ -1,23 +1,35 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
-import Carousel from '../components/Carousel.astro';
-import MenuHighlights from '../components/MenuHighlights.astro';
+import Hero from '../components/Hero.astro';
+import TourCategories from '../components/TourCategories.astro';
+import FeaturedTours from '../components/FeaturedTours.astro';
+import WhyChooseUs from '../components/WhyChooseUs.astro';
+import Certifications from '../components/Certifications.astro';
+import Gallery from '../components/Gallery.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import { getSiteSettings } from '../lib/sanity';
 
 const settings = await getSiteSettings();
-const restaurantName = settings?.restaurantName ?? 'Restaurante';
+const agencyName = settings?.restaurantName ?? 'Agencia de Turismo';
 ---
 
 <Layout
-  title={`${restaurantName} — Restaurante`}
-  description='Experiencia gastronómica única en el corazón de la ciudad. Ingredientes de temporada y hospitalidad inigualable. Reserva tu mesa hoy.'
+  title={`${agencyName} — Tours en Cusco y los Andes`}
+  description='Agencia de turismo en Cusco, Perú. Tours al Camino Inca, Machu Picchu, Valle Sagrado y más. Guías locales certificados, precios transparentes y turismo responsable.'
 >
   <Navbar />
   <main>
-    <Carousel />
-    <MenuHighlights />
+    <Hero />
+    <TourCategories />
+    <FeaturedTours />
+    <WhyChooseUs />
+    <Certifications />
+    <Gallery />
+    <Testimonials />
+    <Contact />
   </main>
   <Footer />
 </Layout>

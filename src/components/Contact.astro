@@ -3,19 +3,18 @@ import { getContactContent } from '../lib/sanity'
 
 const contact = await getContactContent()
 
-const title = contact?.title ?? 'Reserva tu mesa'
-const subtitle = contact?.subtitle ?? 'Encuéntranos'
-const phone = contact?.phone ?? null
-const email = contact?.email ?? null
-const address = contact?.address ?? null
-const reservationCtaText = contact?.reservationCtaText ?? 'Confirmar reservación'
+const title = contact?.title ?? 'Consultá tu tour'
+const subtitle = contact?.subtitle ?? 'Hablemos'
+const phone = contact?.phone ?? '+51 984 123 456'
+const email = contact?.email ?? 'hola@cuscotours.pe'
+const address = contact?.address ?? 'Calle Plateros 321, Centro Histórico\nCusco, Perú 08002'
+const reservationCtaText = contact?.reservationCtaText ?? 'Enviar consulta'
 
 // Parse opening hours: each line "Día | Hora", fallback to hardcoded
 const defaultHours = [
-  { day: 'Lunes – Miércoles', time: '1:00 pm – 10:00 pm' },
-  { day: 'Jueves – Viernes', time: '1:00 pm – 11:30 pm' },
-  { day: 'Sábado', time: '12:00 pm – 11:30 pm' },
-  { day: 'Domingo', time: '12:00 pm – 9:00 pm' },
+  { day: 'Lunes – Viernes', time: '8:00 am – 7:00 pm' },
+  { day: 'Sábado', time: '8:00 am – 5:00 pm' },
+  { day: 'Domingo', time: '9:00 am – 2:00 pm' },
 ]
 
 const hours = contact?.openingHours
@@ -30,7 +29,7 @@ const hours = contact?.openingHours
   : defaultHours
 
 // Split address into lines for display
-const addressLines = address ? address.split('\n').map((l) => l.trim()).filter(Boolean) : []
+const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
 ---
 
 <style>
@@ -99,32 +98,26 @@ const addressLines = address ? address.split('\n').map((l) => l.trim()).filter(B
       </h2>
 
       <div class="space-y-6 mb-10">
-        {addressLines.length > 0 && (
-          <div>
-            <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Dirección</p>
-            {addressLines.map((line, i) => (
-              i === 0
-                ? <p class="text-[#2C2C2C] font-medium">{line}</p>
-                : <p class="text-[#6B6B6B] text-sm">{line}</p>
-            ))}
-          </div>
-        )}
-        {phone && (
-          <div>
-            <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Teléfono</p>
-            <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
-              {phone}
-            </a>
-          </div>
-        )}
-        {email && (
-          <div>
-            <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Correo</p>
-            <a href={`mailto:${email}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
-              {email}
-            </a>
-          </div>
-        )}
+        <div>
+          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Dirección</p>
+          {addressLines.map((line, i) => (
+            i === 0
+              ? <p class="text-[#2C2C2C] font-medium">{line}</p>
+              : <p class="text-[#6B6B6B] text-sm">{line}</p>
+          ))}
+        </div>
+        <div>
+          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Teléfono</p>
+          <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+            {phone}
+          </a>
+        </div>
+        <div>
+          <p class="text-xs text-[#6B6B6B] uppercase tracking-wider mb-1">Correo</p>
+          <a href={`mailto:${email}`} class="text-[#2C2C2C] font-medium hover:text-[#C9A96E] transition-colors">
+            {email}
+          </a>
+        </div>
       </div>
 
       <div>
@@ -142,11 +135,11 @@ const addressLines = address ? address.split('\n').map((l) => l.trim()).filter(B
 
     <!-- Form -->
     <div class="bg-white p-6 md:p-10 border border-[#E8E0D0] rounded-sm shadow-sm reveal reveal-delay-1">
-      <h3 class="font-serif text-2xl font-bold text-[#2C2C2C] mb-6">Haz tu reservación</h3>
+      <h3 class="font-serif text-2xl font-bold text-[#2C2C2C] mb-6">Envianos tu consulta</h3>
       <div id="form-success" class="hidden text-center py-8">
         <p class="text-2xl mb-2">✓</p>
-        <p class="font-serif text-xl text-[#2C2C2C] mb-1">¡Reservación recibida!</p>
-        <p class="text-sm text-[#6B6B6B]">Te confirmaremos por correo a la brevedad.</p>
+        <p class="font-serif text-xl text-[#2C2C2C] mb-1">¡Consulta recibida!</p>
+        <p class="text-sm text-[#6B6B6B]">Te respondemos por correo a la brevedad.</p>
       </div>
       <form id="contact-form" class="space-y-5" novalidate>
         <div class="grid sm:grid-cols-2 gap-5">
@@ -175,7 +168,7 @@ const addressLines = address ? address.split('\n').map((l) => l.trim()).filter(B
         </div>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="fecha" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Fecha</label>
+            <label for="fecha" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Fecha del tour</label>
             <input
               type="text"
               id="fecha"
@@ -187,26 +180,26 @@ const addressLines = address ? address.split('\n').map((l) => l.trim()).filter(B
             />
           </div>
           <div>
-            <label for="personas" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Personas</label>
+            <label for="personas" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Viajeros</label>
             <select
               id="personas"
               name="personas"
               class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors"
             >
               {[1,2,3,4,5,6,7,8].map((n) => (
-                <option value={n}>{n} {n === 1 ? 'persona' : 'personas'}</option>
+                <option value={n}>{n} {n === 1 ? 'viajero' : 'viajeros'}</option>
               ))}
               <option value="9+">9 o más</option>
             </select>
           </div>
         </div>
         <div>
-          <label for="mensaje" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">Mensaje especial (opcional)</label>
+          <label for="mensaje" class="block text-xs text-[#6B6B6B] uppercase tracking-wider mb-1.5">¿Qué tour te interesa? (opcional)</label>
           <textarea
             id="mensaje"
             name="mensaje"
             rows="3"
-            placeholder="Alergias, ocasión especial, preferencias de mesa..."
+            placeholder="Tour al Camino Inca, Machu Picchu, preferencias, preguntas..."
             class="w-full px-4 py-2.5 border border-[#E8E0D0] rounded text-sm text-[#2C2C2C] bg-[#FAFAF7] focus:outline-none focus:border-[#C9A96E] transition-colors resize-none"
           ></textarea>
         </div>

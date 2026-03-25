@@ -1,0 +1,74 @@
+---
+const items = [
+  {
+    icon: '🧭',
+    title: 'Guías locales certificados',
+    description: 'Más de 10 años de experiencia en los Andes',
+  },
+  {
+    icon: '💰',
+    title: 'Precio transparente',
+    description: 'Sin costos ocultos ni sorpresas',
+  },
+  {
+    icon: '📱',
+    title: 'WhatsApp 24/7',
+    description: 'Respondemos en menos de 2 horas',
+  },
+  {
+    icon: '🌿',
+    title: 'Turismo responsable',
+    description: 'Prácticas éticas con las comunidades locales',
+  },
+  {
+    icon: '✅',
+    title: 'Cancelación flexible',
+    description: 'Cambios sin costo hasta 48hs antes',
+  },
+  {
+    icon: '🏆',
+    title: 'Certificados',
+    description: 'MINCETUR y organismos internacionales',
+  },
+]
+---
+
+<section id="por-que-elegirnos" class="py-16 md:py-24" style="background-color: var(--color-bg)">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--color-accent)">
+        Nuestra diferencia
+      </p>
+      <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 reveal" style="color: var(--color-text)">
+        ¿Por qué elegirnos?
+      </h2>
+      <p class="max-w-lg mx-auto" style="color: var(--color-muted)">
+        Somos una agencia local con compromiso real hacia nuestros viajeros y las comunidades andinas.
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {items.map((item, i) => (
+        <div
+          class={`flex items-start gap-4 reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : i === 3 ? ' reveal-delay-3' : ''}`}
+        >
+          <!-- Icon circle -->
+          <div
+            class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+            style="background-color: var(--color-accent); opacity: 0.9;"
+          >
+            {item.icon}
+          </div>
+
+          <!-- Text -->
+          <div>
+            <h3 class="font-semibold text-base mb-1" style="color: var(--color-text)">{item.title}</h3>
+            <p class="text-sm leading-relaxed" style="color: var(--color-muted)">{item.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
