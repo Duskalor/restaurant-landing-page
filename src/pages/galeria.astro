@@ -6,10 +6,10 @@ import Footer from '../components/Footer.astro';
 import { getSiteSettings } from '../lib/sanity';
 
 const settings = await getSiteSettings();
-const restaurantName = settings?.restaurantName ?? 'Restaurante';
+const businessName = settings?.businessName ?? 'Restaurante';
 ---
 
-<Layout title={`Galería — ${restaurantName}`} description={`Descubre los espacios, platos y momentos que hacen de ${restaurantName} una experiencia gastronómica única.`}>
+<Layout title={`Galería — ${businessName}`} description={`Descubre los espacios, platos y momentos que hacen de ${businessName} una experiencia gastronómica única.`}>
   <Navbar />
   <main class="pt-16">
     <Gallery />

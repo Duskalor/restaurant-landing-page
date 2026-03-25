@@ -63,7 +63,7 @@ export async function getFeaturedMenuItems(): Promise<MenuItem[]> {
 }
 
 export interface SiteSettings {
-  restaurantName: string
+  businessName: string
   tagline?: string
   logo?: SanityImageSource
   phone?: string
@@ -104,7 +104,7 @@ export interface Testimonial {
 export async function getSiteSettings(): Promise<SiteSettings | null> {
   return sanityClient.fetch(`
     *[_type == "siteSettings"][0] {
-      restaurantName,
+      businessName,
       tagline,
       logo,
       phone,

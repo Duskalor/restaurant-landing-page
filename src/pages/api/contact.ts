@@ -17,7 +17,7 @@ const ContactSchema = v.object({
 
 export const POST: APIRoute = async ({ request }) => {
   const settings = await getSiteSettings()
-  const restaurantName = settings?.restaurantName ?? 'Restaurante'
+  const businessName = settings?.businessName ?? 'Restaurante'
   const data = await request.formData()
 
   const raw = {
@@ -51,14 +51,14 @@ export const POST: APIRoute = async ({ request }) => {
   const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'
 
   const { error } = await resend.emails.send({
-    from: `Reservas ${restaurantName} <${fromEmail}>`,
+    from: `Reservas ${businessName} <${fromEmail}>`,
     to: [contactEmail],
     subject: `Nueva reservación de ${nombre}`,
     html: `
       <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #FAFAF7; border: 1px solid #E8E0D0;">
         <!-- Header -->
         <div style="background: #2C2C2C; padding: 32px; text-align: center;">
-          <p style="color: #C9A96E; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin: 0 0 8px;">${restaurantName}</p>
+          <p style="color: #C9A96E; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin: 0 0 8px;">${businessName}</p>
           <h1 style="color: #FAFAF7; font-size: 24px; margin: 0; font-weight: normal;">Nueva Reservación</h1>
         </div>
 
@@ -108,7 +108,7 @@ export const POST: APIRoute = async ({ request }) => {
         <!-- Footer -->
         <div style="background: #F5F0E8; padding: 20px 32px; text-align: center; border-top: 1px solid #E8E0D0;">
           <p style="color: #6B6B6B; font-size: 12px; margin: 0;">
-            Este mensaje fue enviado desde el formulario de reservaciones de ${restaurantName}.
+            Este mensaje fue enviado desde el formulario de reservaciones de ${businessName}.
           </p>
         </div>
       </div>

@@ -2,7 +2,7 @@
 import { getSiteSettings, urlFor } from '../lib/sanity'
 
 const settings = await getSiteSettings()
-const restaurantName = settings?.restaurantName ?? 'Restaurante'
+const businessName = settings?.businessName ?? 'Restaurante'
 const logoUrl = settings?.logo
   ? urlFor(settings.logo).width(160).height(48).format('webp').url()
   : null
@@ -21,8 +21,8 @@ const links = [
     <!-- Logo -->
     <a href="/" class="font-serif text-2xl font-bold text-[#2C2C2C] tracking-wide">
       {logoUrl
-        ? <img src={logoUrl} alt={restaurantName} class="h-10 w-auto object-contain" />
-        : restaurantName
+        ? <img src={logoUrl} alt={businessName} class="h-10 w-auto object-contain" />
+        : businessName
       }
     </a>
 

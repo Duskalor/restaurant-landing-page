@@ -3,8 +3,8 @@ import { getSiteSettings } from '../lib/sanity'
 
 const settings = await getSiteSettings()
 const phone = settings?.phone?.replace(/\D/g, '') ?? ''
-const restaurantName = settings?.restaurantName ?? 'nosotros'
-const message = encodeURIComponent(`Hola, me gustaría hacer una reservación en ${restaurantName}.`)
+const businessName = settings?.businessName ?? 'nosotros'
+const message = encodeURIComponent(`Hola, me gustaría hacer una reservación en ${businessName}.`)
 ---
 
 {phone && (
