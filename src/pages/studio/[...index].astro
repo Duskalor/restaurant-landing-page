@@ -1,0 +1,16 @@
+---
+export const prerender = false
+import { renderToString } from '@sanity/astro/studio'
+const { body, head } = await renderToString(Astro)
+---
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Fragment set:html={head} />
+  </head>
+  <body>
+    <div id="sanity"><Fragment set:html={body} /></div>
+  </body>
+</html>
