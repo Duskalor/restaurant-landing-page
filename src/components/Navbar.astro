@@ -2,7 +2,7 @@
 import { getSiteSettings, urlFor } from '../lib/sanity';
 
 const settings = await getSiteSettings();
-const businessName = settings?.businessName ?? 'ingresar Logo';
+const businessName = settings?.businessName ?? 'Restaurante';
 const logoUrl = settings?.logo
   ? urlFor(settings.logo).width(160).height(48).format('webp').url()
   : null;
