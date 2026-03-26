@@ -55,8 +55,6 @@ export default defineConfig({
                   .schemaType('contactContent')
                   .documentId('contactContent')
               ),
-            S.divider(),
-            S.documentTypeListItem('menuItem').title('Menú'),
           ]),
     }),
   ],
