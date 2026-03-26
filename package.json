@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sanity:dev": "sanity dev",
+    "sanity:deploy": "node --env-file=.env ./node_modules/.bin/sanity deploy"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
