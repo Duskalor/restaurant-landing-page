@@ -4,7 +4,7 @@ import { schemaTypes } from './src/sanity/schemaTypes'
 
 export default defineConfig({
   name: 'default',
-  title: 'Restaurant Landing',
+  title: 'Tourism Agency',
   projectId: process.env.SANITY_PROJECT_ID ?? 'q2ywqdj2',
   dataset: process.env.SANITY_DATASET ?? 'production',
   plugins: [
@@ -14,7 +14,7 @@ export default defineConfig({
           .title('Contenido')
           .items([
             S.listItem()
-              .title('Configuración del sitio')
+              .title('Configuración del Sitio')
               .child(
                 S.document()
                   .schemaType('siteSettings')
@@ -27,8 +27,22 @@ export default defineConfig({
                   .schemaType('heroContent')
                   .documentId('heroContent')
               ),
+            S.divider(),
+            S.documentTypeListItem('tour').title('Tours'),
+            S.documentTypeListItem('tourCategory').title('Categorías de Tour'),
+            S.documentTypeListItem('galleryImage').title('Galería'),
+            S.documentTypeListItem('testimonial').title('Testimonios'),
+            S.documentTypeListItem('certification').title('Certificaciones'),
+            S.divider(),
             S.listItem()
-              .title('Nosotros')
+              .title('¿Por qué Elegirnos?')
+              .child(
+                S.document()
+                  .schemaType('whyChooseUs')
+                  .documentId('whyChooseUs')
+              ),
+            S.listItem()
+              .title('Sobre Nosotros')
               .child(
                 S.document()
                   .schemaType('aboutContent')
@@ -42,9 +56,7 @@ export default defineConfig({
                   .documentId('contactContent')
               ),
             S.divider(),
-            S.documentTypeListItem('menuItem').title('Platos del menú'),
-            S.documentTypeListItem('galleryImage').title('Galería'),
-            S.documentTypeListItem('testimonial').title('Testimonios'),
+            S.documentTypeListItem('menuItem').title('Menú'),
           ]),
     }),
   ],

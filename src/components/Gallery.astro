@@ -26,9 +26,9 @@ const sanityImages = await getGalleryImages()
           <a
             href={urlFor(img.image).width(1920).height(1080).format('webp').quality(90).url()}
             class='glightbox overflow-hidden rounded-sm block group'
-            data-gallery='restaurant-gallery'
+            data-gallery='tours-gallery'
             data-type='image'
-            data-description={img.alt ?? img.title ?? ''}
+            data-description={img.description ?? img.alt ?? img.title ?? ''}
           >
             <img
               src={urlFor(img.image).width(600).height(400).format('webp').quality(85).url()}

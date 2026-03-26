@@ -12,9 +12,9 @@ interface Props {
 }
 
 const {
-  title = 'Restaurante',
-  description = 'Experiencia gastronómica única en el corazón de la ciudad. Ingredientes de temporada y hospitalidad inigualable. Reserva tu mesa hoy.',
-  ogImage = 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=85',
+  title = 'Agencia de Turismo',
+  description = 'Descubrí los mejores tours y experiencias en Cusco y los Andes. Naturaleza, aventura y cultura en cada viaje.',
+  ogImage = 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1200&q=85',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
@@ -38,7 +38,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content="es_PE" />
-    <meta property="og:site_name" content={settings?.businessName ?? 'Restaurante'} />
+    <meta property="og:site_name" content={settings?.businessName ?? 'Agencia de Turismo'} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

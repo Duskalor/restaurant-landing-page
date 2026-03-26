@@ -13,13 +13,20 @@ export default defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Descripción / historia del restaurante',
+      title: 'Descripción / historia de la agencia',
       type: 'text',
       rows: 5,
     }),
     defineField({
+      name: 'mission',
+      title: 'Misión / propuesta de valor',
+      description: 'Frase corta que resume el compromiso de la agencia con el viajero',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
       name: 'image',
-      title: 'Imagen',
+      title: 'Imagen principal',
       type: 'image',
       options: {
         hotspot: true,
@@ -27,32 +34,20 @@ export default defineType({
     }),
     defineField({
       name: 'imageAlt',
-      title: 'Texto alternativo',
+      title: 'Texto alternativo de la imagen',
       type: 'string',
     }),
     defineField({
-      name: 'chefName',
-      title: 'Nombre del chef',
+      name: 'badgeLabel',
+      title: 'Etiqueta del badge',
+      description: 'Texto pequeño bajo el ícono del badge. Ej: "Certificados por MINCETUR"',
       type: 'string',
     }),
     defineField({
-      name: 'chefTitle',
-      title: 'Cargo del chef',
-      description: 'Ej: Chef Ejecutivo',
-      type: 'string',
-    }),
-    defineField({
-      name: 'chefImage',
-      title: 'Foto del chef',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: 'chefImageAlt',
-      title: 'Alt de la foto del chef',
-      type: 'string',
+      name: 'yearsOfExperience',
+      title: 'Años de experiencia',
+      description: 'Número que se muestra en el badge. Ej: 15',
+      type: 'number',
     }),
   ],
 })

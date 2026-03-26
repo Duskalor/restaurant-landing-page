@@ -8,6 +8,8 @@ const imageUrl = about?.image
   : 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800&q=80'
 
 const imageAlt = about?.imageAlt ?? 'Guía turístico con viajeros en los Andes'
+const badgeLabel = about?.badgeLabel ?? 'Certificados por MINCETUR'
+const yearsOfExperience = about?.yearsOfExperience ?? 15
 ---
 
 <section id='nosotros' class='py-16 md:py-24 bg-[var(--color-surface)]'>
@@ -27,7 +29,11 @@ const imageAlt = about?.imageAlt ?? 'Guía turístico con viajeros en los Andes'
       <p class='text-[var(--color-muted)] text-base leading-relaxed mb-5 reveal reveal-delay-1'>
         {about?.description ?? `Somos una agencia de turismo comprometida con brindarte experiencias auténticas en los Andes peruanos. Nuestros guías locales certificados te llevarán a descubrir Machu Picchu, el Valle Sagrado y mucho más.`}
       </p>
-      <!-- Stats: agregá estadísticas desde Sanity Studio cuando las configures -->
+      {about?.mission && (
+        <p class='text-[var(--color-muted)] text-base leading-relaxed mb-5 reveal reveal-delay-2 italic'>
+          {about.mission}
+        </p>
+      )}
     </div>
 
     <!-- Image -->
@@ -41,9 +47,9 @@ const imageAlt = about?.imageAlt ?? 'Guía turístico con viajeros en los Andes'
       <div
         class='absolute -bottom-6 -left-6 bg-[var(--color-primary)] text-white p-6 w-40 hidden md:block'
       >
-        <p class='font-serif text-3xl font-bold'>★★★</p>
+        <p class='font-serif text-3xl font-bold'>{yearsOfExperience}+</p>
         <p class='text-xs mt-1 leading-snug'>
-          Premiado por la Guía Gastronómica Nacional
+          {badgeLabel}
         </p>
       </div>
     </div>

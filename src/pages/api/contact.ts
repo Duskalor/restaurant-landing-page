@@ -17,7 +17,7 @@ const ContactSchema = v.object({
 
 export const POST: APIRoute = async ({ request }) => {
   const settings = await getSiteSettings()
-  const businessName = settings?.businessName ?? 'Restaurante'
+  const businessName = settings?.businessName ?? 'Agencia de Turismo'
   const data = await request.formData()
 
   const raw = {
@@ -51,47 +51,47 @@ export const POST: APIRoute = async ({ request }) => {
   const fromEmail = import.meta.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'
 
   const { error } = await resend.emails.send({
-    from: `Reservas ${businessName} <${fromEmail}>`,
+    from: `Consultas ${businessName} <${fromEmail}>`,
     to: [contactEmail],
-    subject: `Nueva reservación de ${nombre}`,
+    subject: `Nueva consulta de tour de ${nombre}`,
     html: `
-      <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #FAFAF7; border: 1px solid #E8E0D0;">
+      <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #F0F4F0; border: 1px solid #E8F0E8;">
         <!-- Header -->
-        <div style="background: #2C2C2C; padding: 32px; text-align: center;">
-          <p style="color: #C9A96E; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin: 0 0 8px;">${businessName}</p>
-          <h1 style="color: #FAFAF7; font-size: 24px; margin: 0; font-weight: normal;">Nueva Reservación</h1>
+        <div style="background: #1A2E1A; padding: 32px; text-align: center;">
+          <p style="color: #2D6A4F; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin: 0 0 8px;">${businessName}</p>
+          <h1 style="color: #F0F4F0; font-size: 24px; margin: 0; font-weight: normal;">Nueva Consulta de Tour</h1>
         </div>
 
         <!-- Body -->
         <div style="padding: 40px 32px;">
           <p style="color: #6B6B6B; font-size: 14px; margin: 0 0 32px;">
-            Se ha recibido una nueva solicitud de reservación. A continuación los detalles:
+            Se ha recibido una nueva consulta de tour. A continuación los detalles:
           </p>
 
           <!-- Details -->
           <table style="width: 100%; border-collapse: collapse;">
-            <tr style="border-bottom: 1px solid #E8E0D0;">
+            <tr style="border-bottom: 1px solid #E8F0E8;">
               <td style="padding: 12px 0; color: #6B6B6B; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; width: 40%;">Nombre</td>
-              <td style="padding: 12px 0; color: #2C2C2C; font-size: 15px; font-weight: bold;">${nombre}</td>
+              <td style="padding: 12px 0; color: #1A2E1A; font-size: 15px; font-weight: bold;">${nombre}</td>
             </tr>
-            <tr style="border-bottom: 1px solid #E8E0D0;">
+            <tr style="border-bottom: 1px solid #E8F0E8;">
               <td style="padding: 12px 0; color: #6B6B6B; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Correo</td>
-              <td style="padding: 12px 0; color: #2C2C2C; font-size: 15px;">
-                <a href="mailto:${email}" style="color: #C9A96E; text-decoration: none;">${email}</a>
+              <td style="padding: 12px 0; color: #1A2E1A; font-size: 15px;">
+                <a href="mailto:${email}" style="color: #2D6A4F; text-decoration: none;">${email}</a>
               </td>
             </tr>
-            <tr style="border-bottom: 1px solid #E8E0D0;">
+            <tr style="border-bottom: 1px solid #E8F0E8;">
               <td style="padding: 12px 0; color: #6B6B6B; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Fecha</td>
-              <td style="padding: 12px 0; color: #2C2C2C; font-size: 15px;">${fecha}</td>
+              <td style="padding: 12px 0; color: #1A2E1A; font-size: 15px;">${fecha}</td>
             </tr>
-            <tr style="border-bottom: 1px solid #E8E0D0;">
+            <tr style="border-bottom: 1px solid #E8F0E8;">
               <td style="padding: 12px 0; color: #6B6B6B; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Personas</td>
-              <td style="padding: 12px 0; color: #2C2C2C; font-size: 15px;">${personas}</td>
+              <td style="padding: 12px 0; color: #1A2E1A; font-size: 15px;">${personas}</td>
             </tr>
             ${mensaje ? `
             <tr>
               <td style="padding: 12px 0; color: #6B6B6B; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; vertical-align: top;">Mensaje</td>
-              <td style="padding: 12px 0; color: #2C2C2C; font-size: 15px; line-height: 1.6;">${mensaje}</td>
+              <td style="padding: 12px 0; color: #1A2E1A; font-size: 15px; line-height: 1.6;">${mensaje}</td>
             </tr>
             ` : ''}
           </table>
@@ -99,16 +99,16 @@ export const POST: APIRoute = async ({ request }) => {
           <!-- CTA -->
           <div style="margin-top: 32px; text-align: center;">
             <a href="mailto:${email}"
-              style="display: inline-block; padding: 12px 32px; background: #C9A96E; color: #fff; text-decoration: none; font-size: 14px; letter-spacing: 1px;">
+              style="display: inline-block; padding: 12px 32px; background: #2D6A4F; color: #fff; text-decoration: none; font-size: 14px; letter-spacing: 1px;">
               Responder al cliente
             </a>
           </div>
         </div>
 
         <!-- Footer -->
-        <div style="background: #F5F0E8; padding: 20px 32px; text-align: center; border-top: 1px solid #E8E0D0;">
+        <div style="background: #E8F0E8; padding: 20px 32px; text-align: center; border-top: 1px solid #E8F0E8;">
           <p style="color: #6B6B6B; font-size: 12px; margin: 0;">
-            Este mensaje fue enviado desde el formulario de reservaciones de ${businessName}.
+            Este mensaje fue enviado desde el formulario de consultas de ${businessName}.
           </p>
         </div>
       </div>

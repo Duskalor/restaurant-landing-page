@@ -10,28 +10,28 @@ export interface Testimonial {
 export const testimonials: Testimonial[] = [
   {
     id: '1',
-    author: 'Sofía Martínez',
-    role: 'Comensal frecuente',
+    author: 'Valentina Ríos',
+    role: 'Viajera, Buenos Aires',
     quote:
-      'Este restaurante es simplemente incomparable. Cada visita es una experiencia nueva: los sabores son impecables y el servicio, de primera clase. Es el lugar perfecto para celebrar momentos especiales.',
+      'El tour al Valle Sagrado superó todas mis expectativas. Los guías conocen cada rincón de los Andes y te explican la historia inca con una pasión increíble. Volví a casa completamente transformada.',
     rating: 5,
     avatar: 'https://i.pravatar.cc/80?img=47',
   },
   {
     id: '2',
-    author: 'Carlos Reyes',
-    role: 'Crítico gastronómico',
+    author: 'Martín Cabrera',
+    role: 'Viajero, Ciudad de México',
     quote:
-      'Rara vez encuentro un restaurante que equilibre tan bien la tradición francesa con ingredientes locales de temporada. El filete al vino tinto es uno de los mejores que he probado en años.',
+      'Hice el tour de senderismo a Choquequirao y fue la experiencia más impresionante de mi vida. La logística fue impecable, el equipo de soporte estuvo en todo momento y las vistas son de otro mundo.',
     rating: 5,
     avatar: 'https://i.pravatar.cc/80?img=12',
   },
   {
     id: '3',
-    author: 'Ana Lucía Hernández',
-    role: 'Organizadora de eventos',
+    author: 'Gabriela Montoya',
+    role: 'Viajera, Bogotá',
     quote:
-      'Organicé la cena de aniversario de mis padres aquí y todo fue perfecto. El equipo fue muy atento en cada detalle. El ambiente es elegante sin ser pretencioso. ¡Altamente recomendado!',
+      'Contratamos el tour familiar por Cusco y Machu Picchu y fue un acierto total. Los guías se adaptaron al ritmo de los chicos, explicaron todo con paciencia y la organización fue perfecta de principio a fin.',
     rating: 5,
     avatar: 'https://i.pravatar.cc/80?img=31',
   },

@@ -1,5 +1,7 @@
 ---
-const items = [
+import { getWhyChooseUs } from '../lib/sanity'
+
+const FALLBACK_ITEMS = [
   {
     icon: '🧭',
     title: 'Guías locales certificados',
@@ -31,6 +33,12 @@ const items = [
     description: 'MINCETUR y organismos internacionales',
   },
 ]
+
+const FALLBACK_TITLE = '¿Por qué Elegirnos?'
+
+const data = await getWhyChooseUs()
+const title = data?.title || FALLBACK_TITLE
+const items = (data?.items && data.items.length > 0) ? data.items : FALLBACK_ITEMS
 ---
 
 <section id="por-que-elegirnos" class="py-16 md:py-24" style="background-color: var(--color-bg)">
@@ -41,7 +49,7 @@ const items = [
         Nuestra diferencia
       </p>
       <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 reveal" style="color: var(--color-text)">
-        ¿Por qué elegirnos?
+        {title}
       </h2>
       <p class="max-w-lg mx-auto" style="color: var(--color-muted)">
         Somos una agencia local con compromiso real hacia nuestros viajeros y las comunidades andinas.

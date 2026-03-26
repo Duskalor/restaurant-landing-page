@@ -15,53 +15,6 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source)
 }
 
-export interface MenuItem {
-  _id: string
-  name: string
-  description: string
-  price: number
-  category: 'entrada' | 'principal' | 'postre' | 'bebida'
-  image: SanityImageSource
-  imageAlt: string
-  featured: boolean
-  order: number
-  slug: { current: string }
-}
-
-export async function getMenuItems(): Promise<MenuItem[]> {
-  return sanityClient.fetch(`
-    *[_type == "menuItem"] | order(order asc, _createdAt asc) {
-      _id,
-      name,
-      description,
-      price,
-      category,
-      image,
-      imageAlt,
-      featured,
-      order,
-      slug
-    }
-  `)
-}
-
-export async function getFeaturedMenuItems(): Promise<MenuItem[]> {
-  return sanityClient.fetch(`
-    *[_type == "menuItem" && featured == true] | order(order asc, _createdAt asc) {
-      _id,
-      name,
-      description,
-      price,
-      category,
-      image,
-      imageAlt,
-      featured,
-      order,
-      slug
-    }
-  `)
-}
-
 export interface SiteSettings {
   businessName: string
   tagline?: string
@@ -88,6 +41,7 @@ export interface GalleryImage {
   title?: string
   image: SanityImageSource
   alt: string
+  description?: string
   order?: number
 }
 
@@ -136,6 +90,7 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
       title,
       image,
       alt,
+      description,
       order
     }
   `)
@@ -157,12 +112,11 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 export interface AboutContent {
   title?: string
   description?: string
+  mission?: string
   image?: SanityImageSource
   imageAlt?: string
-  chefName?: string
-  chefTitle?: string
-  chefImage?: SanityImageSource
-  chefImageAlt?: string
+  badgeLabel?: string
+  yearsOfExperience?: number
 }
 
 export interface ContactContent {
@@ -181,12 +135,11 @@ export async function getAboutContent(): Promise<AboutContent | null> {
     *[_type == "aboutContent"][0] {
       title,
       description,
+      mission,
       image,
       imageAlt,
-      chefName,
-      chefTitle,
-      chefImage,
-      chefImageAlt
+      badgeLabel,
+      yearsOfExperience
     }
   `)
 }
@@ -214,7 +167,7 @@ export interface Tour {
   shortDescription?: string
   price: number
   duration: string
-  difficulty: 'facil' | 'moderado' | 'dificil' | 'muy-dificil'
+  difficulty?: 'facil' | 'moderado' | 'dificil' | 'muy-dificil'
   category: { name: string; slug: { current: string } }
   image: SanityImageSource
   featured: boolean
@@ -288,6 +241,32 @@ export async function getFeaturedTours(): Promise<Tour[]> {
   `)
 }
 
+export async function getTourBySlug(slug: string): Promise<Tour | null> {
+  return sanityClient.fetch(
+    `
+    *[_type == "tour" && slug.current == $slug][0] {
+      _id,
+      name,
+      slug,
+      description,
+      shortDescription,
+      price,
+      duration,
+      difficulty,
+      category-> { name, slug },
+      image,
+      featured,
+      order,
+      maxGroupSize,
+      included,
+      notIncluded,
+      gallery[] { ..., "url": asset->url }
+    }
+  `,
+    { slug }
+  )
+}
+
 export async function getTourCategories(): Promise<TourCategory[]> {
   return sanityClient.fetch(`
     *[_type == "tourCategory"] | order(order asc, _createdAt asc) {
@@ -309,6 +288,30 @@ export async function getCertifications(): Promise<Certification[]> {
       logo,
       url,
       order
+    }
+  `)
+}
+
+export interface WhyChooseUsItem {
+  icon: string
+  title: string
+  description: string
+}
+
+export interface WhyChooseUs {
+  title?: string
+  items: WhyChooseUsItem[]
+}
+
+export async function getWhyChooseUs(): Promise<WhyChooseUs | null> {
+  return sanityClient.fetch(`
+    *[_type == "whyChooseUs"][0] {
+      title,
+      items[] {
+        icon,
+        title,
+        description
+      }
     }
   `)
 }
