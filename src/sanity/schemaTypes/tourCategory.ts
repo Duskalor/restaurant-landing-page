@@ -28,6 +28,7 @@ export default defineType({
       title: 'Imagen',
       type: 'image',
       options: { hotspot: true },
+      description: 'Imagen representativa de la categoría (recomendado: 800x600px mínimo). Sin imagen se mostrará un gradiente de color.',
     }),
     defineField({
       name: 'order',

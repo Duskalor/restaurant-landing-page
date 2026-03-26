@@ -9,12 +9,14 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  heroImage?: string;
 }
 
 const {
   title = 'Agencia de Turismo',
   description = 'Descubrí los mejores tours y experiencias en Cusco y los Andes. Naturaleza, aventura y cultura en cada viaje.',
   ogImage = 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1200&q=85',
+  heroImage,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
@@ -48,9 +50,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
     <!-- Favicon -->
     {settings?.favicon
-      ? <link rel="icon" type="image/png" href={urlFor(settings.favicon).width(64).height(64).format('webp').url()} />
+      ? <link rel="icon" type="image/webp" href={urlFor(settings.favicon).width(64).height(64).format('webp').url()} />
       : <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     }
+
+    <!-- Hero preload -->
+    {heroImage && (
+      <link rel="preload" as="image" href={heroImage} />
+    )}
+
+    <!-- Head slot -->
+    <slot name="head" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

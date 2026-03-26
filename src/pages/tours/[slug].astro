@@ -53,6 +53,24 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
   description={tour.shortDescription ?? tour.description.slice(0, 155)}
   ogImage={ogImageUrl}
 >
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "name": tour.name,
+    "description": tour.shortDescription ?? tour.description,
+    "image": tour.image ? urlFor(tour.image).width(1200).url() : undefined,
+    "touristType": tour.difficulty,
+    "url": `${Astro.site}tours/${tour.slug.current}`,
+    "offers": tour.price ? {
+      "@type": "Offer",
+      "price": tour.price,
+      "priceCurrency": "USD"
+    } : undefined,
+    "provider": {
+      "@type": "TravelAgency",
+      "name": agencyName
+    }
+  })} />
   <Navbar />
   <main class="pt-16">
 
@@ -60,6 +78,8 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
     <div
       class="relative h-[420px] md:h-[560px] flex items-end"
       style={`background-image: url('${heroImageUrl}'); background-size: cover; background-position: center;`}
+      role="img"
+      aria-label={tour.altText ?? tour.name}
     >
       <!-- Overlay -->
       <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 60%, transparent 100%);"></div>
@@ -261,6 +281,16 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
                 </li>
               )}
             </ul>
+
+            {tour.meetingPoint && (
+              <div
+                class="mb-6 p-4 rounded-lg text-sm"
+                style="background-color: var(--color-surface); border: 1px solid var(--color-border);"
+              >
+                <p class="font-semibold mb-1" style="color: var(--color-text);">📍 Punto de encuentro</p>
+                <p style="color: var(--color-muted);">{tour.meetingPoint}</p>
+              </div>
+            )}
 
             <!-- WhatsApp CTA -->
             <a

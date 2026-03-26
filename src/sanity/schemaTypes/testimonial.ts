@@ -35,5 +35,17 @@ export default defineType({
       type: 'number',
       description: 'Número menor = aparece primero',
     }),
+    defineField({
+      name: 'origin',
+      title: 'País / Ciudad de origen',
+      type: 'string',
+      description: 'ej: Buenos Aires, Argentina',
+    }),
+    defineField({
+      name: 'tourVisited',
+      title: 'Tour que realizó',
+      type: 'string',
+      description: 'ej: Camino Inca Clásico 4 días',
+    }),
   ],
 })

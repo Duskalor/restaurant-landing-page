@@ -9,6 +9,11 @@ const agencyName = settings?.businessName ?? 'Agencia de Turismo';
 
 const [tours, categories] = await Promise.all([getTours(), getTourCategories()]);
 
+const featuredTours = tours.filter((t) => t.featured);
+const ogImage = featuredTours[0]?.image
+  ? urlFor(featuredTours[0].image).width(1200).height(630).format('webp').quality(80).url()
+  : undefined;
+
 const difficultyLabels: Record<string, string> = {
   facil: 'Fácil',
   moderado: 'Moderado',
@@ -27,6 +32,7 @@ const difficultyColors: Record<string, string> = {
 <Layout
   title={`Tours — ${agencyName}`}
   description={`Todos nuestros tours en Cusco y los Andes. ${agencyName} — guías certificados, precios transparentes.`}
+  ogImage={ogImage}
 >
   <Navbar />
   <main class="pt-16">
@@ -89,7 +95,7 @@ const difficultyColors: Record<string, string> = {
               <div class="relative h-48 overflow-hidden">
                 <img
                   src={urlFor(tour.image).width(600).height(192).format('webp').quality(85).url()}
-                  alt={tour.name}
+                  alt={tour.altText ?? tour.name}
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />

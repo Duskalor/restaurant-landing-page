@@ -30,6 +30,7 @@ export default defineType({
       type: 'text',
       rows: 2,
       description: 'Resumen para las tarjetas (máx. 2 líneas)',
+      validation: (Rule) => Rule.max(200).warning('Máximo 200 caracteres para no romper el layout de las cards'),
     }),
     defineField({
       name: 'price',
@@ -74,6 +75,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'altText',
+      title: 'Texto alternativo de la imagen',
+      type: 'string',
+      description: 'Descripción de la imagen para accesibilidad (ej: "Grupo de turistas en Machu Picchu al amanecer")',
+    }),
+    defineField({
       name: 'gallery',
       title: 'Galería de imágenes',
       type: 'array',
@@ -106,6 +113,13 @@ export default defineType({
       name: 'order',
       title: 'Orden',
       type: 'number',
+    }),
+    defineField({
+      name: 'meetingPoint',
+      title: 'Punto de encuentro',
+      type: 'text',
+      rows: 2,
+      description: 'Dónde se encuentran los viajeros para iniciar el tour (dirección, referencia, hora)',
     }),
   ],
   orderings: [

@@ -52,6 +52,8 @@ export interface Testimonial {
   comment: string
   date?: string
   order?: number
+  origin?: string
+  tourVisited?: string
 }
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
@@ -104,7 +106,9 @@ export async function getTestimonials(): Promise<Testimonial[]> {
       rating,
       comment,
       date,
-      order
+      order,
+      origin,
+      tourVisited
     }
   `)
 }
@@ -170,12 +174,14 @@ export interface Tour {
   difficulty?: 'facil' | 'moderado' | 'dificil' | 'muy-dificil'
   category: { name: string; slug: { current: string } }
   image: SanityImageSource
+  altText?: string
   featured: boolean
   order: number
   maxGroupSize?: number
   included?: string[]
   notIncluded?: string[]
   gallery?: Array<SanityImageSource & { url: string }>
+  meetingPoint?: string
 }
 
 export interface TourCategory {
@@ -208,6 +214,7 @@ export async function getTours(): Promise<Tour[]> {
       difficulty,
       category-> { name, slug },
       image,
+      altText,
       featured,
       order,
       maxGroupSize,
@@ -231,6 +238,7 @@ export async function getFeaturedTours(): Promise<Tour[]> {
       difficulty,
       category-> { name, slug },
       image,
+      altText,
       featured,
       order,
       maxGroupSize,
@@ -255,12 +263,14 @@ export async function getTourBySlug(slug: string): Promise<Tour | null> {
       difficulty,
       category-> { name, slug },
       image,
+      altText,
       featured,
       order,
       maxGroupSize,
       included,
       notIncluded,
-      gallery[] { ..., "url": asset->url }
+      gallery[] { ..., "url": asset->url },
+      meetingPoint
     }
   `,
     { slug }

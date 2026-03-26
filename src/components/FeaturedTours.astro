@@ -51,7 +51,7 @@ const difficultyColors: Record<string, string> = {
           <div class="relative h-48 overflow-hidden">
             <img
               src={urlFor(tour.image).width(600).height(192).format('webp').quality(85).url()}
-              alt={tour.name}
+              alt={tour.altText ?? tour.name}
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />

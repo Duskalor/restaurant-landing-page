@@ -10,15 +10,20 @@ import Gallery from '../components/Gallery.astro';
 import Testimonials from '../components/Testimonials.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
-import { getSiteSettings } from '../lib/sanity';
+import { getSiteSettings, getHeroContent, urlFor } from '../lib/sanity';
 
-const settings = await getSiteSettings();
+const [settings, hero] = await Promise.all([getSiteSettings(), getHeroContent()]);
 const agencyName = settings?.businessName ?? 'Agencia de Turismo';
+
+const heroImage = hero?.backgroundImage
+  ? urlFor(hero.backgroundImage).width(1920).height(1080).format('webp').url()
+  : undefined;
 ---
 
 <Layout
   title={`${agencyName} — Tours en Cusco y los Andes`}
   description='Agencia de turismo en Cusco, Perú. Tours al Camino Inca, Machu Picchu, Valle Sagrado y más. Guías locales certificados, precios transparentes y turismo responsable.'
+  heroImage={heroImage}
 >
   <Navbar />
   <main>
