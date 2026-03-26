@@ -5,8 +5,8 @@ import { schemaTypes } from './src/sanity/schemaTypes'
 export default defineConfig({
   name: 'default',
   title: 'Tourism Agency',
-  projectId: process.env.SANITY_PROJECT_ID ?? process.env.PUBLIC_SANITY_PROJECT_ID ?? '',
-  dataset: process.env.SANITY_DATASET ?? process.env.PUBLIC_SANITY_DATASET ?? 'production',
+  projectId: 'uo53rq2a',
+  dataset: 'production',
   plugins: [
     structureTool({
       structure: (S) =>
