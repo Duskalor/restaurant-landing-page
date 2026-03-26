@@ -1,5 +1,5 @@
 {
-  "name": "virtual-virgo",
+  "name": "dusk-app",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "sanity:dev": "sanity dev",
-    "sanity:deploy": "node --env-file=.env ./node_modules/.bin/sanity deploy"
+    "sanity:deploy": "node --env-file=.env node_modules/sanity/bin/sanity deploy"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
