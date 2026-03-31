@@ -1,7 +1,16 @@
 ---
 import { getGalleryImages, urlFor } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
 
-const sanityImages = await getGalleryImages()
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+
+const sanityImages = await getGalleryImages(lang)
 ---
 
 <section id='galeria' class='py-16 md:py-24 bg-[var(--color-surface)]'>
@@ -10,13 +19,13 @@ const sanityImages = await getGalleryImages()
       <p
         class='text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-3'
       >
-        Galería
+        {t.gallery.label}
       </p>
       <h2 class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 reveal'>
-        Nuestra galería
+        {t.gallery.title}
       </h2>
       <p class='text-[var(--color-muted)] max-w-lg mx-auto'>
-        Imágenes reales de nuestros tours y destinos en Cusco y los Andes peruanos.
+        {t.gallery.subtitle}
       </p>
     </div>
 
@@ -41,7 +50,7 @@ const sanityImages = await getGalleryImages()
       </div>
     ) : (
       <div class='text-center py-16'>
-        <p class='text-[var(--color-muted)]'>Agregá fotos de tus tours desde Sanity Studio → Galería para mostrarlas aquí.</p>
+        <p class='text-[var(--color-muted)]'>{t.gallery.empty}</p>
       </div>
     )}
   </div>

@@ -1,5 +1,14 @@
 ---
 import { getTourCategories, urlFor } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
 
 const categories = await getTourCategories()
 ---
@@ -9,20 +18,20 @@ const categories = await getTourCategories()
     <!-- Header -->
     <div class="text-center mb-16">
       <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--color-accent)">
-        Explorá Cusco y los Andes
+        {t.categories.label}
       </p>
       <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 reveal" style="color: var(--color-text)">
-        Destinos
+        {t.categories.title}
       </h2>
       <p class="max-w-lg mx-auto" style="color: var(--color-muted)">
-        Desde la ciudad imperial hasta las alturas de la cordillera, tenemos el tour perfecto para vos.
+        {t.categories.subtitle}
       </p>
     </div>
 
     <!-- Empty state -->
     {categories.length === 0 && (
       <p class="text-center py-8" style="color: var(--color-muted)">
-        Agregá categorías de tours en Sanity Studio para mostrarlas aquí.
+        {t.categories.empty}
       </p>
     )}
 
@@ -31,7 +40,7 @@ const categories = await getTourCategories()
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((cat, i) => (
           <a
-            href={`/tours?categoria=${cat.slug.current}`}
+            href={`/${lang}/tours?categoria=${cat.slug.current}`}
             class={`relative block rounded-lg overflow-hidden h-56 group reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}
           >
             <!-- Background image or fallback gradient -->

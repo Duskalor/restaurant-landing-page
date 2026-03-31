@@ -1,0 +1,64 @@
+---
+import type { Locale } from '../i18n/index'
+import { SUPPORTED_LOCALES } from '../i18n/index'
+
+interface Props {
+  lang: Locale
+  currentPath: string
+}
+
+const { lang, currentPath } = Astro.props
+
+const flags: Record<Locale, string> = {
+  es: '🇪🇸',
+  en: '🇬🇧',
+  pt: '🇧🇷',
+}
+
+// Build the equivalent URL for each locale
+// Pattern: replace the locale segment in the URL
+function getLocalePath(targetLang: Locale): string {
+  // currentPath looks like /es/tours or /en/tours/slug
+  const segments = currentPath.split('/').filter(Boolean)
+  if (SUPPORTED_LOCALES.includes(segments[0] as Locale)) {
+    segments[0] = targetLang
+  } else {
+    segments.unshift(targetLang)
+  }
+  return '/' + segments.join('/')
+}
+---
+
+<div class="relative group">
+  <button
+    class="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-colors duration-200"
+    style="color: var(--color-text); border: 1px solid var(--color-border);"
+    aria-label="Change language"
+  >
+    <span>{flags[lang]}</span>
+    <span class="uppercase text-xs">{lang}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </button>
+
+  <div
+    class="absolute right-0 top-full mt-1 py-1 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 min-w-[130px]"
+    style="background-color: white; border: 1px solid var(--color-border);"
+  >
+    {SUPPORTED_LOCALES.map((locale) => (
+      <a
+        href={getLocalePath(locale)}
+        class={`flex items-center gap-2 px-4 py-2 text-sm transition-colors duration-150 ${locale === lang ? 'font-semibold' : ''}`}
+        style={locale === lang
+          ? 'color: var(--color-primary); background-color: var(--color-surface);'
+          : 'color: var(--color-text);'}
+        onmouseover={locale !== lang ? "this.style.backgroundColor='var(--color-surface)'" : undefined}
+        onmouseout={locale !== lang ? "this.style.backgroundColor='transparent'" : undefined}
+      >
+        <span>{flags[locale]}</span>
+        <span>{locale === 'es' ? 'Español' : locale === 'en' ? 'English' : 'Português'}</span>
+      </a>
+    ))}
+  </div>
+</div>

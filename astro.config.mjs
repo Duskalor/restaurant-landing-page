@@ -9,6 +9,13 @@ export default defineConfig({
   site: import.meta.env.SITE_URL ?? 'http://localhost:4321',
   adapter: vercel(),
   integrations: [sitemap()],
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en', 'pt'],
+    routing: {
+      prefixDefaultLocale: true,
+    },
+  },
   vite: {
     plugins: [tailwindcss()]
   }

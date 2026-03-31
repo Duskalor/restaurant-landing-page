@@ -1,18 +1,32 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import Navbar from '../components/Navbar.astro'
-import Footer from '../components/Footer.astro'
-import { getSiteSettings } from '../lib/sanity'
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { getSiteSettings } from '../../lib/sanity';
+import { useTranslations } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
 
-const settings = await getSiteSettings()
-const businessName = settings?.businessName ?? 'Agencia de Turismo'
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+const settings = await getSiteSettings();
+const businessName = settings?.businessName ?? 'Agencia de Turismo';
 ---
 
 <Layout
-  title={`Página no encontrada — ${businessName}`}
-  description="La página que buscás no existe. Volvé al inicio y explorá nuestros tours."
+  title={`${t.meta.notFoundTitle} — ${businessName}`}
+  description={t.meta.notFoundDesc}
+  lang={lang}
 >
-  <Navbar />
+  <Navbar lang={lang} />
   <main class="min-h-screen flex items-center justify-center bg-[var(--color-bg)] pt-16">
     <div class="text-center px-6 py-24">
       <p class="text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-4">
@@ -22,26 +36,26 @@ const businessName = settings?.businessName ?? 'Agencia de Turismo'
         404
       </h1>
       <p class="font-serif text-2xl md:text-3xl text-[var(--color-text)] mb-4">
-        Esta página no existe
+        {t.meta.notFoundHeading}
       </p>
       <p class="text-[var(--color-muted)] text-base md:text-lg max-w-md mx-auto mb-10 leading-relaxed">
-        La página que buscás no fue encontrada. Quizás fue movida o simplemente nunca existió.
+        {t.meta.notFoundBody}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="/"
+          href={`/${lang}/`}
           class="inline-block px-8 py-3.5 bg-[var(--color-primary)] text-white font-medium rounded hover:bg-[var(--color-primary-dark)] transition-colors duration-200"
         >
-          Volver al inicio
+          {t.meta.notFoundHome}
         </a>
         <a
-          href="/tours"
+          href={`/${lang}/tours`}
           class="inline-block px-8 py-3.5 border border-[var(--color-text)] text-[var(--color-text)] font-medium rounded hover:bg-[var(--color-text)] hover:text-white transition-colors duration-200"
         >
-          Ver los tours
+          {t.meta.notFoundTours}
         </a>
       </div>
     </div>
   </main>
-  <Footer />
+  <Footer lang={lang} />
 </Layout>

@@ -1,14 +1,23 @@
 ---
 import { getAboutContent, urlFor } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
 
-const about = await getAboutContent()
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+
+const about = await getAboutContent(lang)
 
 const imageUrl = about?.image
   ? urlFor(about.image).width(800).height(600).format('webp').url()
   : 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800&q=80'
 
-const imageAlt = about?.imageAlt ?? 'Guía turístico con viajeros en los Andes'
-const badgeLabel = about?.badgeLabel ?? 'Certificados por MINCETUR'
+const imageAlt = about?.imageAlt ?? t.about.defaultTitle
+const badgeLabel = about?.badgeLabel ?? t.about.defaultBadge
 const yearsOfExperience = about?.yearsOfExperience ?? 15
 ---
 
@@ -19,15 +28,15 @@ const yearsOfExperience = about?.yearsOfExperience ?? 15
       <p
         class='text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-3'
       >
-        Nuestra historia
+        {t.about.label}
       </p>
       <h2
         class='font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] leading-tight mb-6 reveal'
       >
-        {about?.title ?? 'Expertos en turismo andino'}
+        {about?.title ?? t.about.defaultTitle}
       </h2>
       <p class='text-[var(--color-muted)] text-base leading-relaxed mb-5 reveal reveal-delay-1'>
-        {about?.description ?? `Somos una agencia de turismo comprometida con brindarte experiencias auténticas en los Andes peruanos. Nuestros guías locales certificados te llevarán a descubrir Machu Picchu, el Valle Sagrado y mucho más.`}
+        {about?.description ?? t.about.defaultDesc}
       </p>
       {about?.mission && (
         <p class='text-[var(--color-muted)] text-base leading-relaxed mb-5 reveal reveal-delay-2 italic'>

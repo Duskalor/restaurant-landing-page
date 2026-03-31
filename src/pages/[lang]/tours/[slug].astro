@@ -1,38 +1,41 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/Navbar.astro';
-import Footer from '../../components/Footer.astro';
-import { getTourBySlug, getSiteSettings, urlFor } from '../../lib/sanity';
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import { getTourBySlug, getSiteSettings, urlFor } from '../../../lib/sanity';
+import { useTranslations, isValidLocale } from '../../../i18n/index';
+import type { Locale } from '../../../i18n/index';
 
 export const prerender = false;
 
-const { slug } = Astro.params;
+const { lang, slug } = Astro.params as { lang: string; slug: string };
 
-if (!slug) {
-  return Astro.redirect('/tours');
+if (!isValidLocale(lang)) {
+  return Astro.redirect('/es/tours');
 }
 
+if (!slug) {
+  return Astro.redirect(`/${lang}/tours`);
+}
+
+const t = useTranslations(lang as Locale);
+
 const [tour, settings] = await Promise.all([
-  getTourBySlug(slug),
+  getTourBySlug(slug, lang),
   getSiteSettings(),
 ]);
 
 if (!tour) {
-  return Astro.redirect('/tours');
+  return Astro.redirect(`/${lang}/tours`);
 }
 
 const agencyName = settings?.businessName ?? 'Agencia de Turismo';
 
 const phone = settings?.phone?.replace(/\D/g, '') ?? '';
-const whatsappMessage = encodeURIComponent(`Hola, me gustaría consultar sobre el tour: ${tour.name}`);
-const whatsappHref = phone ? `https://wa.me/${phone}?text=${whatsappMessage}` : '/contacto';
-
-const difficultyLabels: Record<string, string> = {
-  facil: 'Fácil',
-  moderado: 'Moderado',
-  dificil: 'Difícil',
-  'muy-dificil': 'Muy difícil',
-};
+const whatsappMessage = encodeURIComponent(
+  t.tourDetail.whatsappMessage.replace('{name}', tour.name)
+);
+const whatsappHref = phone ? `https://wa.me/${phone}?text=${whatsappMessage}` : `/${lang}/contacto`;
 
 const difficultyBgColors: Record<string, string> = {
   facil: '#22c55e',
@@ -41,8 +44,10 @@ const difficultyBgColors: Record<string, string> = {
   'muy-dificil': '#991b1b',
 };
 
-const difficultyLabel = difficultyLabels[tour.difficulty] ?? tour.difficulty;
-const difficultyColor = difficultyBgColors[tour.difficulty] ?? '#6b7280';
+const difficultyLabel = tour.difficulty
+  ? (t.tourDetail.difficulty_values[tour.difficulty] ?? tour.difficulty)
+  : '';
+const difficultyColor = difficultyBgColors[tour.difficulty ?? ''] ?? '#6b7280';
 
 const heroImageUrl = urlFor(tour.image).width(1400).height(560).format('webp').quality(85).url();
 const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').quality(80).url();
@@ -52,6 +57,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
   title={`${tour.name} | ${agencyName}`}
   description={tour.shortDescription ?? tour.description.slice(0, 155)}
   ogImage={ogImageUrl}
+  lang={lang as Locale}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -60,7 +66,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
     "description": tour.shortDescription ?? tour.description,
     "image": tour.image ? urlFor(tour.image).width(1200).url() : undefined,
     "touristType": tour.difficulty,
-    "url": `${Astro.site}tours/${tour.slug.current}`,
+    "url": `${Astro.site}${lang}/tours/${tour.slug.current}`,
     "offers": tour.price ? {
       "@type": "Offer",
       "price": tour.price,
@@ -71,7 +77,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
       "name": agencyName
     }
   })} />
-  <Navbar />
+  <Navbar lang={lang as Locale} />
   <main class="pt-16">
 
     <!-- Hero -->
@@ -86,13 +92,13 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
 
       <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-6 pb-10 md:pb-14 w-full">
         <!-- Breadcrumb -->
-        <nav class="mb-4 text-sm" aria-label="Miga de pan">
-          <a href="/tours" class="text-white/70 hover:text-white transition-colors">Tours</a>
+        <nav class="mb-4 text-sm" aria-label={t.tourDetail.breadcrumbAriaLabel}>
+          <a href={`/${lang}/tours`} class="text-white/70 hover:text-white transition-colors">{t.tourDetail.breadcrumbTours}</a>
           {tour.category && (
             <>
               <span class="text-white/50 mx-2">/</span>
               <a
-                href={`/tours?categoria=${tour.category.slug.current}`}
+                href={`/${lang}/tours?categoria=${tour.category.slug.current}`}
                 class="text-white/70 hover:text-white transition-colors"
               >
                 {tour.category.name}
@@ -126,14 +132,14 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
             {tour.duration}
           </span>
           <span class="flex items-center gap-1.5 font-bold" style="color: var(--color-accent);">
-            Desde USD {tour.price}
+            {t.tourDetail.fromPrice} {tour.price}
           </span>
           {tour.maxGroupSize && (
             <span class="flex items-center gap-1.5">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
-              Máx. {tour.maxGroupSize} personas
+              {t.tourDetail.maxPeople.replace('{n}', String(tour.maxGroupSize))}
             </span>
           )}
         </div>
@@ -149,20 +155,20 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
 
           <!-- Description -->
           <section>
-            <h2 class="font-serif text-2xl font-bold mb-4" style="color: var(--color-text);">Sobre este tour</h2>
+            <h2 class="font-serif text-2xl font-bold mb-4" style="color: var(--color-text);">{t.tourDetail.aboutTour}</h2>
             <p class="leading-relaxed whitespace-pre-line" style="color: var(--color-muted);">{tour.description}</p>
           </section>
 
           <!-- Gallery -->
           {tour.gallery && tour.gallery.length > 0 && (
             <section>
-              <h2 class="font-serif text-2xl font-bold mb-5" style="color: var(--color-text);">Galería</h2>
+              <h2 class="font-serif text-2xl font-bold mb-5" style="color: var(--color-text);">{t.tourDetail.gallery}</h2>
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {tour.gallery.map((img, i) => (
                   <div class={`overflow-hidden rounded-lg ${i === 0 ? 'col-span-2 sm:col-span-2 row-span-2' : ''}`}>
                     <img
                       src={urlFor(img).width(600).height(400).format('webp').quality(80).url()}
-                      alt={`${tour.name} — foto ${i + 1}`}
+                      alt={`${tour.name} — ${i + 1}`}
                       class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                       style={i === 0 ? 'min-height: 240px;' : 'min-height: 120px;'}
                       loading="lazy"
@@ -176,7 +182,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
           <!-- Included / Not included -->
           {((tour.included && tour.included.length > 0) || (tour.notIncluded && tour.notIncluded.length > 0)) && (
             <section>
-              <h2 class="font-serif text-2xl font-bold mb-5" style="color: var(--color-text);">Qué incluye</h2>
+              <h2 class="font-serif text-2xl font-bold mb-5" style="color: var(--color-text);">{t.tourDetail.whatsIncluded}</h2>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
                 {tour.included && tour.included.length > 0 && (
@@ -185,7 +191,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
                     style="background-color: var(--color-surface); border: 1px solid var(--color-border);"
                   >
                     <h3 class="font-semibold text-sm uppercase tracking-widest mb-4" style="color: var(--color-primary);">
-                      Incluido
+                      {t.tourDetail.included}
                     </h3>
                     <ul class="space-y-2">
                       {tour.included.map((item) => (
@@ -204,7 +210,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
                     style="background-color: var(--color-surface); border: 1px solid var(--color-border);"
                   >
                     <h3 class="font-semibold text-sm uppercase tracking-widest mb-4" style="color: #ef4444;">
-                      No incluido
+                      {t.tourDetail.notIncluded}
                     </h3>
                     <ul class="space-y-2">
                       {tour.notIncluded.map((item) => (
@@ -225,7 +231,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
           {tour.category && (
             <div class="pt-4 border-t" style="border-color: var(--color-border);">
               <a
-                href={`/tours?categoria=${tour.category.slug.current}`}
+                href={`/${lang}/tours?categoria=${tour.category.slug.current}`}
                 class="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-200"
                 style="color: var(--color-primary);"
                 onmouseover="this.style.color='var(--color-primary-dark)'"
@@ -234,7 +240,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <polyline points="15 18 9 12 15 6"/>
                 </svg>
-                Ver todos los tours de {tour.category.name}
+                {t.tourDetail.backToCategory.replace('{category}', tour.category.name)}
               </a>
             </div>
           )}
@@ -249,18 +255,18 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
           >
             <!-- Price -->
             <div class="mb-5 pb-5 border-b" style="border-color: var(--color-border);">
-              <p class="text-xs font-medium uppercase tracking-widest mb-1" style="color: var(--color-muted);">Precio por persona</p>
+              <p class="text-xs font-medium uppercase tracking-widest mb-1" style="color: var(--color-muted);">{t.tourDetail.pricePerPerson}</p>
               <p class="font-serif text-3xl font-bold" style="color: var(--color-accent);">USD {tour.price}</p>
             </div>
 
             <!-- Details -->
             <ul class="space-y-3 mb-6 text-sm" style="color: var(--color-text);">
               <li class="flex items-center justify-between">
-                <span style="color: var(--color-muted);">Duración</span>
+                <span style="color: var(--color-muted);">{t.tourDetail.duration}</span>
                 <span class="font-medium">{tour.duration}</span>
               </li>
               <li class="flex items-center justify-between">
-                <span style="color: var(--color-muted);">Dificultad</span>
+                <span style="color: var(--color-muted);">{t.tourDetail.difficulty}</span>
                 <span
                   class="text-xs font-semibold px-2 py-0.5 rounded-full text-white"
                   style={`background-color: ${difficultyColor};`}
@@ -270,13 +276,13 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
               </li>
               {tour.maxGroupSize && (
                 <li class="flex items-center justify-between">
-                  <span style="color: var(--color-muted);">Tamaño del grupo</span>
-                  <span class="font-medium">Máx. {tour.maxGroupSize} pers.</span>
+                  <span style="color: var(--color-muted);">{t.tourDetail.groupSize}</span>
+                  <span class="font-medium">{t.tourDetail.maxGroup.replace('{n}', String(tour.maxGroupSize))}</span>
                 </li>
               )}
               {tour.category && (
                 <li class="flex items-center justify-between">
-                  <span style="color: var(--color-muted);">Categoría</span>
+                  <span style="color: var(--color-muted);">{t.tourDetail.category}</span>
                   <span class="font-medium">{tour.category.name}</span>
                 </li>
               )}
@@ -287,7 +293,7 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
                 class="mb-6 p-4 rounded-lg text-sm"
                 style="background-color: var(--color-surface); border: 1px solid var(--color-border);"
               >
-                <p class="font-semibold mb-1" style="color: var(--color-text);">📍 Punto de encuentro</p>
+                <p class="font-semibold mb-1" style="color: var(--color-text);">{t.tourDetail.meetingPoint}</p>
                 <p style="color: var(--color-muted);">{tour.meetingPoint}</p>
               </div>
             )}
@@ -304,11 +310,11 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                 <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.122 1.524 5.855L.057 23.617a.75.75 0 00.921.921l5.762-1.467A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.7-.505-5.25-1.385l-.375-.214-3.893.992.992-3.893-.214-.375A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
               </svg>
-              Consultar sobre {tour.name}
+              {t.tourDetail.whatsappCta.replace('{name}', tour.name)}
             </a>
 
             <p class="mt-3 text-center text-xs" style="color: var(--color-muted);">
-              Te respondemos a la brevedad
+              {t.tourDetail.whatsappReply}
             </p>
           </div>
         </aside>
@@ -316,5 +322,5 @@ const ogImageUrl = urlFor(tour.image).width(1200).height(630).format('webp').qua
       </div>
     </div>
   </main>
-  <Footer />
+  <Footer lang={lang as Locale} />
 </Layout>

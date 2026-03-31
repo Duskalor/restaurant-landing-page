@@ -1,0 +1,54 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Hero from '../../components/Hero.astro';
+import TourCategories from '../../components/TourCategories.astro';
+import FeaturedTours from '../../components/FeaturedTours.astro';
+import WhyChooseUs from '../../components/WhyChooseUs.astro';
+import Certifications from '../../components/Certifications.astro';
+import Gallery from '../../components/Gallery.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import { getSiteSettings, getHeroContent, urlFor } from '../../lib/sanity';
+import { useTranslations, isValidLocale } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'pt' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+
+const [settings, hero] = await Promise.all([getSiteSettings(), getHeroContent(lang)]);
+const agencyName = settings?.businessName ?? 'Agencia de Turismo';
+
+const heroImage = hero?.backgroundImage
+  ? urlFor(hero.backgroundImage).width(1920).height(1080).format('webp').url()
+  : undefined;
+---
+
+<Layout
+  title={`${agencyName} — ${t.meta.homeTitle}`}
+  description={t.meta.homeDescription}
+  heroImage={heroImage}
+  lang={lang}
+>
+  <Navbar lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <TourCategories lang={lang} />
+    <FeaturedTours lang={lang} />
+    <WhyChooseUs lang={lang} />
+    <Certifications />
+    <Gallery lang={lang} />
+    <Testimonials lang={lang} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

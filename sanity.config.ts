@@ -1,5 +1,6 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
+import { documentInternationalization } from '@sanity/document-internationalization'
 import { schemaTypes } from './src/sanity/schemaTypes'
 
 export default defineConfig({
@@ -56,6 +57,22 @@ export default defineConfig({
                   .documentId('contactContent')
               ),
           ]),
+    }),
+    documentInternationalization({
+      supportedLanguages: [
+        { id: 'es', title: 'Español' },
+        { id: 'en', title: 'English' },
+        { id: 'pt', title: 'Português' },
+      ],
+      schemaTypes: [
+        'tour',
+        'heroContent',
+        'aboutContent',
+        'contactContent',
+        'testimonial',
+        'whyChooseUs',
+        'galleryImage',
+      ],
     }),
   ],
   schema: {

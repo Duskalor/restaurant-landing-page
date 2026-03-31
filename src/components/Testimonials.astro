@@ -1,8 +1,17 @@
 ---
 import { getTestimonials } from '../lib/sanity'
 import { testimonials as hardcodedTestimonials } from '../data/testimonials'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
 
-const sanityTestimonials = await getTestimonials()
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+
+const sanityTestimonials = await getTestimonials(lang)
 
 const useSanity = sanityTestimonials && sanityTestimonials.length > 0
 ---
@@ -11,40 +20,40 @@ const useSanity = sanityTestimonials && sanityTestimonials.length > 0
   <div class="max-w-7xl mx-auto px-4 md:px-6">
     <div class="text-center mb-16">
       <p class="text-[var(--color-primary)] text-sm font-medium tracking-widest uppercase mb-3">
-        Lo que dicen nuestros viajeros
+        {t.testimonials.label}
       </p>
       <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] reveal">
-        Reseñas
+        {t.testimonials.title}
       </h2>
     </div>
 
     {useSanity ? (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        {sanityTestimonials.map((t, i) => (
+        {sanityTestimonials.map((t2, i) => (
           <article class={`bg-[var(--color-surface)] p-8 border border-[var(--color-border)] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
             <!-- Stars -->
             <div class="flex gap-1 mb-6">
-              {Array.from({ length: t.rating ?? 5 }).map(() => (
+              {Array.from({ length: t2.rating ?? 5 }).map(() => (
                 <span class="text-[var(--color-primary)] text-lg">★</span>
               ))}
             </div>
 
             <!-- Quote -->
             <blockquote class="font-serif text-lg text-[var(--color-text)] leading-relaxed italic flex-1">
-              "{t.comment}"
+              "{t2.comment}"
             </blockquote>
 
             <!-- Author -->
             <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[var(--color-border)]">
               <div>
-                {t.tourVisited && (
-                  <p class="text-xs text-[var(--color-muted)] mb-0.5">Tour: {t.tourVisited}</p>
+                {t2.tourVisited && (
+                  <p class="text-xs text-[var(--color-muted)] mb-0.5">{t.testimonials.tourLabel}{t2.tourVisited}</p>
                 )}
-                <p class="font-semibold text-[var(--color-text)] text-sm">{t.name}</p>
-                {t.origin && (
-                  <p class="text-sm opacity-70 text-[var(--color-muted)] mt-0.5">{t.origin}</p>
+                <p class="font-semibold text-[var(--color-text)] text-sm">{t2.name}</p>
+                {t2.origin && (
+                  <p class="text-sm opacity-70 text-[var(--color-muted)] mt-0.5">{t2.origin}</p>
                 )}
-                {t.date && <p class="text-xs text-[var(--color-muted)] mt-0.5">{t.date}</p>}
+                {t2.date && <p class="text-xs text-[var(--color-muted)] mt-0.5">{t2.date}</p>}
               </div>
             </div>
           </article>
@@ -52,32 +61,32 @@ const useSanity = sanityTestimonials && sanityTestimonials.length > 0
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        {hardcodedTestimonials.map((t, i) => (
+        {hardcodedTestimonials.map((t2, i) => (
           <article class={`bg-[var(--color-surface)] p-8 border border-[var(--color-border)] rounded-sm flex flex-col reveal${i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : ''}`}>
             <!-- Stars -->
             <div class="flex gap-1 mb-6">
-              {Array.from({ length: t.rating }).map(() => (
+              {Array.from({ length: t2.rating }).map(() => (
                 <span class="text-[var(--color-primary)] text-lg">★</span>
               ))}
             </div>
 
             <!-- Quote -->
             <blockquote class="font-serif text-lg text-[var(--color-text)] leading-relaxed italic flex-1">
-              "{t.quote}"
+              "{t2.quote}"
             </blockquote>
 
             <!-- Author -->
             <div class="flex items-center gap-4 mt-8 pt-6 border-t border-[var(--color-border)]">
-              {t.avatar && (
+              {t2.avatar && (
                 <img
-                  src={t.avatar}
-                  alt={t.author}
+                  src={t2.avatar}
+                  alt={t2.author}
                   class="w-12 h-12 rounded-full object-cover"
                 />
               )}
               <div>
-                <p class="font-semibold text-[var(--color-text)] text-sm">{t.author}</p>
-                {t.role && <p class="text-xs text-[var(--color-muted)] mt-0.5">{t.role}</p>}
+                <p class="font-semibold text-[var(--color-text)] text-sm">{t2.author}</p>
+                {t2.role && <p class="text-xs text-[var(--color-muted)] mt-0.5">{t2.role}</p>}
               </div>
             </div>
           </article>

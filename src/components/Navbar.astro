@@ -1,5 +1,15 @@
 ---
 import { getSiteSettings, urlFor } from '../lib/sanity';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { useTranslations } from '../i18n/index';
+import type { Locale } from '../i18n/index';
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
 
 const settings = await getSiteSettings();
 const businessName = settings?.businessName ?? 'Agencia de Turismo';
@@ -8,11 +18,11 @@ const logoUrl = settings?.logo
   : null;
 
 const links = [
-  { label: 'Nosotros', href: '/nosotros' },
-  { label: 'Tours', href: '/tours' },
-  { label: 'Galería', href: '/galeria' },
-  { label: 'Reseñas', href: '/resenas' },
-  { label: 'Contacto', href: '/contacto' },
+  { label: t.nav.about, href: `/${lang}/nosotros` },
+  { label: t.nav.tours, href: `/${lang}/tours` },
+  { label: t.nav.gallery, href: `/${lang}/galeria` },
+  { label: t.nav.reviews, href: `/${lang}/resenas` },
+  { label: t.nav.contact, href: `/${lang}/contacto` },
 ];
 ---
 
@@ -24,7 +34,7 @@ const links = [
   >
     <!-- Logo -->
     <a
-      href='/'
+      href={`/${lang}/`}
       class='font-serif text-2xl font-bold text-[var(--color-text)] tracking-wide'
     >
       {
@@ -56,21 +66,24 @@ const links = [
       }
     </ul>
 
-    <!-- CTA -->
-    <a
-      href='/contacto'
-      class='hidden md:inline-block px-5 py-2 text-sm font-medium text-white rounded transition-colors duration-200'
-      style='background-color: var(--color-primary);'
-      onmouseover="this.style.backgroundColor='var(--color-primary-dark)'"
-      onmouseout="this.style.backgroundColor='var(--color-primary)'"
-    >
-      Consultar tour
-    </a>
+    <!-- Right side: CTA + language switcher -->
+    <div class='hidden md:flex items-center gap-3'>
+      <a
+        href={`/${lang}/contacto`}
+        class='inline-block px-5 py-2 text-sm font-medium text-white rounded transition-colors duration-200'
+        style='background-color: var(--color-primary);'
+        onmouseover="this.style.backgroundColor='var(--color-primary-dark)'"
+        onmouseout="this.style.backgroundColor='var(--color-primary)'"
+      >
+        {t.nav.consultTour}
+      </a>
+      <LanguageSwitcher lang={lang} currentPath={Astro.url.pathname} />
+    </div>
 
     <!-- Mobile burger -->
     <button
       id='burger'
-      aria-label='Abrir menú'
+      aria-label={t.menu.open}
       aria-expanded='false'
       class='md:hidden flex flex-col gap-1.5 p-2'
     >
@@ -103,13 +116,16 @@ const links = [
       ))
     }
     <a
-      href='/contacto'
+      href={`/${lang}/contacto`}
       class='mt-2 inline-block text-center px-5 py-2 text-sm font-medium text-white rounded transition-colors'
       style='background-color: var(--color-primary);'
       data-mobile-link
     >
-      Consultar tour
+      {t.nav.consultTour}
     </a>
+    <div class="mt-2">
+      <LanguageSwitcher lang={lang} currentPath={Astro.url.pathname} />
+    </div>
   </div>
 </header>
 
@@ -122,7 +138,6 @@ const links = [
     menu?.classList.toggle('flex');
     const isOpen = !open;
     burger.setAttribute('aria-expanded', String(isOpen));
-    burger.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
   });
 
   document.querySelectorAll('[data-mobile-link]').forEach((link) => {
@@ -130,7 +145,6 @@ const links = [
       menu?.classList.add('hidden');
       menu?.classList.remove('flex');
       burger?.setAttribute('aria-expanded', 'false');
-      burger?.setAttribute('aria-label', 'Abrir menú');
     });
   });
 </script>

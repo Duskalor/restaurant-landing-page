@@ -1,10 +1,19 @@
 ---
 import { getSiteSettings } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
+
+interface Props {
+  lang?: Locale | string;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations((lang as Locale) || 'es');
 
 const settings = await getSiteSettings()
 const phone = settings?.phone?.replace(/\D/g, '') ?? ''
 const businessName = settings?.businessName ?? 'nosotros'
-const message = encodeURIComponent(`Hola, me gustaría consultar sobre los tours de ${businessName}.`)
+const message = encodeURIComponent(t.whatsapp.message)
 const href = phone ? `https://wa.me/${phone}?text=${message}` : '#'
 ---
 
@@ -13,7 +22,7 @@ const href = phone ? `https://wa.me/${phone}?text=${message}` : '#'
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="Contactar por WhatsApp"
+    aria-label={t.whatsapp.ariaLabel}
     class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200"
   >
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-7 h-7">

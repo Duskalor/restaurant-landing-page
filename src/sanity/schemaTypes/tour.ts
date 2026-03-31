@@ -17,6 +17,7 @@ export default defineType({
       type: 'slug',
       options: { source: 'name', maxLength: 96 },
       validation: (Rule) => Rule.required(),
+      hidden: ({ document }) => !!document?.__i18n_base,
     }),
     defineField({
       name: 'description',

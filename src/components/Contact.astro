@@ -1,22 +1,25 @@
 ---
 import { getContactContent } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
 
-const contact = await getContactContent()
+interface Props {
+  lang?: Locale;
+}
 
-const title = contact?.title ?? 'Consultá tu tour'
-const subtitle = contact?.subtitle ?? 'Hablemos'
-const phone = contact?.phone ?? '+51 984 123 456'
-const email = contact?.email ?? 'hola@cuscotours.pe'
-const address = contact?.address ?? 'Calle Plateros 321, Centro Histórico\nCusco, Perú 08002'
-const reservationCtaText = contact?.reservationCtaText ?? 'Enviar consulta'
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+
+const contact = await getContactContent(lang)
+
+const title = contact?.title ?? t.contact.defaultTitle
+const subtitle = contact?.subtitle ?? t.contact.label
+const phone = contact?.phone ?? t.contact.defaultPhone
+const email = contact?.email ?? t.contact.defaultEmail
+const address = contact?.address ?? t.contact.defaultAddress
+const reservationCtaText = contact?.reservationCtaText ?? t.contact.defaultCta
 
 // Parse opening hours: each line "Día | Hora", fallback to hardcoded
-const defaultHours = [
-  { day: 'Lunes – Viernes', time: '8:00 am – 7:00 pm' },
-  { day: 'Sábado', time: '8:00 am – 5:00 pm' },
-  { day: 'Domingo', time: '9:00 am – 2:00 pm' },
-]
-
 const hours = contact?.openingHours
   ? contact.openingHours
       .split('\n')
@@ -26,7 +29,7 @@ const hours = contact?.openingHours
         const [day, time] = line.split('|').map((s) => s.trim())
         return { day: day ?? line, time: time ?? '' }
       })
-  : defaultHours
+  : t.defaultHours
 
 // Split address into lines for display
 const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
@@ -99,7 +102,7 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
 
       <div class="space-y-6 mb-10">
         <div>
-          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">Dirección</p>
+          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">{t.contact.addressLabel}</p>
           {addressLines.map((line, i) => (
             i === 0
               ? <p class="text-[var(--color-text)] font-medium">{line}</p>
@@ -107,13 +110,13 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
           ))}
         </div>
         <div>
-          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">Teléfono</p>
+          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">{t.contact.phoneLabel}</p>
           <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="text-[var(--color-text)] font-medium hover:text-[var(--color-primary)] transition-colors">
             {phone}
           </a>
         </div>
         <div>
-          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">Correo</p>
+          <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1">{t.contact.emailLabel}</p>
           <a href={`mailto:${email}`} class="text-[var(--color-text)] font-medium hover:text-[var(--color-primary)] transition-colors">
             {email}
           </a>
@@ -121,7 +124,7 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
       </div>
 
       <div>
-        <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-3">Horarios</p>
+        <p class="text-xs text-[var(--color-muted)] uppercase tracking-wider mb-3">{t.contact.hoursLabel}</p>
         <div class="space-y-2">
           {hours.map((h) => (
             <div class="flex justify-between border-b border-[var(--color-border)] pb-2">
@@ -135,32 +138,32 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
 
     <!-- Form -->
     <div class="bg-white p-6 md:p-10 border border-[var(--color-border)] rounded-sm shadow-sm reveal reveal-delay-1">
-      <h3 class="font-serif text-2xl font-bold text-[var(--color-text)] mb-6">Envianos tu consulta</h3>
+      <h3 class="font-serif text-2xl font-bold text-[var(--color-text)] mb-6">{t.contact.formTitle}</h3>
       <div id="form-success" class="hidden text-center py-8">
         <p class="text-2xl mb-2">✓</p>
-        <p class="font-serif text-xl text-[var(--color-text)] mb-1">¡Consulta recibida!</p>
-        <p class="text-sm text-[var(--color-muted)]">Te respondemos por correo a la brevedad.</p>
+        <p class="font-serif text-xl text-[var(--color-text)] mb-1">{t.contact.success}</p>
+        <p class="text-sm text-[var(--color-muted)]">{t.contact.successDetail}</p>
       </div>
       <form id="contact-form" class="space-y-5" novalidate>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="nombre" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Nombre</label>
+            <label for="nombre" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">{t.contact.nameLabel}</label>
             <input
               type="text"
               id="nombre"
               name="nombre"
-              placeholder="Tu nombre"
+              placeholder={t.contact.namePlaceholder}
               required
               class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             />
           </div>
           <div>
-            <label for="email" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Correo</label>
+            <label for="email" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">{t.contact.emailFieldLabel}</label>
             <input
               type="email"
               id="email"
               name="email"
-              placeholder="tu@correo.com"
+              placeholder={t.contact.emailPlaceholder}
               required
               class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             />
@@ -168,38 +171,38 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
         </div>
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="fecha" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Fecha del tour</label>
+            <label for="fecha" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">{t.contact.dateLabel}</label>
             <input
               type="text"
               id="fecha"
               name="fecha"
-              placeholder="Seleccioná una fecha"
+              placeholder={t.contact.datePlaceholder}
               required
               readonly
               class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors cursor-pointer"
             />
           </div>
           <div>
-            <label for="personas" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">Viajeros</label>
+            <label for="personas" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">{t.contact.travelersLabel}</label>
             <select
               id="personas"
               name="personas"
               class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors"
             >
               {[1,2,3,4,5,6,7,8].map((n) => (
-                <option value={n}>{n} {n === 1 ? 'viajero' : 'viajeros'}</option>
+                <option value={n}>{n} {n === 1 ? t.contact.traveler : t.contact.travelers}</option>
               ))}
-              <option value="9+">9 o más</option>
+              <option value="9+">{t.contact.travelersMore}</option>
             </select>
           </div>
         </div>
         <div>
-          <label for="mensaje" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">¿Qué tour te interesa? (opcional)</label>
+          <label for="mensaje" class="block text-xs text-[var(--color-muted)] uppercase tracking-wider mb-1.5">{t.contact.messageLabel}</label>
           <textarea
             id="mensaje"
             name="mensaje"
             rows="3"
-            placeholder="Tour al Camino Inca, Machu Picchu, preferencias, preguntas..."
+            placeholder={t.contact.messagePlaceholder}
             class="w-full px-4 py-2.5 border border-[var(--color-border)] rounded text-sm text-[var(--color-text)] bg-[var(--color-bg)] focus:outline-none focus:border-[var(--color-primary)] transition-colors resize-none"
           ></textarea>
         </div>
@@ -208,6 +211,9 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
           id="submit-btn"
           type="submit"
           class="w-full py-3 bg-[var(--color-primary)] text-white font-medium rounded hover:bg-[var(--color-primary-dark)] transition-colors duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          data-submit-text={reservationCtaText}
+          data-sending-text={t.contact.sending}
+          data-error-text={t.contact.error}
         >
           {reservationCtaText}
         </button>
@@ -238,11 +244,15 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
   const errorEl = document.getElementById('form-error') as HTMLParagraphElement
   const successEl = document.getElementById('form-success') as HTMLDivElement
 
+  const sendingText = submitBtn?.dataset.sendingText ?? 'Enviando...'
+  const submitText = submitBtn?.dataset.submitText ?? 'Enviar'
+  const errorText = submitBtn?.dataset.errorText ?? 'Error al enviar.'
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault()
     errorEl.classList.add('hidden')
     submitBtn.disabled = true
-    submitBtn.textContent = 'Enviando...'
+    submitBtn.textContent = sendingText
 
     const res = await fetch('/api/contact', {
       method: 'POST',
@@ -255,10 +265,10 @@ const addressLines = address.split('\n').map((l) => l.trim()).filter(Boolean)
       form.classList.add('hidden')
       successEl.classList.remove('hidden')
     } else {
-      errorEl.textContent = json.error ?? 'Error al enviar. Intentá de nuevo.'
+      errorEl.textContent = json.error ?? errorText
       errorEl.classList.remove('hidden')
       submitBtn.disabled = false
-      submitBtn.textContent = 'Enviar consulta'
+      submitBtn.textContent = submitText
     }
   })
 </script>

@@ -1,5 +1,14 @@
 ---
 import { getSiteSettings } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
 
 const settings = await getSiteSettings()
 
@@ -11,11 +20,11 @@ const instagram = settings?.instagram ?? null
 const facebook = settings?.facebook ?? null
 
 const links = [
-  { label: 'Nosotros', href: '/nosotros' },
-  { label: 'Tours', href: '/tours' },
-  { label: 'Galería', href: '/galeria' },
-  { label: 'Reseñas', href: '/resenas' },
-  { label: 'Contacto', href: '/contacto' },
+  { label: t.nav.about, href: `/${lang}/nosotros` },
+  { label: t.nav.tours, href: `/${lang}/tours` },
+  { label: t.nav.gallery, href: `/${lang}/galeria` },
+  { label: t.nav.reviews, href: `/${lang}/resenas` },
+  { label: t.nav.contact, href: `/${lang}/contacto` },
 ]
 
 const year = new Date().getFullYear()
@@ -27,13 +36,13 @@ const year = new Date().getFullYear()
     <div class="md:col-span-2">
       <p class="font-serif text-3xl font-bold text-[var(--color-primary)] mb-3">{businessName}</p>
       <p class="text-white/60 text-sm leading-relaxed max-w-sm">
-        {address ?? 'Agencia de turismo local en Cusco, Perú. Guías certificados, experiencias auténticas en los Andes.'}
+        {address ?? t.footer.defaultDesc}
       </p>
     </div>
 
     <!-- Nav -->
     <div>
-      <p class="text-xs text-white/40 uppercase tracking-widest mb-4">Navegación</p>
+      <p class="text-xs text-white/40 uppercase tracking-widest mb-4">{t.footer.nav}</p>
       <ul class="space-y-2">
         {links.map((link) => (
           <li>
@@ -47,7 +56,7 @@ const year = new Date().getFullYear()
 
     <!-- Contact & Socials -->
     <div>
-      <p class="text-xs text-white/40 uppercase tracking-widest mb-4">Contacto</p>
+      <p class="text-xs text-white/40 uppercase tracking-widest mb-4">{t.footer.contact}</p>
       {phone && (
         <a href={`tel:${phone.replace(/[\s()\-]/g, '')}`} class="block text-sm text-white/70 hover:text-[var(--color-primary)] transition-colors mb-1">
           {phone}
@@ -59,12 +68,12 @@ const year = new Date().getFullYear()
         </a>
       )}
       {!phone && !email && (
-        <p class="text-sm text-white/40 mb-6">Configurá el contacto en Sanity Studio.</p>
+        <p class="text-sm text-white/40 mb-6">{t.footer.noContact}</p>
       )}
 
       {(instagram || facebook) && (
         <>
-          <p class="text-xs text-white/40 uppercase tracking-widest mb-3">Síguenos</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest mb-3">{t.footer.follow}</p>
           <div class="flex gap-3">
             {instagram && (
               <a
@@ -95,7 +104,7 @@ const year = new Date().getFullYear()
   </div>
 
   <div class="max-w-7xl mx-auto px-4 md:px-6 mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
-    <p class="text-xs text-white/40">© {year} {businessName}. Todos los derechos reservados.</p>
-    <p class="text-xs text-white/40">Desarrollado con ♥</p>
+    <p class="text-xs text-white/40">© {year} {businessName}. {t.footer.rights}</p>
+    <p class="text-xs text-white/40">{t.footer.madeWith} ♥</p>
   </div>
 </footer>

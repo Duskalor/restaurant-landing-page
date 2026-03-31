@@ -1,14 +1,16 @@
 ---
 import { getFeaturedTours, urlFor } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
 
-const featuredTours = await getFeaturedTours()
-
-const difficultyLabels: Record<string, string> = {
-  facil: 'Fácil',
-  moderado: 'Moderado',
-  dificil: 'Difícil',
-  'muy-dificil': 'Muy difícil',
+interface Props {
+  lang?: Locale;
 }
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+
+const featuredTours = await getFeaturedTours(lang)
 
 const difficultyColors: Record<string, string> = {
   facil: 'bg-green-500',
@@ -23,20 +25,20 @@ const difficultyColors: Record<string, string> = {
     <!-- Header -->
     <div class="text-center mb-16">
       <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--color-accent)">
-        Experiencias
+        {t.tours.featuredLabel}
       </p>
       <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 reveal" style="color: var(--color-text)">
-        Nuestros tours
+        {t.tours.featuredTitle}
       </h2>
       <p class="max-w-lg mx-auto" style="color: var(--color-muted)">
-        Descubrí Cusco y los Andes con guías locales certificados. Cada tour está diseñado para una experiencia auténtica e inolvidable.
+        {t.tours.featuredSubtitle}
       </p>
     </div>
 
     <!-- Empty state -->
     {featuredTours.length === 0 && (
       <p class="text-center py-8" style="color: var(--color-muted)">
-        Marcá tours como destacados en Sanity Studio para mostrarlos aquí.
+        {t.tours.featuredEmpty}
       </p>
     )}
 
@@ -60,7 +62,7 @@ const difficultyColors: Record<string, string> = {
               <span
                 class={`absolute top-3 right-3 ${difficultyColors[tour.difficulty] ?? 'bg-gray-500'} text-white text-xs font-semibold px-2 py-1 rounded`}
               >
-                {difficultyLabels[tour.difficulty] ?? tour.difficulty}
+                {t.tours.difficulty[tour.difficulty] ?? tour.difficulty}
               </span>
             )}
           </div>
@@ -81,19 +83,19 @@ const difficultyColors: Record<string, string> = {
             <div class="flex items-center justify-between mb-4 text-sm" style="color: var(--color-muted)">
               <span>⏱ {tour.duration}</span>
               <span class="font-bold text-base" style="color: var(--color-accent)">
-                Desde USD {tour.price}
+                {t.tours.fromPrice} {tour.price}
               </span>
             </div>
 
             <!-- CTA -->
             <a
-              href={`/tours/${tour.slug.current}`}
+              href={`/${lang}/tours/${tour.slug.current}`}
               class="block w-full text-center px-4 py-2.5 rounded text-sm font-medium transition-colors duration-200"
               style="background-color: var(--color-primary); color: white;"
               onmouseover="this.style.backgroundColor='var(--color-primary-dark)'"
               onmouseout="this.style.backgroundColor='var(--color-primary)'"
             >
-              Ver tour
+              {t.tours.viewTour}
             </a>
           </div>
         </article>
@@ -103,13 +105,13 @@ const difficultyColors: Record<string, string> = {
     {featuredTours.length > 0 && (
       <div class="text-center mt-12">
         <a
-          href="/tours"
+          href={`/${lang}/tours`}
           class="inline-block px-8 py-3 text-sm font-medium rounded transition-colors duration-200"
           style="border: 1px solid var(--color-primary); color: var(--color-primary);"
           onmouseover="this.style.backgroundColor='var(--color-primary)'; this.style.color='white'"
           onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--color-primary)'"
         >
-          Ver todos los tours
+          {t.tours.viewAll}
         </a>
       </div>
     )}

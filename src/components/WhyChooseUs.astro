@@ -1,43 +1,50 @@
 ---
 import { getWhyChooseUs } from '../lib/sanity'
+import { useTranslations } from '../i18n/index'
+import type { Locale } from '../i18n/index'
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
 
 const FALLBACK_ITEMS = [
   {
     icon: '🧭',
-    title: 'Guías locales certificados',
-    description: 'Más de 10 años de experiencia en los Andes',
+    title: lang === 'en' ? 'Certified local guides' : lang === 'pt' ? 'Guias locais certificados' : 'Guías locales certificados',
+    description: lang === 'en' ? 'Over 10 years of experience in the Andes' : lang === 'pt' ? 'Mais de 10 anos de experiência nos Andes' : 'Más de 10 años de experiencia en los Andes',
   },
   {
     icon: '💰',
-    title: 'Precio transparente',
-    description: 'Sin costos ocultos ni sorpresas',
+    title: lang === 'en' ? 'Transparent pricing' : lang === 'pt' ? 'Preço transparente' : 'Precio transparente',
+    description: lang === 'en' ? 'No hidden costs or surprises' : lang === 'pt' ? 'Sem custos ocultos ou surpresas' : 'Sin costos ocultos ni sorpresas',
   },
   {
     icon: '📱',
     title: 'WhatsApp 24/7',
-    description: 'Respondemos en menos de 2 horas',
+    description: lang === 'en' ? 'We respond in less than 2 hours' : lang === 'pt' ? 'Respondemos em menos de 2 horas' : 'Respondemos en menos de 2 horas',
   },
   {
     icon: '🌿',
-    title: 'Turismo responsable',
-    description: 'Prácticas éticas con las comunidades locales',
+    title: lang === 'en' ? 'Responsible tourism' : lang === 'pt' ? 'Turismo responsável' : 'Turismo responsable',
+    description: lang === 'en' ? 'Ethical practices with local communities' : lang === 'pt' ? 'Práticas éticas com as comunidades locais' : 'Prácticas éticas con las comunidades locales',
   },
   {
     icon: '✅',
-    title: 'Cancelación flexible',
-    description: 'Cambios sin costo hasta 48hs antes',
+    title: lang === 'en' ? 'Flexible cancellation' : lang === 'pt' ? 'Cancelamento flexível' : 'Cancelación flexible',
+    description: lang === 'en' ? 'Free changes up to 48h before' : lang === 'pt' ? 'Mudanças gratuitas até 48h antes' : 'Cambios sin costo hasta 48hs antes',
   },
   {
     icon: '🏆',
-    title: 'Certificados',
-    description: 'MINCETUR y organismos internacionales',
+    title: lang === 'en' ? 'Certified' : lang === 'pt' ? 'Certificados' : 'Certificados',
+    description: lang === 'en' ? 'MINCETUR and international organizations' : lang === 'pt' ? 'MINCETUR e organismos internacionais' : 'MINCETUR y organismos internacionales',
   },
 ]
 
-const FALLBACK_TITLE = '¿Por qué Elegirnos?'
-
-const data = await getWhyChooseUs()
-const title = data?.title || FALLBACK_TITLE
+const data = await getWhyChooseUs(lang)
+const title = data?.title || t.whyUs.defaultTitle
 const items = (data?.items && data.items.length > 0) ? data.items : FALLBACK_ITEMS
 ---
 
@@ -46,13 +53,13 @@ const items = (data?.items && data.items.length > 0) ? data.items : FALLBACK_ITE
     <!-- Header -->
     <div class="text-center mb-16">
       <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color: var(--color-accent)">
-        Nuestra diferencia
+        {t.whyUs.label}
       </p>
       <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-4 reveal" style="color: var(--color-text)">
         {title}
       </h2>
       <p class="max-w-lg mx-auto" style="color: var(--color-muted)">
-        Somos una agencia local con compromiso real hacia nuestros viajeros y las comunidades andinas.
+        {t.whyUs.subtitle}
       </p>
     </div>
 
