@@ -1,0 +1,41 @@
+---
+// T-17: index.astro — Page composition
+// RESPONSIVE QA: verified at 320/768/1024/1440px
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import TrustBar from '../components/TrustBar.astro';
+import PracticeAreas from '../components/PracticeAreas.astro';
+import WhyUs from '../components/WhyUs.astro';
+import SuccessCases from '../components/SuccessCases.astro';
+import Team from '../components/Team.astro';
+import Testimonials from '../components/Testimonials.astro';
+import WorkProcess from '../components/WorkProcess.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+---
+
+<Layout
+  title="CRC Abogados Asociados | Estudio Jurídico Penal"
+  description="Defensa penal estratégica en Cusco, Perú. Más de 15 años de experiencia. Disponibilidad 24/7 para emergencias penales."
+>
+  <Header />
+  <Hero />
+  <TrustBar />
+  <div id="especialidades">
+    <PracticeAreas />
+  </div>
+  <WhyUs />
+  <SuccessCases />
+  <div id="equipo">
+    <Team />
+  </div>
+  <Testimonials />
+  <WorkProcess />
+  <ContactForm />
+  <Footer />
+
+  <!-- Fixed position — rendered outside main flow -->
+  <WhatsAppButton />
+</Layout>
