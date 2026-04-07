@@ -1,20 +1,18 @@
-/* Tailwind CSS v3 directives */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* ─── Design Tokens ─────────────────────────────────────────── */
-:root {
+@theme {
   --color-navy: #0D1B2A;
   --color-gold: #C9A84C;
   --color-dark-red: #8B0000;
-  --color-white: #FFFFFF;
   --color-gray-light: #F8F8F8;
   --color-text-dark: #1A1A1A;
 
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
+}
 
+:root {
   /* ─── Animation States ────────────────────────────────────── */
   --tilt-x: 0deg;
   --tilt-y: 0deg;
