@@ -1,0 +1,40 @@
+---
+import { skillCategories } from '../data/portfolio';
+---
+
+<section id="skills" class="py-32 border-t border-emerald-900/30">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="grid md:grid-cols-4 gap-12" data-animate>
+
+      <!-- Label + heading -->
+      <div>
+        <p class="text-xs font-semibold tracking-widest uppercase text-emerald-400 mb-4">04 — Stack</p>
+        <h2 class="text-3xl font-black text-white leading-tight">
+          Tech I<br/>work with
+        </h2>
+      </div>
+
+      <!-- Skills columns -->
+      <div class="md:col-span-3 grid md:grid-cols-3 gap-10">
+        {skillCategories.map((category) => (
+          <div>
+            <p class="text-xs font-semibold tracking-widest uppercase text-slate-600 mb-5">
+              {category.title}
+            </p>
+            <ul class="space-y-3">
+              {category.skills.map((skill) => (
+                <li class="flex items-center gap-3 text-slate-300 text-sm group">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400/60 shrink-0 group-hover:bg-emerald-400 transition-colors"></span>
+                  {skill.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+    </div>
+
+  </div>
+</section>

@@ -1,301 +1,54 @@
 @import "tailwindcss";
 
-/* ─── Design Tokens ─────────────────────────────────────────── */
 @theme {
-  --color-navy: #0D1B2A;
-  --color-gold: #C9A84C;
-  --color-dark-red: #8B0000;
-  --color-gray-light: #F8F8F8;
-  --color-text-dark: #1A1A1A;
-
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --color-bg: oklch(0.07 0.025 155);
+  --color-surface: oklch(0.10 0.025 155);
+  --color-surface-2: oklch(0.14 0.025 155);
+  --color-text-primary: oklch(0.97 0.005 155);
+  --color-text-muted: oklch(0.60 0.01 155);
+  --color-accent: oklch(0.72 0.19 155);
+  --color-accent-dim: oklch(0.58 0.16 155);
+  --color-border: oklch(1 0 0 / 0.08);
 }
 
-:root {
-  /* ─── Animation States ────────────────────────────────────── */
-  --tilt-x: 0deg;
-  --tilt-y: 0deg;
-  --parallax-offset: 0px;
-  --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+html {
+  scroll-behavior: smooth;
 }
 
-/* ─── Base Styles ────────────────────────────────────────────── */
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    font-family: var(--font-sans);
-    color: var(--color-text-dark);
-    background-color: var(--color-white);
-  }
-
-  img,
-  video {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
+body {
+  font-family: var(--font-body);
+  background-color: oklch(0.07 0.025 155);
+  background-image:
+    radial-gradient(ellipse 60% 55% at 10% 25%, oklch(0.72 0.19 155 / 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 90% 75%, oklch(0.72 0.19 155 / 0.18) 0%, transparent 55%);
+  background-attachment: fixed;
 }
 
-/* ─── Scroll Reveal Animations ───────────────────────────────── */
-.reveal {
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+.mesh-bg {
+  background: transparent;
+}
+
+[data-animate] {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
-.reveal.visible {
+
+[data-animate].is-visible {
   opacity: 1;
   transform: translateY(0);
 }
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal-left.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-.reveal-right {
-  opacity: 0;
-  transform: translateX(32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal-right.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
 
-/* Staggered delay utilities */
-.delay-100 { transition-delay: 100ms; }
-.delay-200 { transition-delay: 200ms; }
-.delay-300 { transition-delay: 300ms; }
-.delay-400 { transition-delay: 400ms; }
-.delay-500 { transition-delay: 500ms; }
-
-/* ─── Gold Gradient Text ─────────────────────────────────────── */
-.text-gradient-gold {
-  background: linear-gradient(135deg, #C9A84C 0%, #f0d080 50%, #C9A84C 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Decorative Section Divider ─────────────────────────────── */
-.gold-divider {
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #C9A84C, #f0d080);
-  margin: 0 auto 1.5rem;
-}
-
-/* ─── Glassmorphism Card ─────────────────────────────────────── */
-.glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(201, 168, 76, 0.2);
-}
-
-/* ─── Parallax CSS Utility Classes ────────────────────────────── */
-.parallax-bg {
-  transform: translate3d(0, var(--parallax-offset), 0);
-  will-change: transform;
-  transition: transform 0.1s linear;
-}
-
-.parallax-blob {
-  transform: translate3d(0, calc(var(--parallax-offset) * 0.3), 0);
-  will-change: transform;
-}
-
-/* ─── 3D Tilt Classes ─────────────────────────────────────────── */
-.tilt-card {
-  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-  transition: transform 150ms var(--ease-premium);
-  transform-style: preserve-3d;
-}
-
-.tilt-card-inner {
-  transform: translateZ(20px);
-}
-
-.tilt-card-content {
-  transform: translateZ(40px);
-}
-
-/* ─── Glow Effect Classes ─────────────────────────────────────── */
-.glow-gold {
-  box-shadow: 
-    0 0 20px rgba(201, 168, 76, 0.15),
-    0 8px 32px rgba(201, 168, 76, 0.1),
-    0 20px 48px rgba(201, 168, 76, 0.05);
-}
-
-.glow-gold-hover:hover {
-  box-shadow: 
-    0 0 30px rgba(201, 168, 76, 0.25),
-    0 12px 40px rgba(201, 168, 76, 0.15),
-    0 24px 56px rgba(201, 168, 76, 0.08);
-}
-
-.glow-border {
-  position: relative;
-}
-
-.glow-border::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(201, 168, 76, 0.4), rgba(240, 208, 128, 0.2), rgba(201, 168, 76, 0.4));
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.glow-border:hover::before {
-  opacity: 1;
-}
-
-/* ─── Shimmer Animation for CTA Buttons ───────────────────────── */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.btn-shimmer {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-shimmer::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transform: skewX(-20deg);
-  animation: shimmer 3s infinite;
-  animation-delay: 2s;
-}
-
-.btn-shimmer:hover::after {
-  animation-duration: 1s;
-}
-
-/* ─── Enhanced Glassmorphism Classes ─────────────────────────── */
-.glass-premium {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(201, 168, 76, 0.15);
-  position: relative;
-}
-
-.glass-with-noise::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-.gradient-border {
-  position: relative;
-  background: linear-gradient(var(--color-navy), var(--color-navy)) padding-box,
-              linear-gradient(135deg, #C9A84C, #f0d080, #C9A84C) border-box;
-  border: 2px solid transparent;
-  background-clip: padding-box, border-box;
-}
-
-.gradient-border-animated {
-  position: relative;
-  background: linear-gradient(var(--color-navy), var(--color-navy)) padding-box,
-              linear-gradient(90deg, #C9A84C, #f0d080, #C9A84C) border-box;
-  border: 2px solid transparent;
-  background-clip: padding-box, border-box;
-  transition: background 0.4s ease;
-}
-
-.gradient-border-animated:hover {
-  background: linear-gradient(var(--color-navy), var(--color-navy)) padding-box,
-              linear-gradient(90deg, #f0d080, #C9A84C, #f0d080) border-box;
-  background-clip: padding-box, border-box;
-}
-
-/* ─── Premium Typography Classes ───────────────────────────────── */
-.text-fluid {
-  font-size: clamp(1.5rem, 4vw, 3rem);
-  line-height: 1.2;
-}
-
-.text-fluid-sm {
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  line-height: 1.4;
-}
-
-.text-gold-gradient {
-  background: linear-gradient(135deg, #C9A84C 0%, #f0d080 50%, #C9A84C 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.tracking-premium {
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.font-serif-premium {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-/* ─── Scroll Reveal Enhanced ───────────────────────────────────── */
-.reveal-enhanced {
-  opacity: 0;
-  transform: translateY(32px) scale(0.95);
-  transition: opacity 0.7s var(--ease-premium), transform 0.7s var(--ease-premium);
-}
-
-.reveal-enhanced.visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* ─── Reduced Motion Support ───────────────────────────────────── */
-.reduce-motion .reveal,
-.reduce-motion .reveal-left,
-.reduce-motion .reveal-right,
-.reduce-motion .reveal-enhanced,
-.reduce-motion .tilt-card,
-.reduce-motion .parallax-bg,
-.reduce-motion .parallax-blob {
-  transition: none !important;
-  animation: none !important;
-  transform: none !important;
-  opacity: 1 !important;
-}
-
-.reduce-motion .btn-shimmer::after {
-  animation: none !important;
-  display: none;
 }

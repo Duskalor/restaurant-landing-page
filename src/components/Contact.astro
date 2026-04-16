@@ -1,0 +1,56 @@
+---
+import { socials, personal } from '../data/portfolio';
+---
+
+<section id="contact" class="py-32 border-t border-emerald-900/30">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <p class="text-xs font-semibold tracking-widest uppercase text-emerald-400 mb-10">05 — Contact</p>
+
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+
+      <!-- Left: big closing statement -->
+      <div data-animate>
+        <h2 class="text-5xl md:text-7xl font-black text-white leading-none mb-8">
+          Let's build<br/>
+          <span class="text-emerald-400">something.</span>
+        </h2>
+
+        <a
+          href={socials.email}
+          class="block text-xl text-slate-400 hover:text-emerald-400 transition-colors duration-200 mb-10 group"
+        >
+          {personal.email}
+          <span class="inline-block ml-1 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+        </a>
+
+        <div class="flex gap-8">
+          <a
+            href={socials.github}
+            class="text-sm font-semibold text-slate-500 hover:text-white transition-colors duration-200 tracking-wide"
+            target="_blank" rel="noopener noreferrer"
+          >
+            GitHub ↗
+          </a>
+          <a
+            href={socials.linkedin}
+            class="text-sm font-semibold text-slate-500 hover:text-white transition-colors duration-200 tracking-wide"
+            target="_blank" rel="noopener noreferrer"
+          >
+            LinkedIn ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: decorative -->
+      <div class="hidden md:flex items-center justify-end" data-animate data-delay="150">
+        <div class="text-right">
+          <p class="text-8xl font-black text-slate-800 leading-none select-none">✦</p>
+          <p class="text-slate-700 text-sm mt-4 font-mono">Open to full-time &amp; freelance</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>

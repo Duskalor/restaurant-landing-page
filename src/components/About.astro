@@ -1,0 +1,55 @@
+---
+import { Hammer, BookOpen, Rocket, RefreshCw } from '@lucide/astro';
+import { about } from '../data/portfolio';
+
+const iconMap = { Hammer, BookOpen, Rocket, RefreshCw };
+---
+
+<section id="about" class="py-32">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <p class="text-xs font-semibold tracking-widest uppercase text-emerald-400 mb-10">02 — About</p>
+
+    <div class="grid md:grid-cols-2 gap-16 items-start">
+
+      <!-- Left: statement + highlights -->
+      <div data-animate>
+        <h2 class="text-5xl md:text-6xl font-black text-white leading-tight mb-12">
+          Self-taught.<br/>
+          <span class="text-slate-600">Always</span><br/>
+          building.
+        </h2>
+
+        <div class="space-y-0">
+          {about.highlights.map((item) => {
+            const Icon = iconMap[item.iconName];
+            return (
+              <div class="flex items-start gap-4 py-4 border-b border-emerald-900/30 group">
+                <Icon size={18} class="text-emerald-400 mt-0.5 shrink-0" />
+                <div>
+                  <p class="font-semibold text-white text-sm mb-0.5">{item.title}</p>
+                  <p class="text-slate-500 text-sm leading-relaxed">{item.description}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Right: paragraphs -->
+      <div class="space-y-6 pt-2" data-animate data-delay="150">
+        {about.paragraphs.map((paragraph) => (
+          <p class="text-xl text-slate-400 leading-relaxed">{paragraph}</p>
+        ))}
+
+        <div class="pt-4">
+          <span class="inline-flex items-center gap-2 text-sm text-slate-600">
+            <span class="w-4 h-px bg-slate-700 inline-block"></span>
+            Based in Peru · Open to remote
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,74 +1,108 @@
 ---
-// Header con logo y navegación
+import { navItems, personal } from '../data/portfolio';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-40 bg-navy/95 backdrop-blur-md border-b border-white/5">
-  <div class="max-w-6xl mx-auto px-6 py-4">
-    <div class="flex items-center justify-between">
-      
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-3">
-        <img src="/logo.svg" alt="CRC Abogados Asociados" class="h-12 w-auto" />
+<header
+  class='fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/[0.06]'
+>
+  <div class='max-w-7xl mx-auto px-6'>
+    <nav class='flex justify-between items-center py-4'>
+      <a href='/' class='group'>
+        <span class='text-2xl font-bold text-emerald-400'>
+          &lt;{personal.name.split(' ')[0]} /&gt;
+        </span>
       </a>
 
-      <!-- Navigation (desktop) -->
-      <nav class="hidden md:flex items-center gap-8">
-        <a href="#especialidades" class="font-sans text-white/80 text-sm hover:text-gold transition-colors">Especialidades</a>
-        <a href="#equipo" class="font-sans text-white/80 text-sm hover:text-gold transition-colors">Equipo</a>
-        <a href="#contacto" class="font-sans text-white/80 text-sm hover:text-gold transition-colors">Contacto</a>
-        <a 
-          href="#contacto"
-          class="px-5 py-2 bg-gold text-navy font-sans font-semibold text-sm rounded-full hover:bg-yellow-400 transition-colors"
-        >
-          Consulta confidencial
-        </a>
-      </nav>
+      <!-- Desktop nav -->
+      <ul class='hidden md:flex gap-8 list-none'>
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class='text-slate-400 font-medium hover:text-emerald-400 transition-colors duration-300'
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
 
-      <!-- Mobile menu button -->
-      <button 
-        id="mobile-menu-btn"
-        class="md:hidden p-2 text-white/80 hover:text-gold transition-colors"
-        aria-label="Abrir menú"
+      <!-- Mobile hamburger button -->
+      <button
+        id='menu-toggle'
+        class='md:hidden flex flex-col gap-1.5 p-2 -mr-2'
+        aria-label='Toggle menu'
+        aria-expanded='false'
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
+        <span class='hamburger-line block w-6 h-0.5 bg-slate-300 transition-all duration-300'></span>
+        <span class='hamburger-line block w-6 h-0.5 bg-slate-300 transition-all duration-300'></span>
+        <span class='hamburger-line block w-6 h-0.5 bg-slate-300 transition-all duration-300'></span>
       </button>
-
-    </div>
+    </nav>
   </div>
 
-  <!-- Mobile menu (hidden by default) -->
-  <div id="mobile-menu" class="hidden md:hidden bg-navy/98 border-t border-white/5">
-    <div class="px-6 py-4 flex flex-col gap-4">
-      <a href="#especialidades" class="font-sans text-white/80 text-base py-2 hover:text-gold transition-colors">Especialidades</a>
-      <a href="#equipo" class="font-sans text-white/80 text-base py-2 hover:text-gold transition-colors">Equipo</a>
-      <a href="#contacto" class="font-sans text-white/80 text-base py-2 hover:text-gold transition-colors">Contacto</a>
-      <a 
-        href="#contacto"
-        class="px-5 py-3 bg-gold text-navy font-sans font-semibold text-base rounded-full text-center hover:bg-yellow-400 transition-colors"
-      >
-        Consulta confidencial
-      </a>
-    </div>
+  <!-- Mobile menu -->
+  <div
+    id='mobile-menu'
+    class='md:hidden hidden border-t border-white/[0.06] bg-black/60 backdrop-blur-md'
+  >
+    <ul class='flex flex-col list-none px-6 py-4 gap-1'>
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class='mobile-nav-link block py-3 text-slate-300 font-medium hover:text-emerald-400 transition-colors duration-200 border-b border-white/[0.06] last:border-0'
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </header>
 
-<!-- Spacer para evitar que el contenido quede debajo del header fixed -->
-<div class="h-20"></div>
+<style>
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-100%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  header {
+    animation: slideDown 0.5s ease-out forwards;
+  }
+
+  /* Hamburger → X animation */
+  .menu-open .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .menu-open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-open .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+</style>
 
 <script>
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  
-  mobileBtn?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden', isOpen);
+    toggle.classList.toggle('menu-open', !isOpen);
+    toggle.setAttribute('aria-expanded', String(!isOpen));
   });
 
-  // Close menu when clicking on a link
-  mobileMenu?.querySelectorAll('a').forEach(link => {
+  // Close menu on nav link click
+  document.querySelectorAll('.mobile-nav-link').forEach((link) => {
     link.addEventListener('click', () => {
-      mobileMenu?.classList.add('hidden');
+      menu?.classList.add('hidden');
+      toggle?.classList.remove('menu-open');
+      toggle?.setAttribute('aria-expanded', 'false');
     });
   });
 </script>

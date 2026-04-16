@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://crcabogados.com.ar/sitemap-index.xml
